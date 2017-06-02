@@ -1,0 +1,59 @@
+// Here you can add other styles
+#search-form{
+	width: 50vw;
+}
+.jumbotron.full-width{
+	height: 100vh;
+	background-size: 100vw auto;
+	background-position: 50% 50%;
+	background-repeat:no-repeat;
+	overflow: visible;
+}
+.d-md-up-none{
+	display:block;
+}
+@media(min-width:768px){
+	.d-md-up-none{
+		display: none;
+	}
+}
+.bg-white{	
+	background-color:white;
+}
+body, .bg-aqua{
+	background-color:rgba(99,194,222,.05);
+}
+
+.nav-link.active{
+	font-weight:500;
+}
+.ease-transition{
+	-webkit-transition: all 0.5s ease-in-out;
+   -moz-transition: all 0.5s ease-in-out;
+     -o-transition: all 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
+}
+a{
+	@extend .ease-transition;
+	&:hover{
+		text-decoration: none;
+	}
+}
+.btn{
+	&:hover{
+		cursor: pointer;
+	}
+}
+.form-group{
+	label{
+		font-weight: 500;
+	}
+}
+.navbar-brand{
+	background-image:none !important;
+}
+.sidebar{
+	z-index:999;
+	top:55px;
+}
+
