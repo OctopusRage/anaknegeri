@@ -1,5 +1,5 @@
 @extends('auth.layouts.app')
-@section('title', 'Login')
+@section('title', 'Register')
 @section('content')
 <div class="container">
         <div class="row justify-content-center">
@@ -8,48 +8,93 @@
                     <div class="card-block p-4">
                         <h1>Register</h1>
                         <p class="text-muted">Silakan masukkan data diri anda</p>
-                      
-                        <div class="form-group  mb-3">
-                            <label for="name">Nama Lengkap</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="icon-user"></i>
-                            </span>
-                            <input type="text" class="form-control" placeholder="Nama Lengkap">
-                            </div>
-                            <span class="help-block">Pesan error</span>
-                        </div>
-                       
-                        <div class="form-group  mb-3">
-
-                            <label for="name">Email</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="icon-envelope"></i></span>
-                                <input type="text" class="form-control" placeholder="Email">
-                            </div>
-                            <span class="help-block">Pesan error</span>
-                        </div>
-                        <div class="form-group  mb-3">
-
-                            <label for="name">Passworrd</label>
-                            <div class="input-group">
-                                 <span class="input-group-addon"><i class="icon-lock"></i>
-                            </span>
-                            <input type="password" class="form-control" placeholder="Password">
-                            </div>
-                            <span class="help-block">Pesan error</span>
-                        </div>
-                       <div class="form-group  mb-3">  
-
-                            <label for="name">Ulangi Password</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="icon-lock"></i>
+                         {!! Form::open(['url' => url('register'),  'role' =>'form' ]) !!}
+                            @include('components.status')
+                                
+                            {{ csrf_field() }}
+                            <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}  mb-3">
+                                <label for="inputFullName">Nama Lengkap</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-user"></i>
                                 </span>
-                                <input type="password" class="form-control" placeholder="Ulangi password">
+
+                                {!! Form::text('name', null, [
+                                        'class'                         => 'form-control',
+                                        'placeholder'                   => 'Email address',
+                                        'required',
+                                        'id'                            => 'inputFullName'
+                                    ]) !!}
+                                </div>
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('name') }}</strong>
+                                    </span>
+                                @endif
                             </div>
-                           <span class="help-block">Pesan error</span>
-                        </div>
-                       
-                        <button type="button" class="btn btn-block btn-success">Register</button>
+                           
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}  mb-3">
+
+                                <label for="inputEmail">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-envelope"></i></span>
+                                    {!! Form::email('email', null, [
+                                        'class'                         => 'form-control',
+                                        'placeholder'                   => 'Email address',
+                                        'required',
+                                        'id'                            => 'inputEmail'
+                                    ]) !!}
+                                </div>
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}  mb-3">
+
+                                <label for="inputPassword">Passworrd</label>
+                                <div class="input-group">
+                                     <span class="input-group-addon"><i class="icon-lock"></i>
+                                </span>
+                                {!! Form::password('password', [
+                                    'class'                         => 'form-control',
+                                    'placeholder'                   => 'Password',
+                                    'required',
+                                    'id'                            => 'inputPassword'
+                                ]) !!}
+
+                                </div>
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                           <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}  mb-3">  
+
+                                <label for="name">Ulangi Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon-lock"></i>
+                                    </span>
+                                    {!! Form::password('password_confirmation', [
+                                        'class'                         => 'form-control',
+                                        'placeholder'                   => 'Password',
+                                        'required',
+                                        'id'                            => 'password-confirm'
+                                    ]) !!}
+
+                                </div>
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                           
+                            <button type="submit" class="btn btn-block btn-primary">Register</button>
+
+                        {!! Form::close() !!}
+                        <h6 class="mt-3"><a href="/" class="text-muted"><i class="icon-arrow-left-circle"></i>&nbsp; Kembali ke Beranda</a></h6>
                     </div>
                 </div>
             </div>

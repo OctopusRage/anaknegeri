@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\User;
+use App\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -27,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -48,10 +49,21 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6|max:32',
+                'password_confirmation' => 'required|string|same:password',
+            ],
+            [
+                'name.required'         => 'Kolom nama harus diisi',
+                'email.required'        => 'Kolom email harus diisi',
+                'email.unique'          => 'Email sudah terdaftar',
+                'email.email'           => 'Email tidak valid',
+                'password.required'     => 'Kolom password harus diisi',
+                'password.min'          => 'Panjang karakter minimal 6',
+                'password.max'          => 'Panjang karakter maksimal 32'
+            ]
+        );
     }
 
     /**
@@ -62,10 +74,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'token' => str_random(64),
+            'activated' => true,
         ]);
+
+        $role = Role::whereName('user')->first();
+        $user->assignRole($role);
+
+        return $user;
     }
 }

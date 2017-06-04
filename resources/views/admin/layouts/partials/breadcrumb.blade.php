@@ -1,4 +1,7 @@
-<ol class="breadcrumb">
+<ol class="breadcrumb 
+@if(session('message'))
+mb-0
+@endif">
     <li class="breadcrumb-item">Home</li>
     <li class="breadcrumb-item"><a href="#">Admin</a>
     </li>
@@ -11,3 +14,10 @@
         </div>
     </li>
 </ol>
+@if(session('message'))
+<nav class="navbar  navbar-inverse bg-primary mb-4">
+   <span class="navbar-text">
+      {{ session('message') }}, {{ Auth::user()->name }}
+    </span>
+</nav>
+@endif

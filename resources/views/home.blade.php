@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('title','Anaknegeri')
 @section('content')
-
+	
+	@include('banner.status')
 	@include('components.jumbotron')
 	<div class="jumbotron jumbotronfluid pt-5 mb-0 mt-0 bg-white">
 		<div class="container">

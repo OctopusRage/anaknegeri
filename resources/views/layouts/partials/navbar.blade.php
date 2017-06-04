@@ -24,22 +24,44 @@
     </ul>
 <ul class="nav navbar-nav ml-auto">
     <li class="nav-item px-3 d-md-down-none">
-        <a class="nav-link active" href="{{ route('campaign') }}">Campaign</a>
+        <a class="nav-link" href="{{ route('campaign') }}">Campaign</a>
     </li>
     <li class="nav-item dropdown pr-3 ">
         <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <img src="{{ asset('img/avatars/6.jpg') }} " class="img-avatar" alt="admin@bootstrapmaster.com">
-            <span class="d-md-down-none">Full Name</span>
+            <span class="d-md-down-none">@if(Auth::check()) {{  Auth::user()->name }} @else Guest @endif</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right mr-3">
-            <a class="dropdown-item"  href="{{ url('/loginadmin') }}"><i class="icon-login"></i> Login</a>
-            <a class="dropdown-item"  href="{{ url('/registeradmin') }}"><i class="icon-people"></i> Register</a>
-            <a class="dropdown-item"  href="{{ route('profile') }}"><i class="icon-user"></i> Profil</a>
-            <a class="dropdown-item"  href="{{ route('profile-campaign') }}"><i class="icon-cursor"></i> Campaign</a>
-            <a class="dropdown-item"  href="{{ route('profile-wallet') }}"><i class="icon-wallet"></i> Dompet</a>
-            <a class="dropdown-item"  href="{{ route('profile-account') }}"><i class="icon-settings"></i> Akun</a>
-            <div class="divider"></div>
-            <a class="dropdown-item" href="#"><i class="icon-logout"></i> Logout</a>
+             @if (Route::has('login'))
+                @if (Auth::check())
+                    @if (Auth::user()->hasRole('administrator'))
+                         <div class="dropdown-header text-center">
+                            <strong>Administrator</strong>
+                        </div>
+                        <a class="dropdown-item"  href="{{ route('admin.index') }}"><i class="icon-speedometer"></i> Dashboard</a>
+                    @endif
+                     @if (Auth::user()->hasRole('organisasi'))
+                         <div class="dropdown-header text-center">
+                            <strong>Organisasi</strong>
+                        </div>
+                        <a class="dropdown-item"  href="{{ route('admin.index') }}"><i class="icon-speedometer"></i> Profil Publik</a>
+                    @endif
+
+                    <div class="dropdown-header text-center">
+                        <strong>Account</strong>
+                    </div>
+                    <a class="dropdown-item"  href="{{ route('profile') }}"><i class="icon-user"></i> Profil</a>
+                    <a class="dropdown-item"  href="{{ route('profile-campaign') }}"><i class="icon-cursor"></i> Campaign</a>
+                    <a class="dropdown-item"  href="{{ route('profile-wallet') }}"><i class="icon-wallet"></i> Dompet</a>
+                    <a class="dropdown-item"  href="{{ route('profile-account') }}"><i class="icon-settings"></i> Akun</a>
+                    <a class="dropdown-item" href="{{ route('authenticated.logout')}}"><i class="icon-logout"></i> Logout</a>
+                @else
+                    <a class="dropdown-item"  href="{{ route('login') }}"><i class="icon-login"></i> Login</a>
+                    <a class="dropdown-item"  href="{{ route('register') }}"><i class="icon-people"></i> Register</a>
+                @endif
+            @endif
+
+            
         </div>
     </li>
 </ul>

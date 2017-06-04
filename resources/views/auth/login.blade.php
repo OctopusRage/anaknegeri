@@ -10,28 +10,44 @@
 
                         <h1>Login</h1>
                         <p class="text-muted">Silakan masukan email dan password</p>
-                         <div class="form-group  mb-3">
+                            
+                         {!! Form::open(['url' => url('login'),  'role' =>'form' ]) !!}
+                            
+                            @include('components.status')
+                            {{ csrf_field() }}
+                         <div class="form-group {{ $errors->has('email') ? ' has-danger' : '' }}  mb-3">
 
-                            <label for="name">Email</label>
+                            <label for="inputEmail">Email</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="icon-envelope"></i></span>
-                                <input type="text" class="form-control" placeholder="Email">
+                                {!! Form::email('email', null, [
+                                    'class'                         => 'form-control',
+                                    'placeholder'                   => 'Email address',
+                                    'required',
+                                    'id'                            => 'inputEmail'
+                                ]) !!}
                             </div>
-                            <span class="help-block">Pesan error</span>
                         </div>
-                        <div class="form-group  mb-3">
+                        <div class="form-group {{ $errors->has('email') ? ' has-danger' : '' }}  mb-3">
 
-                            <label for="name">Password</label>
+                            <label for="inputPassword">Password</label>
                             <div class="input-group">
-                                 <span class="input-group-addon"><i class="icon-lock"></i>
-                            </span>
-                            <input type="password" class="form-control" placeholder="Password">
+                                 <span class="input-group-addon"><i class="icon-lock"></i></span>
+                            {!! Form::password('password', [
+                                'class'                         => 'form-control',
+                                'placeholder'                   => 'Password',
+                                'required',
+                                'id'                            => 'inputPassword'
+                            ]) !!}
+
                             </div>
-                            <span class="help-block">Pesan error</span>
                         </div>
                         <div class="checkbox">
                             <label class="switch switch-sm switch-icon switch-primary-outline-alt checkbox-inline mb-1">
-                                <input type="checkbox" class="switch-input "> 
+                                {!! Form::checkbox('remember', 1, null, [
+                                    'id'    => 'remember-me', 
+                                    'class' => 'switch-input'
+                                ]) !!}
                                 <span class="switch-label" data-on="" data-off=""></span>
                                 <span class="switch-handle"></span>
                             </label>
@@ -41,12 +57,13 @@
                         </div>
                         <div class="row mt-3 mb-3">
                             <div class="col-6">
-                                <button type="button" class="btn btn-primary px-4">Login</button>
+                                <button type="submit" class="btn btn-primary px-4">Login</button>
                             </div>
                             <div class="col-6 text-right">
-                                <button type="button" class="btn btn-link px-0">Forgot password?</button>
+                                <a href="{{ route('password.request')}}" class="btn btn-link px-0">Forgot password?</a>
                             </div>
                         </div>
+                        {!! Form::close() !!}
 
                         <h6><a href="/" class="text-muted"><i class="icon-arrow-left-circle"></i>&nbsp; Kembali ke Beranda</a></h6>
                     </div>
@@ -59,7 +76,7 @@
                                 <i class="icon-people"></i>
                             </h2>
                             <p>Bergabung dengan komunitas peduli pemerataan pendidikan Indonesia dan karya anak bangsa. </p>
-                            <button type="button" class="btn btn-info mt-3">Register Now!</button>
+                            <a href="{{ route('register')}}" class="btn btn-info mt-3">Register Now!</a>
                         </div>
                     </div>
                 </div>
