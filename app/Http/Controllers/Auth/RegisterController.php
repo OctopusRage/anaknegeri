@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Traits\CaptchaTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
 class RegisterController extends Controller
 {
     /*
@@ -21,7 +21,7 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    use RegistersUsers,CaptchaTrait;
 
     /**
      * Where to redirect users after registration.
@@ -48,11 +48,14 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $data['captcha'] = $this->captchaCheck();
+        $validator = Validator::make($data, [
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6|max:32',
                 'password_confirmation' => 'required|string|same:password',
+                'g-recaptcha-response'  => 'required',
+                'captcha'               => 'accepted'
             ],
             [
                 'name.required'         => 'Kolom nama harus diisi',
@@ -61,9 +64,13 @@ class RegisterController extends Controller
                 'email.email'           => 'Email tidak valid',
                 'password.required'     => 'Kolom password harus diisi',
                 'password.min'          => 'Panjang karakter minimal 6',
-                'password.max'          => 'Panjang karakter maksimal 32'
+                'password.max'          => 'Panjang karakter maksimal 32',
+                'g-recaptcha-response.required' => 'Captcha is required',
+                'captcha.min'           => 'Wrong captcha, please try again.'
             ]
         );
+
+        return $validator;
     }
 
     /**

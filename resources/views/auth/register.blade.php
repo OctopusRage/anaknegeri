@@ -1,5 +1,8 @@
 @extends('auth.layouts.app')
 @section('title', 'Register')
+@section('plugincss')
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+@endsection
 @section('content')
 <div class="container">
         <div class="row justify-content-center">
@@ -90,7 +93,10 @@
                                     </span>
                                 @endif
                             </div>
-                           
+                            <div class="g-recaptcha mb-3" data-sitekey="6LfgGCQUAAAAAKi0uWSrcWz-fmNXSOX2pTC62-J9">
+                                
+                            </div>
+
                             <button type="submit" class="btn btn-block btn-primary">Register</button>
 
                         {!! Form::close() !!}
