@@ -13,8 +13,8 @@
 
                                 <i class="icon-check"></i>
                             </h1>
-                            <p>Selamat, akun anda telah aktif.</p>
-                            <a href="{{ route('home')}}" class="btn btn-primary mt-3 mb-5">Mulai Campaign</a>
+                            <p>Selamat, akun anda telah aktif!</p>
+                            <a href="{{ route('home')}}" class="btn btn-success mt-3 mb-5">Mulai Campaign</a>
                         </div>
                     </div>
                 </div>

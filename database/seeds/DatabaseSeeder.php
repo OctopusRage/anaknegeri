@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
 
          $this->call('RoleSeeder');
          $this->call('UserSeeder');
+         $this->call('CategorySeed');
+         $this->call('SupportTypeSeed');
 
-      Model::reguard();
+        Model::reguard();
     }
 }

@@ -47,30 +47,47 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
         $this->auth = $auth;
+        $auth->viaRemember();
     }
 
     public function login(Request $request)
     {
         $email      = $request->get('email');
         $password   = $request->get('password');
-        $remember   = $request->get('remember');
+        $remember   = $request->has('remember') ? true : false;
 
         if ($this->auth->attempt([
             'email'     => $email,
             'password'  => $password
-        ], $remember == 1 ? true : false)) {
-            if ( $this->auth->user()->hasRole('user') || $this->auth->user()->hasRole('user')) {
+        ], $remember)) {
+            if ( $this->auth->user()->hasRole('user') || $this->auth->user()->hasRole('organization')) {
 
                 return redirect()->route('home')
-                    ->with('message','Selamat datang, ')
-                    ->with('status', 'danger');
+                    ->with('message','Selamat datang, '. $this->auth->user()->name) 
+                    ->with('status', 'success');
             }
 
             if ( $this->auth->user()->hasRole('administrator')) {
 
             return redirect()->route('admin.index')
                 ->with('message','Selamat datang, ')
-                ->with('status', 'danger');
+                ->with('status', 'success');
+
+            }
+
+            if ( $this->auth->user()->hasRole('finance')) {
+
+            return redirect()->route('finance.index')
+                ->with('message','Selamat datang, ')
+                ->with('status', 'success');
+
+            }
+
+            if ( $this->auth->user()->hasRole('logistic')) {
+
+            return redirect()->route('logistic.index')
+                ->with('message','Selamat datang, ')
+                ->with('status', 'success'); 
 
             }
         }

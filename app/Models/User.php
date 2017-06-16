@@ -15,9 +15,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'token', 'activated'
+        'name', 'email', 'password', 'token', 'activated', 'verified', 'mobile_no', 'date','bio', 'profile_img','banner_img'
     ];
-
 
     protected $guarded = ['id'];
 
@@ -31,11 +30,28 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    // Define Relations
     public function roles()
     {
         return $this->belongsToMany('App\Models\Role')->withTimestamps();
     }
 
+    public function campaign()
+    {
+        return $this->hasMany('App\Models\Campaign', 'created_by');
+    }
+
+    public function support()
+    {
+        return $this->hasMany('App\Models\Support', 'user_id');
+    } 
+
+    public function activationRequests()
+    {
+        return $this->hasMany('App\Models\ActivationRequest', 'user_id');
+    } 
+
+    // Role Relation
     public function hasRole($name)
     {
         foreach($this->roles as $role)
@@ -56,16 +72,30 @@ class User extends Authenticatable
         return $this->roles()->detach($role);
     }
 
-    public function homeUrl()
+    public function activated()
     {
-        if ($this->hasRole('user')) {
-            $url = route('user.home');
-        } else {
-            $url = route('admin.home');
-        }
-
-        return $url;
+        $this->activated = true;
+        $this->save();
     }
-    
+    public function isActive($status)
+    {   
+        if($this->activated == $status){
+            return true;
+        }
+        return false;
+    }
 
-}
+    public function verified()
+    {
+        $this->verified = true;
+        $this->save();
+    }
+
+    public function isVerified($status)
+    {   
+        if($this->verified == $status){
+            return true;
+        }
+        return false;
+    }
+}   

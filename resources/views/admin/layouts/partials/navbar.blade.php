@@ -15,13 +15,7 @@
         </li>
 
         <li class="nav-item px-3">
-            <a class="nav-link" href="{{route('admin.index')}}">Dashboard</a>
-        </li>
-        <li class="nav-item px-3">
-            <a class="nav-link" href="#">Pengaturan</a>
-        </li>
-        <li class="nav-item px-3">
-            <a class="nav-link" href="#">User</a>
+            <a class="nav-link" href="{{route('home')}} " target="_blank"><i class="icon-action-redo"></i>&nbsp; Ke Website</a>
         </li>
     </ul>
     <ul class="nav navbar-nav ml-auto">

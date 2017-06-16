@@ -28,7 +28,7 @@ $(function(){
   var options = {
     maintainAspectRatio: false,
     legend: {
-      display: false
+      display: true
     },
     scales: {
       xAxes: [{

@@ -2,8 +2,8 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('campaign')}}">
-                    <i class="icon-cursor"></i>&nbsp; 
+                <a class="nav-link" href="{{ route('campaign.home')}}">
+                    <i clssa="icon-cursor"></i>&nbsp; 
                     Campaign
                 </a>
             </li>

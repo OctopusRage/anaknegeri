@@ -8,23 +8,34 @@
       <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
   <div class="card-block">
-    <h4 class="card-title">Card title</h4>
+    <h4 class="card-title">{{ $campaign->title }}</h4>
     <p>
     	<small>
     		<i class="icon-user"></i>
-    		<span>Pandhu Weni</span>
+    		<span>{{ $campaign->user->name }}</span>
 
     		<i class="icon-calendar pl-4"></i>
-    		<span>24 Januari 2018</span>
+    		<span><?php echo date('D, d M Y', strtotime($campaign->deadline)); ?></span>
     	</small>
+    </p>    
+    <p>
+        <strong class="text-success">
+            <span class="icon-tag"></span>
+            {{ $campaign->category->category }}
+        </strong>        
     </p>
-    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium nam, commodi non quo perferendis dolorem voluptas eaque quis.</p>
-    <p class="text-danger">
-        <strong>Rp. 45000000
-                + Buku
-        </strong>
-        
-    </p>
+    <p class="card-text">{{ $campaign->subtitle }}.</p>
+    <p>Kebutuhan</p>
+    <table class="table table-sm table-bordered" >
+        <tbody>
+             @foreach($campaign->supportType as $st)
+            <tr>
+                <td class="bg-inverse">{{ $st->pivot->item }}</td>
+                <td>@if($st->pivot->item == "Dana") Rp. @endif {{ $st->pivot->amount }}</td>
+            </tr>            
+            @endforeach
+        </tbody>
+    </table>
    
   </div>
 

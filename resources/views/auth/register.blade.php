@@ -14,7 +14,7 @@
                          {!! Form::open(['url' => url('register'),  'role' =>'form' ]) !!}
                             @include('components.status')
                                 
-                            {{ csrf_field() }}
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}  mb-3">
                                 <label for="inputFullName">Nama Lengkap</label>
                                 <div class="input-group">
@@ -23,7 +23,7 @@
 
                                 {!! Form::text('name', null, [
                                         'class'                         => 'form-control',
-                                        'placeholder'                   => 'Email address',
+                                        'placeholder'                   => 'Nama Lengkap',
                                         'required',
                                         'id'                            => 'inputFullName'
                                     ]) !!}
@@ -42,7 +42,7 @@
                                     <span class="input-group-addon"><i class="icon-envelope"></i></span>
                                     {!! Form::email('email', null, [
                                         'class'                         => 'form-control',
-                                        'placeholder'                   => 'Email address',
+                                        'placeholder'                   => 'Alamat Email',
                                         'required',
                                         'id'                            => 'inputEmail'
                                     ]) !!}
@@ -81,7 +81,7 @@
                                     </span>
                                     {!! Form::password('password_confirmation', [
                                         'class'                         => 'form-control',
-                                        'placeholder'                   => 'Password',
+                                        'placeholder'                   => 'Konfirmasi Password',
                                         'required',
                                         'id'                            => 'password-confirm'
                                     ]) !!}

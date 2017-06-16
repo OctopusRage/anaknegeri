@@ -1,4 +1,4 @@
-<?php
+/<?php
 
 namespace App\Http\Controllers\Auth;
 
@@ -8,6 +8,12 @@ use App\Traits\CaptchaTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Mail;
+
+use Illuminate\Http\Request;
+use DB;
+use App\Mail\EmailVerification;
+
 class RegisterController extends Controller
 {
     /*
@@ -28,7 +34,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '';
 
     /**
      * Create a new controller instance.
@@ -37,7 +43,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        //$this->middleware('guest');
     }
 
     /**
@@ -50,8 +56,8 @@ class RegisterController extends Controller
     {
         $data['captcha'] = $this->captchaCheck();
         $validator = Validator::make($data, [
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
+                'name' => 'required|string|max:64',
+                'email' => 'required|string|email|max:64|unique:users',
                 'password' => 'required|string|min:6|max:32',
                 'password_confirmation' => 'required|string|same:password',
                 'g-recaptcha-response'  => 'required',
@@ -59,6 +65,8 @@ class RegisterController extends Controller
             ],
             [
                 'name.required'         => 'Kolom nama harus diisi',
+                'name.string'           => 'Nama harus alfabet',
+                'name.max'              => 'Nama tidak boleh lebih dari 64 karakter',
                 'email.required'        => 'Kolom email harus diisi',
                 'email.unique'          => 'Email sudah terdaftar',
                 'email.email'           => 'Email tidak valid',
@@ -87,12 +95,47 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'token' => str_random(64),
-            'activated' => true,
-        ]);
+            'activated' => false,
+        ]); 
 
         $role = Role::whereName('user')->first();
         $user->assignRole($role);
 
+        $data['token']  = $user->token;
+        $data['email'] = $user->email;
+        $data['name'] = $user->name;
+
+        Mail::send('emails.activate', $data, function($message) use ($data)
+        {
+            $message->from('weniindya@gmail.com', "Anaknegeri");
+            $message->subject("Aktivasi akun anda");
+            $message->to($data['email'], $data['name']);   
+        });
         return $user;
     }
+
+    public function activate($token)
+    {
+        User::where('token',$token)->firstOrFail()->activated();
+        return view('banner.activation-success')
+            ->with('message', 'Selamat, akun anda telah aktif!');
+    }
+
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+        if ($validator->fails())
+        {
+           $this->throwValidationException(
+               $request, $validator
+           );
+        }
+
+        $this->create($request->all());
+
+        return redirect('/login')
+            ->with('message','Registrasi berhasil <br>Silakan cek email untuk aktivasi akun')
+            ->with('status', 'success');
+    }
+
 }

@@ -24,7 +24,7 @@
     </ul>
 <ul class="nav navbar-nav ml-auto">
     <li class="nav-item px-3 d-md-down-none">
-        <a class="nav-link" href="{{ route('campaign') }}">Campaign</a>
+        <a class="nav-link {{ Request::segment(1) === 'campaign' ? 'active' : null }}" href="{{ route('campaign.home') }}">Campaign</a>
     </li>
     <li class="nav-item dropdown pr-3 ">
         <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -40,7 +40,7 @@
                         </div>
                         <a class="dropdown-item"  href="{{ route('admin.index') }}"><i class="icon-speedometer"></i> Dashboard</a>
                     @endif
-                     @if (Auth::user()->hasRole('organisasi'))
+                     @if (Auth::user()->hasRole('organization'))
                          <div class="dropdown-header text-center">
                             <strong>Organisasi</strong>
                         </div>
@@ -50,9 +50,9 @@
                     <div class="dropdown-header text-center">
                         <strong>Account</strong>
                     </div>
-                    <a class="dropdown-item"  href="{{ route('profile') }}"><i class="icon-user"></i> Profil</a>
+                    <a class="dropdown-item"  href="{{ route('profile.home', ['id'=>Auth::user()->id])}}"><i class="icon-user"></i> Profil</a>
                     <a class="dropdown-item"  href="{{ route('profile-campaign') }}"><i class="icon-cursor"></i> Campaign</a>
-                    <a class="dropdown-item"  href="{{ route('profile-wallet') }}"><i class="icon-wallet"></i> Dompet</a>
+                    <a class="dropdown-item"  href="{{ route('profile.wallet') }}"><i class="icon-wallet"></i> Dompet</a>
                     <a class="dropdown-item"  href="{{ route('profile-account') }}"><i class="icon-settings"></i> Akun</a>
                     <a class="dropdown-item" href="{{ route('authenticated.logout')}}"><i class="icon-logout"></i> Logout</a>
                 @else

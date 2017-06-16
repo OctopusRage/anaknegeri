@@ -11,6 +11,7 @@
 
 		
 		</div>
+		@include('banner.unactive')
 	  @yield('content')
 
 		@include('layouts.partials.footer')    

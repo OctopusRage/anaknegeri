@@ -3,6 +3,7 @@
 @section('content')
 	
 	@include('banner.status')
+
 	@include('components.jumbotron')
 	<div class="jumbotron jumbotronfluid pt-5 mb-0 mt-0 bg-white">
 		<div class="container">
@@ -17,18 +18,15 @@
 				<div class="col-md-12 mb-4 text-center">
 					<h3 clas>Campaign Terbaru</h3>
 				</div>
-				<?php for($i=0;$i<3;$i++){ ?>
+				@foreach($campaigns as $campaign)
 					<div class="col">
 						@include('components.campaign')
 					</div>
-					
-				<?php 
-					}
-				?>
+				@endforeach
 				<div class="col-md-12">
 					
 					<p class="text-center">
-						<a href="{{ route('campaign')}}" class="btn btn-primary">Lihat semua...</a>
+						<a href="{{ route('campaign.home')}}" class="btn btn-primary">Lihat semua...</a>
 					</p>
 				</div>
 

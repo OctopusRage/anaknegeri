@@ -19,7 +19,7 @@
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon-user"></i>
                 </span>
-                <input type="text" class="form-control" placeholder="Nama Lengkap">
+                <input type="text" class="form-control" placeholder="Nama">
             </div>
             <span class="help-block">Pesan error</span>
         </div>

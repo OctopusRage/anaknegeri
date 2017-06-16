@@ -5,10 +5,10 @@
 		</div>
 	</div>
 	<div class="card-block">
-	  <h4 class="card-title">Pandhu Weni</h4>
+	  <!-- <h4 class="card-title">{{ Auth::user()->name }} @if (Auth::user()->isVerified(true)) <i class="icon-check text-success"></i> @endif</h4> -->
 	</div>
 	<div class="list-group list-group-flush">
-	  <a href="{{ route('profile')}}" class="list-group-item  list-group-item-action">
+	  <a href="{{ route('profile.home', ['id'=>Auth::user()->id])}}" class="list-group-item  list-group-item-action">
 	  	<i class="icon-user"></i> &nbsp;
 	    Profile
 	  </a>
@@ -16,7 +16,7 @@
 	  	<i class="icon-cursor"> </i> &nbsp;
 	  	Campaign
 	  </a>
-	  <a href="{{ route('profile-wallet')}}" class="list-group-item list-group-item-action">
+	  <a href="{{ route('profile.wallet')}}" class="list-group-item list-group-item-action">
 	  	<i class="icon-wallet"></i> &nbsp;
 	  	Dompet Untuknegeri
 	  </a>

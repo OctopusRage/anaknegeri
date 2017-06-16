@@ -14,7 +14,7 @@
                          {!! Form::open(['url' => url('login'),  'role' =>'form' ]) !!}
                             
                             @include('components.status')
-                            {{ csrf_field() }}
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                          <div class="form-group {{ $errors->has('email') ? ' has-danger' : '' }}  mb-3">
 
                             <label for="inputEmail">Email</label>
@@ -44,10 +44,7 @@
                         </div>
                         <div class="checkbox">
                             <label class="switch switch-sm switch-icon switch-primary-outline-alt checkbox-inline mb-1">
-                                {!! Form::checkbox('remember', 1, null, [
-                                    'id'    => 'remember-me', 
-                                    'class' => 'switch-input'
-                                ]) !!}
+                                <input type="checkbox" class="switch-input" name="remember" {{ old('remember') ? 'checked' : '' }}> 
                                 <span class="switch-label" data-on="" data-off=""></span>
                                 <span class="switch-handle"></span>
                             </label>
