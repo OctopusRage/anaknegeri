@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Datatables;
+use Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 
@@ -13,8 +15,14 @@ class ProfileController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        // return view('profile');
+    {   
+        $id= Auth::user()->id;
+        $user = User::whereId($id)->firstOrFail();
+        $count=array(
+            'campaign' => $user->campaign()->count(),
+            'contribute' => $user->support()->count()
+            );
+        return view('profile')->with('user',$user)->with('count', $count);
     }
 
     /**
@@ -46,12 +54,7 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        $user = User::whereId($id)->firstOrFail();
-        $count=array(
-            'campaign' => $user->campaign()->count(),
-            'contribute' => $user->support()->count()
-            );
-        return view('profile')->with('user',$user)->with('count', $count);
+        //
     }
 
     /**
@@ -88,8 +91,17 @@ class ProfileController extends Controller
         //
     }
 
-    public function verify (Request $request, $id)
-    {
 
+    /**
+     * Get All Campaign created by User.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllCampign($id)
+    {
+        
     }
+
+
 }

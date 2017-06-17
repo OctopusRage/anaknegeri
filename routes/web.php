@@ -35,11 +35,6 @@ Route::get('/privacy-policy', function () {
     return view('privacy-policy');
 })->name('privacy-policy');
 
-Route::get('campaign/campaign-detail', function () {
-    return view('campaign.detail');
-})->name('campaign-detail');
-
-
 Route::get('campaign/donate', function () {
     return view('campaign/donate');
 })->name('campaign-donate');
@@ -109,11 +104,17 @@ Route::group(['prefix' => 'campaign'], function() {
 
     Route::get('/', ['as' => $campaign . 'home', 'uses' => 'CampaignController@index']);
 
+    Route::get('detail/{slug}', ['as' => $campaign . 'detail', 'uses' => 'CampaignController@show']);
+
+    Route::get('/{slug}/donate', ['as' => $campaign . 'donate', 'uses' => 'CampaignController@donate']);
+
     Route::get('/popular', ['as' => $campaign . 'popular', 'uses' => 'CampaignController@popular']);
 
     Route::get('/category/{slug}', ['as' => $campaign . 'category', 'uses' => 'CampaignController@category']);
 
+
 });
+
 /*
 *******************
 Auth:All Access
@@ -136,18 +137,20 @@ Route::group(['middleware' => 'auth:all'], function()
     Route::get('/resend/{id}', ['as' => $a . 'resend', 'uses' => 'UserController@activateUser']);
 
 
+    // Route::resource('campaign', 'CampaignController', ['only' => [
+    //     'create', 'store', 'update'
+    // ]],['names' => [
+    //     'create'    => 'campaign.create',
+    //     'store'     => 'campaign.store'
+    // ]]);
     Route::group(['prefix' => 'campaign'], function()
     {
-        /**
-         * Show Campaign Create Page
-         */
-        $campaign = 'campaign.';
-        Route::get('/create', ['as' => $campaign . 'create', 'uses' => 'CampaignController@create']);
 
-        /**
-         * Store Campaign
-         */
-        Route::post('/create', ['as' => $campaign . 'store', 'uses' => 'CampaignController@store']);
+        $campaign='campaign.';
+
+        Route::get('/create', ['as' => $campaign . 'create', 'uses' => 'CampaignController@create']);
+        Route::post('/', ['as' => $campaign . 'store', 'uses' => 'CampaignController@store']);
+
     });
 
     /*
@@ -163,7 +166,7 @@ Route::group(['middleware' => 'auth:all'], function()
          * Get Profile Homepage
          * @param user_id
          */
-        Route::get('/{id}', ['as' => $user . 'home', 'uses' => 'ProfileController@show']);
+        Route::get('/', ['as' => $user . 'home', 'uses' => 'ProfileController@index']);
 
         /**
          * Get Wallet on User's Profile
@@ -213,8 +216,6 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
      * Get User (Datatables serverside implementation)
      */
     Route::get('campaign/campaigns', ['as' => $admin . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
-
-
 
 });
 

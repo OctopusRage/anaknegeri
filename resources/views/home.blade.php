@@ -19,7 +19,7 @@
 					<h3 clas>Campaign Terbaru</h3>
 				</div>
 				@foreach($campaigns as $campaign)
-					<div class="col">
+					<div class="col-md-4 col-sm-12">
 						@include('components.campaign')
 					</div>
 				@endforeach

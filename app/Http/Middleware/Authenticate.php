@@ -41,14 +41,6 @@ class Authenticate
                 ->with('message', 'Silakan login untuk masuk ke sistem');
         }
 
-        if (config('settings.activation')) {
-            if ($this->auth->user()->activated == false) {
-                session()->put('banner.status', 'Silakan lakukan aktivasi email. <a href="'. route('authenticated.activation-resend') .'">Resend</a> activation email.');
-            } else {
-                session()->forget('banner.status');
-            }
-        }
-
         if($role == 'all')
         {
             return $next($request);

@@ -50,7 +50,7 @@
                     <div class="dropdown-header text-center">
                         <strong>Account</strong>
                     </div>
-                    <a class="dropdown-item"  href="{{ route('profile.home', ['id'=>Auth::user()->id])}}"><i class="icon-user"></i> Profil</a>
+                    <a class="dropdown-item"  href="{{ route('profile.home')}}"><i class="icon-user"></i> Profil</a>
                     <a class="dropdown-item"  href="{{ route('profile-campaign') }}"><i class="icon-cursor"></i> Campaign</a>
                     <a class="dropdown-item"  href="{{ route('profile.wallet') }}"><i class="icon-wallet"></i> Dompet</a>
                     <a class="dropdown-item"  href="{{ route('profile-account') }}"><i class="icon-settings"></i> Akun</a>

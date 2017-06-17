@@ -47,7 +47,6 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
         $this->auth = $auth;
-        $auth->viaRemember();
     }
 
     public function login(Request $request)

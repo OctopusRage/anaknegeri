@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\ActivationRequest', 'user_id');
     } 
 
+    public function wallet()
+    {
+        return $this->hasOne('App\Models\Wallet', 'user_id');
+    }
+
     // Role Relation
     public function hasRole($name)
     {

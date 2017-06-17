@@ -12,14 +12,8 @@
 
 <div class="tab-content">
     <div class="tab-pane active" id="home4" role="tabpanel">
-        <!-- Detail Campaign -->
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta repudiandae, sunt eum modi quas totam sed, cumque architecto deserunt ut officiis temporibus voluptate, illum quia repellat quos consequatur numquam obcaecati.
-        <br>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio facere quo laboriosam quidem odit autem! Voluptatum, autem ut sapiente possimus earum ea totam, fuga cupiditate obcaecati, a nam dolorem blanditiis.
-        <br>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci numquam deleniti, voluptatem placeat soluta quam harum, mollitia in ipsum omnis alias neque enim voluptatum, molestias earum inventore fuga nulla amet.
-        <br>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi aliquam tempora error. Magni amet id quibusdam sapiente hic, numquam cum corporis, nobis dicta facilis ut dolore, blanditiis iste maxime aliquid?
+        <!-- Detail Campaign -->        
+        {{ $campaign->detail }}
     </div>
     <div class="tab-pane" id="profile4" role="tabpanel">
        <?php for ($i=0; $i <10 ; $i++) {

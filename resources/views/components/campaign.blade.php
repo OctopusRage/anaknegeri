@@ -1,7 +1,7 @@
-<div class="card" style="width: 20rem;">
+<div class="card mb-4" >
 	<div class="embed-responsive embed-responsive-1by1">
 	  <div class="embed-responsive-item" src="/">  
-	  	<img class="card-img-top" src="{{ asset('img/feature-home/back_1.JPG') }}" alt="Card image cap">
+	  	<img class="card-img-top" @if($campaign->feature_img!=null) src="{{ asset('img/campaigns/thumbs')}}/{{ $campaign->feature_img }}" @else src="{{ asset('img/bg-primary.png' )}}"  style="backgroud-color:#63c2de !important" @endif alt="Card image cap">
 		</div>
 	</div>
     <div class="progress">
@@ -40,6 +40,6 @@
   </div>
 
     <div class="card-footer"> 
-        <a href="{{ route('campaign-detail')}}" class="btn btn-info ">Detail</a>
+        <a href="{{ route('campaign.detail', [$campaign->slug] )}}" class="btn btn-info ">Detail</a>
     </div>
 </div>

@@ -17,8 +17,7 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $campaigns = Campaign::all();
-        $campaigns->slice(0,3);
+        $campaigns = Campaign::take(3)->get();
         return view('home')
             ->with('campaigns', $campaigns);
     }

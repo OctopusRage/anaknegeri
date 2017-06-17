@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Datatables;
-use Auth;
+use Image;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -17,12 +17,6 @@ use App\Models\Category;
 class CampaignController extends Controller
 {
 
-    protected $auth;
-
-    public function __construct(Guard $auth)
-    {
-        $this->auth = $auth;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -30,11 +24,11 @@ class CampaignController extends Controller
      */
     public function index()
     {
-        $campaigns= Campaign::all()
-            ->sortByDesc('created_by');
+        $campaigns= Campaign::paginate(15);
+        $campaigns->sortByDesc('created_at');
         return view('campaign')
             ->with('campaigns', $campaigns);
-    }
+    } 
     
     /**
      * Display a listing of the Campaign sorted by popularity.
@@ -43,7 +37,7 @@ class CampaignController extends Controller
      */
     public function popular()
     {
-        $campaigns= Campaign::all();
+        $campaigns= Campaign::paginate(15);
         return view('campaign')
             ->with('campaigns', $campaigns);
     }
@@ -57,7 +51,8 @@ class CampaignController extends Controller
     {
 
         $category = Category::whereSlug($slug)->firstOrFail();
-        $campaigns= Campaign::where('category_id', $category->id)->get();
+        $campaigns= Campaign::where('category_id', $category->id)
+            ->paginate(15);
         return view('campaign')
             ->with('category', $category)
             ->with('campaigns', $campaigns);
@@ -81,8 +76,7 @@ class CampaignController extends Controller
     public function create()
     {
         $category = Category::all();
-        return view('campaign.create')->with('category', $category);
-        return view('campaign.create');
+        return view('campaign.create')->with('category', $category);    
     }
 
     /**
@@ -91,33 +85,30 @@ class CampaignController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CampaignFormRequest $request)
-    {
-        $campaign = new Campaign(array(
-            'title'     => $request->get('title'),
-            'subtitle'  => $request->get('subtitle'),
-            'deadline'  => $request->get('deadline'),
-            'address'   => $request->get('address'),
-            'slug'      => $request->get('slug'),
-            'deadline'  => Carbon::parse($request->get('deadline')),
-            'detail'    => $request->get('detail')
-        ));
-        //Assign User
-        $campaign->assignUser(Auth::user()->id);
 
-        //Assign Category
+    public function store(Request $request)
+    {
+        $image = Input::file('feature_img');
+        $input = $this->processImage($image);
+        $slug = strtolower(str_replace(' ', '-', $request->get('slug')));
+        $campaign = new Campaign(array(
+            'title'         => $request->get('title'),
+            'subtitle'      => $request->get('subtitle'),
+            'deadline'      => $request->get('deadline'),
+            'address'       => $request->get('address'),
+            'slug'          => $slug,
+            'feature_img'   => $input,
+            'deadline'      => Carbon::parse($request->get('deadline')),
+            'detail'        => $request->get('detail')
+        ));
+        $campaign->assignUser($request->get('user_id'));
         $category = $request->get('category_id');
         $campaign->assignCategory($category);
-
         $campaign->save();
-
-        //Assign Support Need -> Finansial Type
         $finansialType= SupportType::whereType('Finansial')->first();
         $nonFinansialType= SupportType::whereType('Non Finansial')->first();
-
         $checkifFinansial = $request->has('check_finansial') ? true : false;
         $checkifNonFinansial = $request->has('check_nonfinansial') ? true : false;
-        
         if($checkifFinansial){
             $donasiDana= $request->get('donasi_finansial');
             $campaign->assignSupportNeed($finansialType, 'Dana', $donasiDana);
@@ -129,12 +120,39 @@ class CampaignController extends Controller
                 $campaign->assignSupportNeed($nonFinansialType, $item[$i], $amount[$i]);
             }
         }
-
-                
         return redirect()->back()
-            ->with('message','Campaign berhasil dibuat')
+            ->withInput()
+            ->with('message','Campaign berhasil dibuat.')
             ->with('status', 'success');
-        
+    }
+
+
+
+    /**
+     * Processing Image for Campaign
+     *
+     * @param  Image
+     * @return \Illuminate\Http\Response
+     */
+    public function processImage($image){
+        $originalImage = $image;
+        $randomString = str_random(64);
+        $input =  $randomString . '.' . $image->getClientOriginalExtension();
+   
+        $destinationPath = public_path('img/campaigns/thumbs/'. $input);
+        $oriDestinationPath = public_path('img/campaigns/'. $input);
+
+        $img = Image::make($image
+            ->getRealPath())
+            ->resize(null, 350, function ($constraint) {
+                $constraint->aspectRatio();
+            })
+            ->crop(350, 350)
+            ->save($destinationPath);
+
+        $oriImage = Image::make($originalImage->getRealPath())->save($oriDestinationPath);
+
+        return $input;
     }
 
     /**
@@ -143,9 +161,11 @@ class CampaignController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $campaign = Campaign::whereSlug($slug)->firstOrFail();
+        return view('campaign.detail')
+            ->with('campaign', $campaign);
     }
 
     /**
@@ -207,6 +227,19 @@ class CampaignController extends Controller
                 </a>
                 ';
             })->make(true);
+    }
+
+    /**
+     * Donate to Campaign
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function donate($slug)
+    {
+        $campaign = Campaign::whereSlug($slug)->firstOrFail();
+        return view('campaign.donate')
+            ->with('campaign', $campaign);
     }
 
 }

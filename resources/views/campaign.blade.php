@@ -33,16 +33,20 @@
 							</h5>
 					</div>
 				@endif
-				@foreach($campaigns as $campaign)
-					<div class="col-md-4">
-						@include('components.campaign')
-					</div>
-				@endforeach
+				
 				<div class="col-md-12">
-					
-					<p class="text-center">
-						<a href="/" class="btn btn-primary">Lihat selanjutnya...</a>
-					</p>
+					<div class="card-columns" >
+						@foreach($campaigns as $campaign)
+								@include('components.campaign')
+						@endforeach
+
+					</div>
+				</div>
+				<div class="col-md-12 text-center">
+					<center>
+						
+					{{ $campaigns->links('vendor.pagination.bootstrap-4')}}		
+					</center>	
 				</div>
 
 			</div>

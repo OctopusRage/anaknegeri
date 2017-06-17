@@ -11,10 +11,11 @@
         <!-- Untuk dukungan finansial -->
         <div class="row">
             <div class="col-md-12 col-sm-12">
-                {!! Form::open(['url' => url('campaign/create'), 'method'=>'post']) !!}
-
+                <!-- {!! Form::open(['url' => url('campaign/create'), 'method'=>'post']) !!} -->
+                <form action="{{url('campaign')}}" method="POST" enctype="multipart/form-data">
                 @include('components.status')
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                 
                 <div class="form-group  mb-3">
                    <label for="inputCategory">Kategori</label>
@@ -26,8 +27,12 @@
                             <option value="{{$cat->id}}">{{ $cat->category }}</option>
                            @endforeach
                        </select>
-                    </div>                    
-                    <span class="help-block">Pesan error</span>
+                    </div>  
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('category_id') }}</strong>
+                        </span>
+                    @endif
                 </div>
                 <div class="form-group  mb-3">
                     <label for="inputTitle">Judul Campaign</label>
@@ -40,7 +45,11 @@
                             'id'                            => 'inputTitle'
                         ]) !!}
                     </div>
-                    <span class="help-block">Pesan error</span>
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('title') }}</strong>
+                        </span>
+                    @endif
                 </div>
                 <div class="form-group  mb-3">
                     <label for="inputSubtitle">Subjudul Campaign</label>
@@ -51,20 +60,23 @@
                         'id'                            => 'inputSubjudul',
                         'rows'                          => 5
                     ]) !!}
-                    <span class="help-block">Pesan error</span>
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('subtitle') }}</strong>
+                        </span>
+                    @endif
                 </div>
 
                 <div class="form-group  mb-3">
                     <label for="inputFeatureImg">Feature Image</label>                    
                     <div class="input-group">
-                    {!! Form::file('feature_img', null, [
-                        'class'                         => 'form-control',
-                        'placeholder'                   => 'Browse File',
-                        'required',
-                        'id'                            => 'inputFeatureImg'
-                    ]) !!}
+                    <input type="file" name="feature_img">
                     </div>
-                    <span class="help-block">Pesan error</span>
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('feature_img') }}</strong>
+                        </span>
+                    @endif
                 </div>
                 <div class="form-group  mb-3">
                     <label for="inputDeadline">Deadline Campaign</label>
@@ -77,7 +89,11 @@
                             'id'                            => 'inputDeadline'
                         ]) !!}
                     </div>
-                    <span class="help-block">Pesan error</span>
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('deadline') }}</strong>
+                        </span>
+                    @endif
                 </div>                
                 <div class="form-group  mb-3">
                     <label for="inputSlug">Slug</label>
@@ -90,7 +106,11 @@
                             'id'                            => 'inputSlug'
                         ]) !!}
                     </div>
-                    <span class="help-block">Pesan error</span>
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('slug') }}</strong>
+                        </span>
+                    @endif
                 </div>
                  <div class="form-group  mb-3">
                     <label for="inputAddress">Alamat Campaign</label>
@@ -101,7 +121,11 @@
                         'id'                            => 'inputAddress',
                         'rows'                          => 5
                     ]) !!}
-                    <span class="help-block">Pesan error</span>
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('address') }}</strong>
+                        </span>
+                    @endif
                 </div>
                 <div class="form-group  mb-3">
 
@@ -130,8 +154,13 @@
                             'id'                            => 'inputDonasiFinansial'
                         ]) !!}
                     </div>
-                    <span class="help-block">Pesan error</span>
+                    @if ($errors->has('email'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('subtitle') }}</strong>
+                        </span>
+                    @endif
                 </div>
+
 
                 <div class="form-group  mb-3" id="group-input-donasi-non-finansial">
                     <label for="inputDonasiFinansial">Item Lain yang Dibutuhkan</label>
@@ -174,12 +203,16 @@
                         'id'                            => 'inputDetail'
 
                     ]) !!}
-                    <span class="help-block">Pesan error</span>
+                    @if ($errors->has('detail'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('detail') }}</strong>
+                        </span>
+                    @endif
                 </div>
 
                 <button type="submit" class="btn btn-lg btn-success">Buat Campaign!</button>
                 
-                {!! Form::close() !!}
+                </form>
             </div>
             
         </div>

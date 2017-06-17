@@ -66,3 +66,12 @@ a{
 .hide{
 	display:none;
 }
+@media(min-width:767px){
+	.card-columns{
+		column-count:3;
+		column-gap: 1.25rem;
+	}
+	.card-columns .card{
+		width: 98%;
+	}
+}
