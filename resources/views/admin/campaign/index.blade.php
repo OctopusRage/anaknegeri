@@ -78,7 +78,45 @@
 			        "previous":   "Previous"
 			    }
 		  }
-    });
+    });	
+
+	</script>
+	<script type="text/javascript">
+	$('#infoCampaign').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) // Button that triggered the modal
+	  var id = button.data('id') // Extract info from data-* attributes
+	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	  	console.log(id);
+	  	$.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		        }
+			});
+	  	$.ajax(
+      {
+          url: '/admin/campaign/'+id+'/show',
+					type: "GET",
+          beforeSend: function()
+          {
+              $('#detailCampaign').html('<h3 class="text-center text-info"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...</h3>');
+          }
+      })
+      .done(function(data)
+      {
+      	console.log(data);
+          console.log(data);
+					$("#detailCampaign").html(data.html);
+      })
+      .fail(function(jqXHR, ajaxOptions, thrownError)
+      {
+           $("#detailCampaign").html('<h2 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br>Gagal Mengambil Data</h2>');
+      });
+
+
+	   
+	});		
+
 
 	</script>
 @endsection

@@ -6,6 +6,7 @@ use Datatables;
 use Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Campaign;
 
 class ProfileController extends Controller
 {
@@ -98,9 +99,17 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getAllCampign($id)
-    {
-        
+    public function campaign(Request $request)
+    {   
+        $user=Auth::user();
+        $campaigns= Campaign::where('created_by', $user->id)->paginate(5);
+        $campaigns->sortByDesc('created_at');
+
+        if ($request->ajax()) {
+            $view = view('components.profile.campaign-on-profile',compact('campaigns'))->render();
+            return response()->json(['html'=>$view]);
+        }
+        return view('profile.campaign',compact('campaigns'));
     }
 
 

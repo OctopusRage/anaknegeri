@@ -35,21 +35,58 @@
 				@endif
 				
 				<div class="col-md-12">
-					<div class="card-columns" >
-						@foreach($campaigns as $campaign)
-								@include('components.campaign')
-						@endforeach
-
+					<div class="card-columns" id="campaign-data" >
+						@include('components.campaign')
 					</div>
 				</div>
 				<div class="col-md-12 text-center">
 					<center>
-						
-					{{ $campaigns->links('vendor.pagination.bootstrap-4')}}		
+						<button type="button" id="loadMore" class="btn btn-lg btn-primary">Muat Selanjutnya...</button>
+					<!-- {{ $campaigns->links('vendor.pagination.bootstrap-4')}}		 -->
 					</center>	
 				</div>
 
 			</div>
 		</div>
 	</div>
+@endsection
+@section('pluginjs')
+<script type="text/javascript">
+		var page = 1;
+
+		$('#loadMore').click(function(){
+			page++;
+			loadMoreData(page);
+			console.log(page);
+		});
+
+		function loadMoreData(page){
+		  $.ajax(
+		        {
+		            url: '?page=' + page,
+		            type: "GET",
+		            beforeSend: function()
+		            {
+		                $('#loadMore').html('<i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...');
+		            }
+		        })
+		        .done(function(data)
+		        {
+		        	console.log(data);
+		            if(data.html == ""){
+		                $('#loadMore').html('Semua data telah dimuat...');
+		                $('#loadMore').attr("disabled", "disabled");
+		                return;
+		            }
+		            $('#loadMore').html('Muat Selanjutnya...');
+		            $("#campaign-data").append(data.html);
+		        })
+		        .fail(function(jqXHR, ajaxOptions, thrownError)
+		        {
+		              alert('Server tidak merespon...');
+		        });
+		}
+
+		
+</script>
 @endsection

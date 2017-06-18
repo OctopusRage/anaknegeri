@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\ActivationRequest;
 Use Mail;
 use Carbon\Carbon;
+use Role;
 
 class UserController extends Controller
 {
@@ -132,20 +133,25 @@ class UserController extends Controller
 
       
     }
+    public function status($value)
+    {   
+        if($value==1)
+        {
+            return "Active";
+        }else{
+            return "Unactive";
+        }
 
-
-
+    }
     public function getUsers(){
         $users = DB::table('users')
-            ->join('role_user', 'users.id','=','role_user.user_id')
-            ->join('roles', 'roles.id','=','role_user.role_id')
-            ->select('users.*', 'roles.name as rolename')
+            ->select(DB::raw("users.id as id,  users.email as email, users.name as name, (CASE WHEN status = 1 THEN 'Active' ELSE 'Unactive' END) as status"))
             ->get();
         return Datatables::of($users)
             ->addColumn('action', function($user){
                 return '
-                <button class="btn btn-sm btn-info info" data-toggle="modal" data-target="#infoUser" data-id="'.$user->id.'">
-                    <i class="icon-user-follow"></i>
+                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#infoUser" data-id="'.$user->id.'">
+                    <i class="icon-info"></i>
                 </button>
                 <button class="btn btn-sm btn-warning edit" data-toggle="modal" data-target="#editUser" data-id="'.$user->id.'">
                     <i class="icon-note"></i>
@@ -155,6 +161,15 @@ class UserController extends Controller
                 </button>
                 ';
             })->make(true);
+    }
+    public function showUser(Request $request, $id){
+        $user = User::where('id',$id)->firstOrFail();
+        
+        if ($request->ajax()) {
+            $view = view('admin.components.user.detail',compact('user'))->render();
+            return response()->json(['html'=>$view]);
+        }
+
     }
 }
 

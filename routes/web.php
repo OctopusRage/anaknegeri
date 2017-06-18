@@ -23,10 +23,6 @@ Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
 
-Route::get('/profile/wallet', function () {
-    return view('profile/wallet');
-})->name('profile/wallet');
-
 Route::get('/term-condition', function () {
     return view('term-condition');
 })->name('term-condition');
@@ -38,15 +34,6 @@ Route::get('/privacy-policy', function () {
 Route::get('campaign/donate', function () {
     return view('campaign/donate');
 })->name('campaign-donate');
-
-Route::get('profile/campaign', function () {
-    return view('profile.campaign');
-})->name('profile-campaign');
-
-
-Route::get('profile/wallet/deposit', function () {
-    return view('profile/wallet/deposit');
-})->name('profile-wallet-deposit');
 
 Route::get('profile/account', function () {
     return view('profile/account');
@@ -136,19 +123,12 @@ Route::group(['middleware' => 'auth:all'], function()
      */
     Route::get('/resend/{id}', ['as' => $a . 'resend', 'uses' => 'UserController@activateUser']);
 
-
-    // Route::resource('campaign', 'CampaignController', ['only' => [
-    //     'create', 'store', 'update'
-    // ]],['names' => [
-    //     'create'    => 'campaign.create',
-    //     'store'     => 'campaign.store'
-    // ]]);
     Route::group(['prefix' => 'campaign'], function()
     {
-
         $campaign='campaign.';
 
         Route::get('/create', ['as' => $campaign . 'create', 'uses' => 'CampaignController@create']);
+
         Route::post('/', ['as' => $campaign . 'store', 'uses' => 'CampaignController@store']);
 
     });
@@ -162,19 +142,19 @@ Route::group(['middleware' => 'auth:all'], function()
     Route::group(['prefix' => 'profile'], function()
     {
         $user = 'profile.';
-        /**
-         * Get Profile Homepage
-         * @param user_id
-         */
+
         Route::get('/', ['as' => $user . 'home', 'uses' => 'ProfileController@index']);
 
-        /**
-         * Get Wallet on User's Profile
-         * @param user_id
-         */
         Route::get('/wallets', ['as' => $user . 'wallet', 'uses' => 'WalletController@index']);
 
-        
+        Route::get('/campaign', ['as' => $user . 'campaign', 'uses' => 'ProfileController@campaign']);
+
+        Route::post('/wallets/deposit', ['as' => $user . 'deposit', 'uses' => 'WalletController@deposit']);
+
+        Route::get('/wallets/deposit/{id}', ['as' => $user . 'depositDetail', 'uses' => 'WalletController@depositDetail']);
+
+        Route::get('wallets/deposit', ['as' => $user . 'getDeposits', 'uses' => 'WalletController@getDeposits']);
+
     });
 
 });
@@ -195,27 +175,20 @@ Auth:Administrator
 Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], function()
 {
     $admin = 'admin.';
-    /**
-     * Get Admin Dashboard Home
-     */
+
     Route::get('/', ['as' => $admin . 'index', 'uses' => 'DashboardController@index']);
-    /**
-     * User management home
-     */
+
     Route::get('user', ['as' => $admin . 'user', 'uses' => 'UserController@index']);
-    /**
-     * Get User (Datatables serverside implementation)
-     */
+
     Route::get('user/users', ['as' => $admin . 'getUsers', 'uses' => 'UserController@getUsers']);
 
-    /**
-     * Campaign management home
-     */
+    Route::get('user/{id}/show', ['as' => $admin . 'showUser', 'uses' => 'UserController@showUser']);
+
     Route::get('campaign', ['as' => $admin . 'campaign', 'uses' => 'CampaignController@adminindex']);
-    /**
-     * Get User (Datatables serverside implementation)
-     */
+
     Route::get('campaign/campaigns', ['as' => $admin . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
+
+    Route::get('campaign/{id}/show', ['as' => $admin . 'showCampaign', 'uses' => 'CampaignController@showCampaign']);
 
 });
 
@@ -225,63 +198,63 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
 Auth:Finansial
 *******************
 */
-Route::group(['prefix' => 'finance','middleware' => 'auth:finance'], function()
-{
-    $finance = 'admin.';
-    /**
-     * Get Admin Dashboard Home
-     */
-    Route::get('/', ['as' => $finance . 'index', 'uses' => 'DashboardController@index']);
-    /**
-     * User management home
-     */
-    Route::get('user', ['as' => $finance . 'user', 'uses' => 'UserController@index']);
-    /**
-     * Get User (Datatables serverside implementation)
-     */
-    Route::get('user/users', ['as' => $finance . 'getUsers', 'uses' => 'UserController@getUsers']);
+// Route::group(['prefix' => 'finance','middleware' => 'auth:finance'], function()
+// {
+//     $finance = 'admin.';
+//     /**
+//      * Get Admin Dashboard Home
+//      */
+//     Route::get('/', ['as' => $finance . 'index', 'uses' => 'DashboardController@index']);
+//     /**
+//      * User management home
+//      */
+//     Route::get('user', ['as' => $finance . 'user', 'uses' => 'UserController@index']);
+//     /**
+//      * Get User (Datatables serverside implementation)
+//      */
+//     Route::get('user/users', ['as' => $finance . 'getUsers', 'uses' => 'UserController@getUsers']);
 
-    /**
-     * Campaign management home
-     */
-    Route::get('campaign', ['as' => $finance . 'campaign', 'uses' => 'CampaignController@adminindex']);
-    /**
-     * Get User (Datatables serverside implementation)
-     */
-    Route::get('campaign/campaigns', ['as' => $finance . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
+//     /**
+//      * Campaign management home
+//      */
+//     Route::get('campaign', ['as' => $finance . 'campaign', 'uses' => 'CampaignController@adminindex']);
+//     /**
+//      * Get User (Datatables serverside implementation)
+//      */
+//     Route::get('campaign/campaigns', ['as' => $finance . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
 
-});
+// });
 
 
 /*
 *******************
 Auth:Logistik
 *******************
-*/
-Route::group(['prefix' => 'logistic','middleware' => 'auth:logistic'], function()
-{
-    $logistic = 'admin.';
-    /**
-     * Get Admin Dashboard Home
-     */
-    Route::get('/', ['as' => $logistic . 'index', 'uses' => 'DashboardController@index']);
-    /**
-     * User management home
-     */
-    Route::get('user', ['as' => $logistic . 'user', 'uses' => 'UserController@index']);
-    /**
-     * Get User (Datatables serverside implementation)
-     */
-    Route::get('user/users', ['as' => $logistic . 'getUsers', 'uses' => 'UserController@getUsers']);
+// */
+// Route::group(['prefix' => 'logistic','middleware' => 'auth:logistic'], function()
+// {
+//     $logistic = 'admin.';
+//     /**
+//      * Get Admin Dashboard Home
+//      */
+//     Route::get('/', ['as' => $logistic . 'index', 'uses' => 'DashboardController@index']);
+//     /**
+//      * User management home
+//      */
+//     Route::get('user', ['as' => $logistic . 'user', 'uses' => 'UserController@index']);
+//     /**
+//      * Get User (Datatables serverside implementation)
+//      */
+//     Route::get('user/users', ['as' => $logistic . 'getUsers', 'uses' => 'UserController@getUsers']);
 
-    /**
-     * Campaign management home
-     */
-    Route::get('campaign', ['as' => $logistic . 'campaign', 'uses' => 'CampaignController@adminindex']);
-    /**
-     * Get User (Datatables serverside implementation)
-     */
-    Route::get('campaign/campaigns', ['as' => $logistic . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
+//     /**
+//      * Campaign management home
+//      */
+//     Route::get('campaign', ['as' => $logistic . 'campaign', 'uses' => 'CampaignController@adminindex']);
+//     /**
+//      * Get User (Datatables serverside implementation)
+//      */
+//     Route::get('campaign/campaigns', ['as' => $logistic . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
 
-});
+// });
 

@@ -90,6 +90,11 @@ class User extends Authenticatable
         return false;
     }
 
+    public function deactivate(){
+        $this->status = false;
+        $this->save();
+    }
+
     public function verified()
     {
         $this->verified = true;
@@ -103,4 +108,5 @@ class User extends Authenticatable
         }
         return false;
     }
+
 }   

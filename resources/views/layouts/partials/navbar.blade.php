@@ -28,7 +28,7 @@
     </li>
     <li class="nav-item dropdown pr-3 ">
         <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <img src="{{ asset('img/avatars/6.jpg') }} " class="img-avatar" alt="admin@bootstrapmaster.com">
+            <img @if(Auth::user()->profile_img !=null) src="{{ asset('img/avatars/')}}/{{ $user->profile_img }}" @else src="{{ asset('img/primary.png' )}}" @endif class="img-avatar" alt="admin@bootstrapmaster.com">
             <span class="d-md-down-none">@if(Auth::check()) {{  Auth::user()->name }} @else Guest @endif</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right mr-3">
@@ -51,7 +51,7 @@
                         <strong>Account</strong>
                     </div>
                     <a class="dropdown-item"  href="{{ route('profile.home')}}"><i class="icon-user"></i> Profil</a>
-                    <a class="dropdown-item"  href="{{ route('profile-campaign') }}"><i class="icon-cursor"></i> Campaign</a>
+                    <a class="dropdown-item"  href="{{ route('profile.campaign') }}"><i class="icon-cursor"></i> Campaign</a>
                     <a class="dropdown-item"  href="{{ route('profile.wallet') }}"><i class="icon-wallet"></i> Dompet</a>
                     <a class="dropdown-item"  href="{{ route('profile-account') }}"><i class="icon-settings"></i> Akun</a>
                     <a class="dropdown-item" href="{{ route('authenticated.logout')}}"><i class="icon-logout"></i> Logout</a>

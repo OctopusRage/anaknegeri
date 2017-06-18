@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Wallet;
 use App\Traits\CaptchaTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -113,9 +114,21 @@ class RegisterController extends Controller
         return $user;
     }
 
+    public function createWallet($id){
+        $newWallet= Wallet::create(array(
+            'total' => 0
+        )); 
+        $newWallet->save();
+        $newWallet->assignUser($id);
+    }
+
     public function activate($token)
     {
         User::where('token',$token)->firstOrFail()->activated();
+        $user = User::where('token', $token)->firstOrFail();
+
+        $this->createWallet($user->id);
+
         return view('banner.activation-success')
             ->with('message', 'Selamat, akun anda telah aktif!');
     }

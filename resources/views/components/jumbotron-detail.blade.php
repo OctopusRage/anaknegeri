@@ -54,10 +54,10 @@
       <hr>
       <h3 class="text-center mt-3 mb-3">Bagikan</h3>
       <p>
-        <a class="btn btn-facebook" style="margin-bottom: 4px" href="https://twitter.com/share?text={{ $campaign->title }}&url=<?php echo url()->current(); ?>&via=pandhuweni" rel="nofollow" target="_blank" >
+        <a class="btn btn-facebook"  href="https://facebook.com/sharer.php?url=<?php echo url()->current(); ?>" style="margin-bottom: 4px"  rel="nofollow" target="_blank" >
             <span>Facebook</span>
         </a>
-        <a class="btn btn-twitter" href="https://facebook.com/sharer.php?u=<?php echo url()->current(); ?>" rel="nofollow" target="_blank" style="margin-bottom: 4px">
+        <a class="btn btn-twitter" href="https://twitter.com/share?text={{ $campaign->title }}&url=<?php echo url()->current(); ?>&via=pandhuweni" rel="nofollow" target="_blank" style="margin-bottom: 4px">
             <span>Twitter</span>
         </a>
     </p>

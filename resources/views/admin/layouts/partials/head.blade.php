@@ -6,7 +6,8 @@
     <meta name="description" content="Sistem Informasi Manajemen Dukungan Pendidikan 'AnakNegeri'">
     <meta name="author" content="Pandhu Weni">
     <meta name="keyword" content="Dukungan untuk pendidikan Indonesia">
-    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Admin | @yield('title')</title>
 
     <link href="{{ asset('core/css/font-awesome.min.css') }}" rel="stylesheet">

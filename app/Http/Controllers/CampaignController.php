@@ -22,12 +22,16 @@ class CampaignController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $campaigns= Campaign::paginate(15);
+        $campaigns= Campaign::paginate(6);
         $campaigns->sortByDesc('created_at');
-        return view('campaign')
-            ->with('campaigns', $campaigns);
+
+        if ($request->ajax()) {
+            $view = view('components.campaign',compact('campaigns'))->render();
+            return response()->json(['html'=>$view]);
+        }
+        return view('campaign',compact('campaigns'));
     } 
     
     /**
@@ -47,12 +51,18 @@ class CampaignController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function category($slug)
+    public function category(Request $request, $slug)
     {
 
         $category = Category::whereSlug($slug)->firstOrFail();
         $campaigns= Campaign::where('category_id', $category->id)
-            ->paginate(15);
+            ->paginate(6);
+        $campaigns->sortByDesc('created_at');
+
+        if ($request->ajax()) {
+            $view = view('components.campaign',compact('campaigns'))->render();
+            return response()->json(['html'=>$view]);
+        }
         return view('campaign')
             ->with('category', $category)
             ->with('campaigns', $campaigns);
@@ -210,18 +220,18 @@ class CampaignController extends Controller
      */
     public function getCampaigns(){
         $campaigns = DB::table('campaigns')
-            ->join('category', 'campaigns.category_id','=','category.id')
-            ->select('campaigns.*', 'category.category as categoryname')
+            ->join('categories', 'campaigns.category_id','=','categories.id')
+            ->select('campaigns.*', 'categories.category as categoryname')
             ->get();
         return Datatables::of($campaigns)
             ->addColumn('action', function($campaign){
-                return '
-                <button class="btn btn-sm btn-info info" data-toggle="modal" data-target="#infoCampaign" data-id="'.$campaign->id.'">
-                    <i class="icon-user-follow"></i>
-                </button>
-                <a class="btn btn-sm btn-warning edit" href="{{ route("home")}}">
-                    <i class="icon-note"></i>
+                return '                
+                <a class="btn btn-sm btn-secondary info" href="/campaign/detail/'.$campaign->slug.'" target="_blank">
+                    <i class="icon-eye"></i>
                 </a>
+                <button class="btn btn-sm btn-info info" data-toggle="modal" data-target="#infoCampaign" data-id="'.$campaign->id.'">
+                    <i class="icon-info"></i>
+                </button>
                 <a class="btn btn-sm btn-danger destroy" href="{{ route("home")}}">
                     <i class="icon-trash"></i>
                 </a>
@@ -229,6 +239,14 @@ class CampaignController extends Controller
             })->make(true);
     }
 
+    public function showCampaign(Request $request, $id){
+        $campaign = Campaign::where('id',$id)->firstOrFail();
+
+        if ($request->ajax()) {
+            $view = view('admin.components.campaign.detail',compact('campaign'))->render();
+            return response()->json(['html'=>$view]);
+        } 
+    }
     /**
      * Donate to Campaign
      *

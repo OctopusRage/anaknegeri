@@ -21,8 +21,8 @@
 							<tr >
 								<th>ID</th>
 								<th>Name</th>
-								<th>Email</th>
-								<th>Role</th>
+                <th>Email</th>
+								<th>Status</th>
 								<th>Action</th>
 							</tr>
 						</thead>
@@ -41,44 +41,83 @@
 
 	<script type="text/javascript">
 		//Handling Datatbles
+    
     $('#user-table').DataTable({
-    	"processing": true,
+      "processing": true,
       "serverSide": true,
       "ajax": {
-				'url': '{{ route("admin.getUsers") }}',
-				'type': 'GET',
-				'headers': {
-				'X-CSRF-TOKEN': '{{ csrf_token() }}'
-				}
-			},
+        'url': '{{ route("admin.getUsers") }}',
+        'type': 'GET',
+        'headers': {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+      },
       "columns": [
           { data: 'id', name: 'id' },
           { data: 'name', name: 'name' },
           { data: 'email', name: 'email' },
-          { data: 'rolename', name: 'rolename' },
+          { data: 'status', name: 'status' },
           { data: 'action', name: 'action', orderable: false, searchable: false}
       ],
       "language": {
-      		"decimal":        "",
-			    "emptyTable":     "Tidak ada data",
-			    "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-			    "infoEmpty":      "Tidak ada data",
-			    "infoFiltered":   "(Disaring dari _MAX_ data)",
-			    "infoPostFix":    "",
-			    "thousands":      ",",
-			    "lengthMenu":     "Tampilkan _MENU_ data",
-			    "loadingRecords": "Loading...",
-			    "processing":     "Loading...",
-			    "search":         "Cari:",
-			    "zeroRecords":    "Tidak ada data yang sesuai",
-			    "paginate": {
-			        "first":      "First",
-			        "last":       "Last",
-			        "next":       "Next",
-			        "previous":   "Previous"
-			    }
-		  }
+          "decimal":        "",
+          "emptyTable":     "Tidak ada data",
+          "info":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+          "infoEmpty":      "Tidak ada data",
+          "infoFiltered":   "(Disaring dari _MAX_ data)",
+          "infoPostFix":    "",
+          "thousands":      ",",
+          "lengthMenu":     "Tampilkan _MENU_ data",
+          "loadingRecords": "Loading...",
+          "processing":     "Loading...",
+          "search":         "Cari:",
+          "zeroRecords":    "Tidak ada data yang sesuai",
+          "paginate": {
+              "first":      "First",
+              "last":       "Last",
+              "next":       "Next",
+              "previous":   "Previous"
+          }
+      }
     });
-
 	</script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+
+  $('#infoUser').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var id = button.data('id') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      console.log(id);
+      
+    $.ajax(
+      {
+          url: '/admin/user/'+id+'/show/',
+          type: "GET",
+          beforeSend: function()
+          {
+              $('#detailUser').html('<h1 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...</h1>');
+          }
+      })
+      .done(function(data)
+      {
+        console.log(data);
+          console.log(data);
+          $("#detailUser").html(data.html);
+      })
+      .fail(function(ajaxOptions, thrownError)
+      {
+        // console.log(jqXHR.status);
+       console.log(thrownError);
+          $("#detailUser").html('<h2 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br>Gagal Mengambil Data</h2>');
+      });
+
+
+
+     
+  });   
+  });
+  
+  </script>
 @endsection

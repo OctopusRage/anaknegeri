@@ -1,3 +1,5 @@
+@foreach($campaigns as $campaign)
+
 <div class="card mb-4" >
 	<div class="embed-responsive embed-responsive-1by1">
 	  <div class="embed-responsive-item" src="/">  
@@ -43,3 +45,4 @@
         <a href="{{ route('campaign.detail', [$campaign->slug] )}}" class="btn btn-info ">Detail</a>
     </div>
 </div>
+@endforeach
