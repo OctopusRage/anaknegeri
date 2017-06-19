@@ -28,7 +28,12 @@
     </li>
     <li class="nav-item dropdown pr-3 ">
         <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <img @if(Auth::user()->profile_img !=null) src="{{ asset('img/avatars/')}}/{{ $user->profile_img }}" @else src="{{ asset('img/primary.png' )}}" @endif class="img-avatar" alt="admin@bootstrapmaster.com">
+            <img @if (Route::has('login'))
+                    @if (Auth::check())
+                        @if(Auth::user()->profile_img !=null) src="{{ asset('img/avatars/')}}/{{ $user->profile_img }}" @else src="{{ asset('img/primary.png' )}}" @endif class="img-avatar" alt="Profile Pic" 
+                    @endif
+                @endif
+            >
             <span class="d-md-down-none">@if(Auth::check()) {{  Auth::user()->name }} @else Guest @endif</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right mr-3">

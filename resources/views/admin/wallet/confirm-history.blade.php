@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title','Manajemen Dompet')
+@section('title','Riwayat Konfirmasi')
 @section('plugincss')
 	<link rel="stylesheet" type="text/css" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
 @endsection
@@ -10,19 +10,18 @@
 	    	<div class="card-block">	
 	    		<div class="row">
 	    			<div class="col-md-12 mb-4 ">
-	    				<h4 class="float-left">Manajemen Dompet</h4>
-	    				<a href="/admin" class="btn btn-secondary float-right">
-	    					<i class="icon-check"></i> Konfirmasi Transfer
-	    				</a>
+	    				<h4 class="float-left">Riwayat Konfirmasi Transfer</h4>
 	    			</div>
 	    		</div>    	
-						<table class="table table-striped table-bordered" id="Wallet-table" style="width: 100% !important">
+						<table class="table table-striped table-bordered" id="histroy-table" style="width: 100% !important">
 						<thead class="thead-inverse">
 							<tr >
-								<th>ID Wallet</th>
-								<th>Pemilik</th>
+								<th>ID</th>
+                <th>Pemilik Dompet</th>
                 <th>Jumlah</th>
-								<th>Action</th>
+                <th>Token</th>
+                <th>Status</th>
+                <th>Tanggal</th>
 							</tr>
 						</thead>
 					</table>
@@ -41,11 +40,11 @@
 	<script type="text/javascript">
 		//Handling Datatbles
     
-    $('#Wallet-table').DataTable({
+    $('#histroy-table').DataTable({
       "processing": true,
       "serverSide": true,
       "ajax": {
-        'url': '{{ route("admin.getWallets") }}',
+        'url': '{{ route("admin.getHistory") }}',
         'type': 'GET',
         'headers': {
         'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -54,8 +53,10 @@
       "columns": [
           { data: 'id', name: 'id' },
           { data: 'owner', name: 'owner' },
-          { data: 'total', name: 'total' },
-          { data: 'action', name: 'action', orderable: false, searchable: false}
+          { data: 'amount', name: 'amount' },
+          { data: 'token', name: 'token'},
+          { data: 'status', name: 'status'},
+          { data: 'updated_at', name: 'updated_at'}
       ],
       "language": {
           "decimal":        "",
@@ -91,7 +92,7 @@
       
     $.ajax(
       {
-          url: '{{ route("admin.index")}}/wallet/'+id+'/show/',
+          url: '{{ route("admin.index")}}/wallet/confirm/'+id+'/show/',
           type: "GET",
           beforeSend: function()
           {
@@ -110,11 +111,7 @@
        console.log(thrownError);
           $("#detailWallet").html('<h2 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br>Gagal Mengambil Data</h2>');
       });
-
-
-
-     
-  });   
+    });   
   });
   
   </script>

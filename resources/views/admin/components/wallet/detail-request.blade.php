@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="col-md-6">
-		<img class="img-thumbnail" @if($deposit->image!=null) src="{{ asset('img/confirms/')}}/{{ $deposit->image }}" @else src="{{ asset('img/bg-primary.png' )}}"  @endif >
+		<img class="img-thumbnail" @if($deposit->image !=null) src="{{ asset('img/confirms/')}}/{{ $deposit->image }}" @else src="{{ asset('img/bg-primary.png' )}}"  @endif >
 	</div>
 	<div class="col-md-6">
 		<table class="table table-bordered table-striped">
@@ -11,10 +11,13 @@
 				</tr>
 			</thead>
 			<tbody>
-
 				<tr>
-					<td>Jumlah</td>
-					<td>Rp. {{ $deposit->amount }}</td>
+					<td>Owner</td>
+					<td>{{ $deposit->wallet->user->name }}</td>
+				</tr>
+				<tr>
+					<td>Status</td>
+					<td>{{ $deposit->status }}</td>
 				</tr>
 				<tr>
 					<td>Token</td>
@@ -22,11 +25,7 @@
 				</tr>
 				<tr>
 					<td>Status</td>
-					<td>
-						<strong>
-							{{ $deposit->getStatus() }}
-						</strong>
-					</td>
+					<td>Menunggu Konfirmasi</td>
 				</tr>
 			</tbody>
 		</table>

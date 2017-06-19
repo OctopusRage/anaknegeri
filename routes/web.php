@@ -44,13 +44,6 @@ Route::get('organisasi', function () {
     return view('organisasi');
 })->name('organisasi');
 
-
-
-Route::get('admin', function () {
-    return view('admin.home');
-})->middleware('auth');
-
-
 Route::get('/', 'HomeController@index')->name('home');
 
 
@@ -145,15 +138,18 @@ Route::group(['middleware' => 'auth:all'], function()
 
         Route::get('/', ['as' => $user . 'home', 'uses' => 'ProfileController@index']);
 
-        Route::get('/wallets', ['as' => $user . 'wallet', 'uses' => 'WalletController@index']);
-
         Route::get('/campaign', ['as' => $user . 'campaign', 'uses' => 'ProfileController@campaign']);
 
-        Route::post('/wallets/deposit', ['as' => $user . 'deposit', 'uses' => 'WalletController@deposit']);
+        Route::get('/wallets', ['as' => $user . 'wallet', 'uses' => 'Wallet\WalletController@index']);
 
-        Route::get('/wallets/deposit/{id}', ['as' => $user . 'depositDetail', 'uses' => 'WalletController@depositDetail']);
 
-        Route::get('wallets/deposit', ['as' => $user . 'getDeposits', 'uses' => 'WalletController@getDeposits']);
+        Route::post('/wallets/deposit', ['as' => $user . 'deposit', 'uses' => 'Wallet\DepositController@store']);
+
+        Route::get('/wallets/deposit/{id}', ['as' => $user . 'depositDetail', 'uses' => 'Wallet\DepositController@show']);
+
+        Route::get('wallets/deposit', ['as' => $user . 'getDeposits', 'uses' => 'Wallet\DepositController@getDeposits']);
+
+
 
     });
 
@@ -184,18 +180,38 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
 
     Route::get('user/{id}/show', ['as' => $admin . 'showUser', 'uses' => 'UserController@showUser']);
 
+
+
     Route::get('campaign', ['as' => $admin . 'campaign', 'uses' => 'CampaignController@adminindex']);
 
     Route::get('campaign/campaigns', ['as' => $admin . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
 
     Route::get('campaign/{id}/show', ['as' => $admin . 'showCampaign', 'uses' => 'CampaignController@showCampaign']);
 
-    Route::get('wallet', ['as' => $admin . 'wallet', 'uses' => 'WalletController@adminindex']);
 
-    Route::get('wallet/wallets', ['as' => $admin . 'getWallets', 'uses' => 'WalletController@getWallets']);
 
-    Route::get('wallet/{id}/show', ['as' => $admin . 'showWallet', 'uses' => 'WalletController@showWallet']);
+    Route::get('wallet', ['as' => $admin . 'wallet', 'uses' => 'Wallet\WalletController@adminindex']);
 
+    Route::get('wallet/{id}/show', ['as' => $admin . 'showWallet', 'uses' => 'Wallet\WalletController@show']);
+
+    Route::get('wallet/wallets', ['as' => $admin . 'getWallets', 'uses' => 'Wallet\WalletController@getWallets']);
+
+
+
+
+    Route::get('wallet/confirm', ['as' => $admin . 'confirm', 'uses' => 'Wallet\ConfirmationController@index']);
+   
+    Route::post('wallet/confirm', ['as' => $admin . 'confirmDeposit', 'uses' => 'Wallet\ConfirmationController@store']);
+
+    Route::get('wallet/confirm/requests', ['as' => $admin . 'confirmRequests', 'uses' => 'Wallet\ConfirmationController@getConfirmationRequests']);
+
+    Route::get('wallet/confirm/{id}/show', ['as' => $admin . 'showRequest', 'uses' => 'Wallet\ConfirmationController@showRequest']);
+
+
+
+    Route::get('wallet/confirm/history', ['as' => $admin . 'history', 'uses' => 'Wallet\HistoryController@index']);
+
+    Route::get('wallet/confirm/history/histories', ['as' => $admin . 'getHistory', 'uses' => 'Wallet\HistoryController@getHistory']);
 
 });
 

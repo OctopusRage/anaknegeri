@@ -22,7 +22,7 @@
     </p>    
     <p>
         <strong class="text-success">
-            <span class="icon-tag"></span>
+            <span class="icon-tag"></span>&nbsp;
             {{ $campaign->category->category }}
         </strong>        
     </p>

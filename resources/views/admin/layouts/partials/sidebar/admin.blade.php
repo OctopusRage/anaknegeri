@@ -36,7 +36,10 @@
                         <a class="nav-link" href="{{route('admin.wallet')}}"><i class="icon-list"></i> Data Wallet</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('home')}}"><i class="icon-check"></i> Konfirmasi Transfer</a>
+                        <a class="nav-link" href="{{route('admin.confirm')}}"><i class="icon-check"></i> Konfirmasi Transfer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.history')}}"><i class="icon-reload"></i> Riwayat Konfirmasi</a>
                     </li>
                 </ul>
             </li>

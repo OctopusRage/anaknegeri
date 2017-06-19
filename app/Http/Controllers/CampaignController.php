@@ -24,7 +24,7 @@ class CampaignController extends Controller
      */
     public function index(Request $request)
     {
-        $campaigns= Campaign::paginate(6);
+        $campaigns= Campaign::paginate(8);
         $campaigns->sortByDesc('created_at');
 
         if ($request->ajax()) {
@@ -56,7 +56,7 @@ class CampaignController extends Controller
 
         $category = Category::whereSlug($slug)->firstOrFail();
         $campaigns= Campaign::where('category_id', $category->id)
-            ->paginate(6);
+            ->paginate(8);
         $campaigns->sortByDesc('created_at');
 
         if ($request->ajax()) {

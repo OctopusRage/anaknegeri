@@ -25,12 +25,17 @@ class WalletDeposit extends Model
 
   public function accepted()
   {
-  	$this->status=true;
+    $this->status=true;
+  	$this->confirmed=true;
   	$this->save();
     $add = $this->amount;
-    $total = $add + $this->wallet()->total;
-    $this->wallet()->total = $total;
-    $this->wallet()->save();
+  }
+
+  public function rejected()
+  {
+    $this->status=false;
+    $this->confirmed=true;
+    $this->save();
   }
 
   public function assignWallet($id)
