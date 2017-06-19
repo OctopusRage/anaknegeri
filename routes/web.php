@@ -190,6 +190,13 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
 
     Route::get('campaign/{id}/show', ['as' => $admin . 'showCampaign', 'uses' => 'CampaignController@showCampaign']);
 
+    Route::get('wallet', ['as' => $admin . 'wallet', 'uses' => 'WalletController@adminindex']);
+
+    Route::get('wallet/wallets', ['as' => $admin . 'getWallets', 'uses' => 'WalletController@getWallets']);
+
+    Route::get('wallet/{id}/show', ['as' => $admin . 'showWallet', 'uses' => 'WalletController@showWallet']);
+
+
 });
 
 

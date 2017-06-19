@@ -23,6 +23,10 @@ class WalletController extends Controller
         return view('profile.wallet');
     }
 
+    public function adminindex()
+    {
+        return view('admin.wallet.index');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -156,5 +160,23 @@ class WalletController extends Controller
         } 
     }
 
+    public function getWallets(){
+        $wallets = Wallet::all();
+        return Datatables::of($wallets)
+            ->addColumn('owner', function($wallet){
+                return $wallet->user->name;
+            })
+            ->editColumn('total', function($wallet){
+                return   "Rp. ".$wallet->total;
+            })
+            ->addColumn('action', function($wallet){
+                return '
+                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#infoDeposit" data-id="'.$wallet->id.'">
+                    <i class="icon-info"></i>
+                </button>
+                ';
+            })
+            ->make(true);
+    }
 
 }

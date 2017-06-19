@@ -18,11 +18,15 @@
 				</tr>
 				<tr>
 					<td>Token</td>
-					<td><?php echo {{ $deposit->token }} ?></td>
+					<td><?php echo substr($deposit->token, 0, 32) ?>...</td>
 				</tr>
 				<tr>
 					<td>Status</td>
-					<td>{{ $deposit->getStatus() }}</td>
+					<td>
+						<strong>
+							{{ $deposit->getStatus() }}
+						</strong>
+					</td>
 				</tr>
 			</tbody>
 		</table>

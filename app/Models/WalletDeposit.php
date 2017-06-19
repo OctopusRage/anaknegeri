@@ -50,4 +50,5 @@ class WalletDeposit extends Model
         return "Pending";
     }
   }
+
 }
