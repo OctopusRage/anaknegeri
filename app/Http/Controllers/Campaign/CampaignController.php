@@ -1,8 +1,9 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Campaign;
 
 use Illuminate\Http\Request;
 use DB;
+use App\Http\Controllers\Controller;
 use Datatables;
 use Image;
 use Carbon\Carbon;
@@ -247,17 +248,4 @@ class CampaignController extends Controller
             return response()->json(['html'=>$view]);
         } 
     }
-    /**
-     * Donate to Campaign
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function donate($slug)
-    {
-        $campaign = Campaign::whereSlug($slug)->firstOrFail();
-        return view('campaign.donate')
-            ->with('campaign', $campaign);
-    }
-
 }

@@ -77,20 +77,22 @@ Route::get('/activate/{token}', 'Auth\RegisterController@activate');
  * Get Campaign for 
  * @param Campaign's Catgory
  */
-// Route::get('/campaign', 'CampaignController@index')->name('campaign');
+// Route::get('/campaign', 'Campaign\CampaignController@index')->name('campaign');
 
 Route::group(['prefix' => 'campaign'], function() {
     $campaign = 'campaign.';
 
-    Route::get('/', ['as' => $campaign . 'home', 'uses' => 'CampaignController@index']);
+    Route::get('/', ['as' => $campaign . 'home', 'uses' => 'Campaign\CampaignController@index']);
 
-    Route::get('detail/{slug}', ['as' => $campaign . 'detail', 'uses' => 'CampaignController@show']);
+    Route::get('detail/{slug}', ['as' => $campaign . 'detail', 'uses' => 'Campaign\CampaignController@show']);
 
-    Route::get('/{slug}/donate', ['as' => $campaign . 'donate', 'uses' => 'CampaignController@donate']);
 
-    Route::get('/popular', ['as' => $campaign . 'popular', 'uses' => 'CampaignController@popular']);
+    Route::get('/detail/{slug}/donate', ['as' => $campaign . 'donate', 'uses' => 'Campaign\SupportController@index']);
 
-    Route::get('/category/{slug}', ['as' => $campaign . 'category', 'uses' => 'CampaignController@category']);
+
+    Route::get('/popular', ['as' => $campaign . 'popular', 'uses' => 'Campaign\CampaignController@popular']);
+
+    Route::get('/category/{slug}', ['as' => $campaign . 'category', 'uses' => 'Campaign\CampaignController@category']);
 
 
 });
@@ -120,9 +122,9 @@ Route::group(['middleware' => 'auth:all'], function()
     {
         $campaign='campaign.';
 
-        Route::get('/create', ['as' => $campaign . 'create', 'uses' => 'CampaignController@create']);
+        Route::get('/create', ['as' => $campaign . 'create', 'uses' => 'Campaign\CampaignController@create']);
 
-        Route::post('/', ['as' => $campaign . 'store', 'uses' => 'CampaignController@store']);
+        Route::post('/', ['as' => $campaign . 'store', 'uses' => 'Campaign\CampaignController@store']);
 
     });
 
@@ -182,11 +184,11 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
 
 
 
-    Route::get('campaign', ['as' => $admin . 'campaign', 'uses' => 'CampaignController@adminindex']);
+    Route::get('campaign', ['as' => $admin . 'campaign', 'uses' => 'Campaign\CampaignController@adminindex']);
 
-    Route::get('campaign/campaigns', ['as' => $admin . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
+    Route::get('campaign/campaigns', ['as' => $admin . 'getCampaigns', 'uses' => 'Campaign\CampaignController@getCampaigns']);
 
-    Route::get('campaign/{id}/show', ['as' => $admin . 'showCampaign', 'uses' => 'CampaignController@showCampaign']);
+    Route::get('campaign/{id}/show', ['as' => $admin . 'showCampaign', 'uses' => 'Campaign\CampaignController@showCampaign']);
 
 
 
@@ -240,11 +242,11 @@ Auth:Finansial
 //     /**
 //      * Campaign management home
 //      */
-//     Route::get('campaign', ['as' => $finance . 'campaign', 'uses' => 'CampaignController@adminindex']);
+//     Route::get('campaign', ['as' => $finance . 'campaign', 'uses' => 'Campaign\CampaignController@adminindex']);
 //     /**
 //      * Get User (Datatables serverside implementation)
 //      */
-//     Route::get('campaign/campaigns', ['as' => $finance . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
+//     Route::get('campaign/campaigns', ['as' => $finance . 'getCampaigns', 'uses' => 'Campaign\CampaignController@getCampaigns']);
 
 // });
 
@@ -273,11 +275,11 @@ Auth:Logistik
 //     /**
 //      * Campaign management home
 //      */
-//     Route::get('campaign', ['as' => $logistic . 'campaign', 'uses' => 'CampaignController@adminindex']);
+//     Route::get('campaign', ['as' => $logistic . 'campaign', 'uses' => 'Campaign\CampaignController@adminindex']);
 //     /**
 //      * Get User (Datatables serverside implementation)
 //      */
-//     Route::get('campaign/campaigns', ['as' => $logistic . 'getCampaigns', 'uses' => 'CampaignController@getCampaigns']);
+//     Route::get('campaign/campaigns', ['as' => $logistic . 'getCampaigns', 'uses' => 'Campaign\CampaignController@getCampaigns']);
 
 // });
 

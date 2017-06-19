@@ -49,7 +49,7 @@
           <span class="text-bold text-danger"><?php echo date('d M Y', strtotime($campaign->deadline)); ?></span>
         </h6>
       <hr>
-      <a href="{{route('campaign-donate')}}" class="btn btn-primary btn-block btn-lg">Beri dukungan!</a>
+      <a href="{{route('campaign.donate',[$campaign->slug])}}" class="btn btn-primary btn-block btn-lg">Beri dukungan!</a>
       <p class="text-center mt-3">atau</p>
       <hr>
       <h3 class="text-center mt-3 mb-3">Bagikan</h3>
