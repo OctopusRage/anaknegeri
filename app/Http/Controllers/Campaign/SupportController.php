@@ -13,11 +13,9 @@ class SupportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($slug)
+    public function index()
     {
-        $campaign = Campaign::whereSlug($slug)->firstOrFail();
-        return view('campaign.donate')
-            ->with('campaign', $campaign);
+        
     }
 
     /**
@@ -25,9 +23,11 @@ class SupportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($slug)
     {
-        //
+        $campaign = Campaign::whereSlug($slug)->firstOrFail();
+        return view('campaign.donate')
+            ->with('campaign', $campaign);
     }
 
     /**

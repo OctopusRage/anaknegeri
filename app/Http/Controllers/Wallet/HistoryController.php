@@ -18,19 +18,19 @@ class HistoryController extends Controller
         $deposit = WalletDeposit::where('confirmed',true)->get();
         return Datatables::of($deposit)
             ->addColumn('owner', function($depo){
-                return  $depo->wallet->user->name;
+                return $depo->wallet->user->name;
             })
             ->editColumn('amount', function($depo){
-                return   "Rp. ".$depo->amount;
+                return "Rp. ".$depo->amount;
             })
             ->editColumn('status', function($depo){
-                return   $depo->getStatus();
+                return $depo->getStatus();
             })
             ->editColumn('token', function($depo){
-                return   substr($depo->token, 0, 32)."...";
+                return substr($depo->token, 0, 32)."...";
             })
             ->editColumn('updated_at', function($depo){
-                return   date('d M Y H:i:s', strtotime($depo->updated_at));
+                return date('d M Y H:i:s', strtotime($depo->updated_at));
             })
             ->addColumn('action', function($depo){
                 return '

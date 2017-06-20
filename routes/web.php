@@ -87,9 +87,6 @@ Route::group(['prefix' => 'campaign'], function() {
     Route::get('detail/{slug}', ['as' => $campaign . 'detail', 'uses' => 'Campaign\CampaignController@show']);
 
 
-    Route::get('/detail/{slug}/donate', ['as' => $campaign . 'donate', 'uses' => 'Campaign\SupportController@index']);
-
-
     Route::get('/popular', ['as' => $campaign . 'popular', 'uses' => 'Campaign\CampaignController@popular']);
 
     Route::get('/category/{slug}', ['as' => $campaign . 'category', 'uses' => 'Campaign\CampaignController@category']);
@@ -152,6 +149,15 @@ Route::group(['middleware' => 'auth:all'], function()
         Route::get('wallets/deposit', ['as' => $user . 'getDeposits', 'uses' => 'Wallet\DepositController@getDeposits']);
 
 
+
+    });
+
+    Route::group(['prefix' => 'campaign'], function() {
+        $campaign='campaign.';
+        
+        Route::get('/detail/{slug}/donate', ['as' => $campaign . 'donate', 'uses' => 'Campaign\SupportController@create']);
+
+        Route::post('/detail/{slug}/donate', ['as' => $campaign . 'donates', 'uses' => 'Campaign\SupportController@create']);
 
     });
 

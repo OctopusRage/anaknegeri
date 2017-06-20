@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WalletDeposit;
 use App\Models\Wallet;
 use Datatables;
+use Mail;
 
 class ConfirmationController extends Controller
 {
@@ -21,21 +22,33 @@ class ConfirmationController extends Controller
 
         $deposit = WalletDeposit::where('id', $request->id)->firstOrFail();        
         $wallet = Wallet::where('id', $deposit->wallet_id)->firstOrFail();
+        $user = $wallet->user()->firstOrFail();
 
         if($request->type == 'accept')
         {   
             $deposit->accepted();
             $wallet->total = $wallet->total + $deposit->amount;
-            $wallet->save();
-            $message = "Diterima";
+            $wallet->save(); 
+            $status = "Diterima";           
 
         }else if($request->type == "reject")
         {
             $deposit->rejected();  
-            $message = "Ditolak"; 
+            $status = "Ditolak"; 
         }
+        $data['email'] = $user->email;
+        $data['name'] = $user->name;
+        $data['status'] = $status;
+
+        Mail::send('emails.deposit', $data, function($message) use ($data)
+        {
+            $message->from('weniindya@gmail.com', "Anaknegeri");
+            $message->subject("Konfirmasi Deposit Dompet");
+            $message->to($data['email'], $data['name']);   
+        }); 
+
         return response()->json([
-            'message' => $message
+            'message' => $status
         ]);
     }
 
