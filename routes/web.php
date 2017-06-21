@@ -157,7 +157,7 @@ Route::group(['middleware' => 'auth:all'], function()
         
         Route::get('/detail/{slug}/donate', ['as' => $campaign . 'donate', 'uses' => 'Campaign\SupportController@create']);
 
-        Route::post('/detail/{slug}/donate', ['as' => $campaign . 'donates', 'uses' => 'Campaign\SupportController@create']);
+        Route::post('/detail/{slug}/donate', ['as' => $campaign . 'donates', 'uses' => 'Campaign\SupportController@store']);
 
     });
 

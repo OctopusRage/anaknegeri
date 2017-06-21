@@ -13,4 +13,9 @@ class SupportType extends Model
       return $this->belongsToMany('App\Models\Campaign')->withTimestamps();;
   }
 
+  public function support()
+  {
+      return $this->hasMany('App\Models\Support', 'type_id');
+  }
+
 }

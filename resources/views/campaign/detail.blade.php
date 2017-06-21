@@ -8,7 +8,7 @@
         <div class="col-md-6 col-sm-12"><a href="{{route('campaign.donate', [$campaign->slug])}}" class="btn btn-lg btn-block btn-primary">Beri Dukungan</a></div>
        @if (Route::has('login'))
                 @if (Auth::check())
-        <div class="col-md-6 col-sm-12"><a href="{{route('campaign.create')}}" class="btn btn-lg btn-block btn-danger" >Beri Buat Campaign Sendiri</a></div>
+        <div class="col-md-6 col-sm-12"><a href="{{route('campaign.create')}}" class="btn btn-lg btn-block btn-success" >Beri Buat Campaign Sendiri</a></div>
         @endif
         @endif
     </div>

@@ -18,8 +18,10 @@ class CreateSupport extends Migration
             Schema::create('supports', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('item');
-                $table->string('comment');
-                $table->text('detail');
+                $table->string('comment')
+                    ->nullable();
+                $table->text('detail')
+                    ->nullable();
                 $table->double('amount',12,2);                
                 $table->boolean('anonim')
                     ->default(false);                

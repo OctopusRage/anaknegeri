@@ -14,6 +14,7 @@ use App\Http\Requests\CampaignFormRequest;
 use App\Models\SupportType;
 use App\Models\Campaign;
 use App\Models\Category;
+use App\Models\Support;
 
 class CampaignController extends Controller
 {
@@ -175,8 +176,10 @@ class CampaignController extends Controller
     public function show($slug)
     {
         $campaign = Campaign::whereSlug($slug)->firstOrFail();
+        $history = $campaign->support()->get();
         return view('campaign.detail')
-            ->with('campaign', $campaign);
+            ->with('campaign', $campaign)
+            ->with('support', $support);
     }
 
     /**

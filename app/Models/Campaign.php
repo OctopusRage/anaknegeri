@@ -33,6 +33,10 @@ class Campaign extends Model
         return $this->belongsToMany('App\Models\SupportType')->withTimestamps()->withPivot('item', 'amount');
     }
 
+    public function support()
+    {
+        return $this->hasMany('App\Models\Support', 'campaign_id');
+    }
     // Assign Campaign Category
     public function assignCategory($category)
     {
@@ -64,6 +68,31 @@ class Campaign extends Model
             return true;
         }
         return false;
+    }
+
+    public function getProgress()
+    {
+        $need = 0.0;
+        foreach( $this->supportType as $type)
+        {
+            if($type->pivot->item == "Dana")
+            {   
+                $need = $type->pivot->amount;
+            }
+        }
+
+        $progress = 0.0;
+
+        foreach( $this->support as $support)
+        {
+            if($support->item == "Dana")
+            {   
+                $progress = $progress + $support->amount;
+            }
+        }
+
+        $precentage = ($progress / $need)*100;
+        return number_format((float)$precentage, 2, '.', '');
     }
 
 }	

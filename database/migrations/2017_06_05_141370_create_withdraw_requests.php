@@ -18,6 +18,10 @@ class CreateWithdrawRequests extends Migration
             $table->string('item');
             $table->double('amount', 12,2);
             $table->string('detail');
+            $table->boolean('confirmed')
+                ->default(false);
+            $table->boolean('status')
+                ->default(false);
             $table->integer('campaign_id')
                 ->unsigned()
                 ->index();

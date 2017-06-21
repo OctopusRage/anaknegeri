@@ -22,9 +22,9 @@
               @endforeach
           </tbody>
       </table>
-      <div class="progress">
-        <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
+      
+      <h6 class="mt-3 mb-3">Progress Finansial</h6>
+      @include('components.progress')
       <h6 class="mt-3">
         <i class="icon-calendar"></i>&nbsp; Deadline 
           <span class="text-bold text-danger"><?php echo date('d M Y', strtotime($campaign->deadline)); ?></span>

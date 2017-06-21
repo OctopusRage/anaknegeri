@@ -6,19 +6,20 @@
         </h3>
         <form action="{{ route('campaign.donates', [$campaign->slug])}}" method="POST">
         @include('components.status')
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="form-group  mb-3">
-
+        
             <label for="support_type">Jenis dukungan yang diberikan</label>
-            <div class="checkbox">
+            
+
+             <div class="radio">
                 <label for="check_finansial">
-                    <input type="checkbox" name="check_finansial" value="finansial" id="check_finansial">
-                    Finansial
+                    <input type="radio" id="check_finansial" name="type" value="Finansial">&nbsp; Finansial
                 </label>
             </div>
-            <div class="checkbox">
+            <div class="radio">
                 <label for="check_nonfinansial">
-                    <input type="checkbox" name="check_nonfinansial" value="non finansial" id="check_nonfinansial">
-                    Non Finansial
+                    <input type="radio" id="check_nonfinansial" name="type" value="Non Finansial">&nbsp; Non Finansial
                 </label>
             </div>
         </div>
@@ -38,7 +39,8 @@
                     <div class="input-group">
                         <span class="input-group-addon">Rp.
                         </span>
-                        <input type="number" class="form-control" placeholder="Jumlah Donasi">
+                        <input type="hidden" name="item" value="Dana">
+                        <input type="number" class="form-control" name="amount" placeholder="Jumlah Donasi">
                     </div>
                     <span class="help-block">Pesan error</span>
                 </div>
@@ -48,17 +50,40 @@
         <!-- Untuk dukungan nonfinansial -->
         <div class="row" id="group-input-donasi-non-finansial">
             <div class="col-md-12 col-sm-12">
-                <h5 class="mt-3">Anda bisa menberikan dukungan pada daftar di bawah ini, atau dukungan lain yang akan berguna.</h5>
-                @foreach($campaign->supportType as $st)
-                  @if($st->pivot->item != "Dana")
-                    <span class="badge badge-primary pt-2 pb-1 px-3 my-3 mr-3">
-                        <h6>
-                            {{ $st->pivot->amount }} {{ $st->pivot->item }}
-                        </h6> 
-                    </span>
-                                            
-                  @endif          
-                @endforeach
+                
+                @if($campaign->supportType->count() == 1)
+                    @foreach($campaign->supportType as $st)
+                      @if($st->pivot->item == "Dana")
+                        <h5 class="mt-3 mb-3">Anda bisa menberikan dukungan lain yang mungkin berguna.</h5>
+                      @else
+                        <h5 class="mt-3">Anda bisa menberikan dukungan pada daftar di bawah ini, atau dukungan lain yang akan berguna.</h5>
+                        @foreach($campaign->supportType as $st)
+                          @if($st->pivot->item != "Dana")
+                            <span class="badge badge-primary pt-2 pb-1 px-3 my-3 mr-3">
+                                <h6>
+                                    {{ $st->pivot->amount }} {{ $st->pivot->item }}
+                                </h6> 
+                            </span>
+                                                    
+                          @endif          
+                        @endforeach
+                        @endif
+                    @endforeach
+                @else
+                    <h5 class="mt-3">Anda bisa menberikan dukungan pada daftar di bawah ini, atau dukungan lain yang akan berguna.</h5>
+                   @foreach($campaign->supportType as $st)
+                    
+                      @if($st->pivot->item != "Dana")
+                        <span class="badge badge-primary pt-2 pb-1 px-3 my-3 mr-3">
+                            <h6>
+                                {{ $st->pivot->amount }} {{ $st->pivot->item }}
+                            </h6> 
+                        </span>
+                                                
+                      @endif          
+                    @endforeach
+                @endif 
+                
                 <div class="card">
                     <div class="card-block clearfix">
                         <h6 class="text-justify">Prosedur pemberian dukungan non-finansial</h6>
@@ -79,7 +104,7 @@
                     <div class="input-group">
                         <span class="input-group-addon"><i class="icon-drawer"></i>
                         </span>
-                        <input type="text" class="form-control" name="item" id="inputItem" placeholder="Nama Barang">
+                        <input type="text" class="form-control" name="barang" id="inputItem" placeholder="Nama Barang">
                     </div>
                     <span class="help-block">Pesan error</span>
                 </div> 
@@ -88,14 +113,14 @@
                     <div class="input-group">
                         <span class="input-group-addon"><i class="icon-arrow-right"></i>
                         </span>
-                        <input type="number" id="inputAmount" name="amount" class="form-control" placeholder="Jumlah Donasi">
+                        <input type="number" id="inputAmount" name="count" class="form-control" placeholder="Jumlah Donasi">
                     </div>
                     <span class="help-block">Pesan error</span>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="name">Dikirim dari <span class="text-muted"></span></label>
-                    <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" placeholder="Silakan tulis alamat pengiriman anda"></textarea>
+                    <textarea id="inputAddress" name="detail" rows="5" class="form-control" placeholder="Silakan tulis alamat pengiriman anda"></textarea>
                 </div>
 
             </div>
@@ -106,17 +131,17 @@
             <div class="col-md-12">
                 <div class="form-group  mb-3">
                     <div class="checkbox">
-                        <label for="checkbox1">
-                            <input type="checkbox" id="checkbox1" name="checkbox1" value="option1"> Berikan dukungan sebagai anonim?
+                        <label for="inputAnonim">
+                            <input type="checkbox" id="inputAnonim" name="anonim" value="1"> Berikan dukungan sebagai anonim?
                         </label>
                     </div>
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="name">Komentar <span class="text-muted">Opsional</span></label>
-                    <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" placeholder="Berikan dukungan anda!"></textarea>
+                    <label for="inputComment">Komentar <span class="text-muted">Opsional</span></label>
+                    <textarea id="inputComment" name="comment" rows="5" class="form-control" placeholder="Berikan dukungan anda!"></textarea>
                 </div>
-                <button type="button" class="btn btn-success">Berikan Dukungan!</button>
+                <button type="submit" class="btn btn-success">Berikan Dukungan!</button>
             </div>
         </div>
 
@@ -127,14 +152,44 @@
 @section('viewjs')
 <script type="text/javascript">
     $(document).ready(function(){
+
         $('#group-input-donasi-finansial').hide();
         $('#group-input-donasi-non-finansial').hide();
-        $('#check_finansial').click(function(){
-            $("#group-input-donasi-finansial").slideToggle();
+
+
+        $("input[name=type]").change(function() {
+            var type = $(this).val();
+            if(type=="Finansial"){
+                $("#group-input-donasi-finansial").slideDown();
+                $('#group-input-donasi-non-finansial').hide();
+            }else if(type=="Non Finansial"){
+
+                $("#group-input-donasi-non-finansial").slideDown();            
+                $('#group-input-donasi-finansial').hide();
+            }
         });
-        $('#check_nonfinansial').click(function(){
-            $('#group-input-donasi-non-finansial').slideToggle();
-        });
-    })
+
+        // if($('#check_finansial').prop('checked', true)){
+        //     $("#group-input-donasi-finansial").slideDown();
+        //     $('#group-input-donasi-non-finansial').hide();
+        // }else if($('#check_nonfinansial').prop('checked', true)){
+        //     $("#group-input-donasi-non-finansial").slideDown();            
+        //     $('#group-input-donasi-finansial').hide();
+        // }else{
+        //     $('#group-input-donasi-non-finansial').hide();
+        // }
+
+
+    });
+
+    $(document).ready(function(){
+        var anonim = $('#inputAnonim');
+        anonim.val(0);
+        if($(anonim).is(':checked')){
+            $(this).val(1);
+        }else{
+            $(this).val(0);
+        }
+    });
 </script>
 @endsection

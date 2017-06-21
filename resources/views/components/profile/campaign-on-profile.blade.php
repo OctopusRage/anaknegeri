@@ -11,7 +11,7 @@
 			<?php echo date('D, d M Y', strtotime($campaign->deadline)); ?>
 		<strong>
 			<i class="icon-chart pl-3"></i>&nbsp;
-			35% terdanai	
+			{{ $campaign->getProgress() }} % terdanai	
 		</strong>
 		
 		
@@ -19,7 +19,14 @@
 </p>
 <p>
 	{{$campaign->subtitle}}
-	<a href="{{ route('campaign.detail',[$campaign->slug])}}" class="text-primary">Selengkapnya...</a>
+</p>
+<p>
+	<a href="{{ route('campaign.detail',[$campaign->slug])}}" class="btn btn-sm btn-success">
+		Rincian
+	</a>
+	<a href="{{ route('campaign.detail',[$campaign->slug])}}" class="btn btn-sm  btn-secondary">
+		Baca Selengkapnya 
+	</a>
 </p>
 <hr>
 @endforeach

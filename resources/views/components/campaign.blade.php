@@ -6,9 +6,7 @@
 	  	<img class="card-img-top" @if($campaign->feature_img!=null) src="{{ asset('img/campaigns/thumbs')}}/{{ $campaign->feature_img }}" @else src="{{ asset('img/bg-primary.png' )}}"  style="backgroud-color:#63c2de !important" @endif alt="Card image cap">
 		</div>
 	</div>
-    <div class="progress">
-      <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
+    @include('components.progress')
   <div class="card-block">
     <h4 class="card-title">{{ $campaign->title }}</h4>
     <p>

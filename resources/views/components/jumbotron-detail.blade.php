@@ -8,7 +8,7 @@
     <div class="col-md-9 col-sm-12">
 
         <div class="media mb-3">
-          <img class="d-flex align-self-center mr-3 rounded-circle" src="{{ asset('img/avatars/6.jpg') }}" alt="Generic placeholder image">
+          <img class="d-flex align-self-center mr-3 rounded-circle" style="max-width: 48px; " @if( $campaign->user->profile_img !=null) src="{{ asset('img/avatars/')}}/{{ $campaign->user->profile_img }}" @else src="{{ asset('img/primary.png' )}}" @endif alt="Generic placeholder image" >
           <div class="media-body">
             <p class="h6 text-bold mt-2">
                 {{ $campaign->user->name }} @if ($campaign->user->isVerified(true)) 
@@ -40,10 +40,8 @@
               @endforeach
           </tbody>
       </table>
-      <h6 class="mt-3 mb-3">Progress</h6>
-      <div class="progress">
-        <div class="progress-bar bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
+      <h6 class="mt-3 mb-3">Progress Finansial</h6>
+      @include('components.progress')
       <h6 class="mt-3">
         <i class="icon-calendar"></i>&nbsp; Deadline 
           <span class="text-bold text-danger"><?php echo date('d M Y', strtotime($campaign->deadline)); ?></span>

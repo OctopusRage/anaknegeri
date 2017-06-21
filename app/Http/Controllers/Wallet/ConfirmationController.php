@@ -36,6 +36,7 @@ class ConfirmationController extends Controller
             $deposit->rejected();  
             $status = "Ditolak"; 
         }
+        
         $data['email'] = $user->email;
         $data['name'] = $user->name;
         $data['status'] = $status;
