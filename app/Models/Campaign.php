@@ -37,6 +37,11 @@ class Campaign extends Model
     {
         return $this->hasMany('App\Models\Support', 'campaign_id');
     }
+
+    public function withdraw()
+    {
+        return $this->hasMany('App\Models\WithdrawRequest', 'campaign_id');
+    }
     // Assign Campaign Category
     public function assignCategory($category)
     {
@@ -84,7 +89,7 @@ class Campaign extends Model
         return $progress;
     }
 
-    public function getProgress()
+    public function getNeed()
     {
         $need = 0.0;
         foreach( $this->supportType as $type)
@@ -94,12 +99,30 @@ class Campaign extends Model
                 $need = $type->pivot->amount;
             }
         }
+        return $need;
+    }
 
+    public function getProgress()
+    {
+        
+
+        $need= $this->getNeed();
         $progress= $this->getStatusFinansial();
         
 
         $precentage = ($progress / $need)*100;
         return number_format((float)$precentage, 2, '.', '');
     }
-
+    
+    public function isSuccess()
+    {
+        if($this->getStatusFinansial() >= $this->getNeed())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }	

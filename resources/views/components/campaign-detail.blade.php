@@ -49,7 +49,7 @@
                             <tbody>
                                 @foreach($campaign->support as $supports)
                                     @if($supports->item != "Dana")
-                                        @if($supports->item == 0)
+                                        @if($supports->count() == 0)
                                             <tr>
                                                 <td colspan="2" class="text-center">                                                  
                                                     Belum ada dukungan lain
@@ -58,10 +58,10 @@
                                         @else
                                         <tr>
                                             <td>
-                                                $support->item
+                                                {{$supports->item}}
                                             </td>
                                             <td>
-                                                $support->amount
+                                                {{$supports->amount}}
                                             </td>
                                         </tr> 
                                         @endif
@@ -86,7 +86,7 @@
                 <div id="comment-data">
                     
                 </div>
-                <button type="button" id="loadMore" class="btn btn-primary">Muat Selanjutnya...</button>
+                <button type="button" id="loadMore" class="btn btn-secondary">Muat Selanjutnya...</button>
             </div>
         </div>
      

@@ -44,9 +44,30 @@
                 </ul>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="{{route('home')}}"><i class="icon-drawer"></i> Permintaan Penarikan</a>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-credit-card"></i>Penarikan Dana</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.withdrawFinance')}}"><i class="icon-check"></i> Konfirmasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('home')}}"><i class="icon-reload"></i> History</a>
+                    </li>
+                </ul>
             </li>
+
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-support"></i>Penarikan Logistik</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.withdrawLogistic')}}"><i class="icon-check"></i> Konfirmasi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('home')}}"><i class="icon-reload"></i> History</a>
+                    </li>
+                </ul>
+            </li>
+            
 
             <li class="nav-item">
                 <a class="nav-link" href="{{route('home')}}"><i class="icon-settings"></i> Pengaturan</a>

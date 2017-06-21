@@ -8,15 +8,15 @@
 	  <h4 class="card-title">{{ Auth::user()->name }} @if (Auth::user()->isVerified(true)) <i class="icon-check text-success"></i> @endif</h4>
 	</div>
 	<div class="list-group list-group-flush">
-	  <a href="{{ route('profile.home', ['id'=>Auth::user()->id])}}" class="list-group-item  list-group-item-action {{ Request::url() == route('profile.home')? 'active' : null }}">
+	  <a href="{{ route('profile.home', ['id'=>Auth::user()->id])}}" class="list-group-item  list-group-item-action {{ Request::segment(1) == 'profile' && Request::segment(2)==''? 'active' : null }}">
 	  	<i class="icon-user"></i> &nbsp;
 	    Profile
 	  </a>
-	  <a href="{{ route('profile.campaign')}}" class="list-group-item list-group-item-action {{ Request::url() == route('profile.campaign')? 'active' : null }}">
+	  <a href="{{ route('profile.campaign')}}" class="list-group-item list-group-item-action {{ Request::segment(1) == 'profile' && Request::segment(2)=='campaign'? 'active' : null }}">
 	  	<i class="icon-cursor"> </i> &nbsp;
 	  	Campaign
 	  </a>
-	  <a href="{{ route('profile.wallet')}}" class="list-group-item list-group-item-action {{ Request::url() == route('profile.wallet')? 'active' : null }}">
+	  <a href="{{ route('profile.wallet')}}" class="list-group-item list-group-item-action {{ Request::segment(1) == 'profile' && Request::segment(2)=='wallet'? 'active' : null }}">
 	  	<i class="icon-wallet"></i> &nbsp;
 	  	Dompet Untuknegeri
 	  </a>

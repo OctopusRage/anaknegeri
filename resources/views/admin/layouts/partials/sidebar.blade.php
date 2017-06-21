@@ -41,6 +41,18 @@
                 </ul>
             </li>
             
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-withdraw"></i> Permintaan Penarikan</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.user')}}"><i class="icon-credit-card"></i> Penarikan Dana</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('home')}}"><i class="icon-support"></i> Penarikan Logistik</a>
+                    </li>
+                </ul>
+            </li>
+            
 
             <li class="nav-item">
                 <a class="nav-link" href="{{route('home')}}"><i class="icon-drawer"></i> Permintaan Penarikan</a>

@@ -183,7 +183,7 @@ class CampaignController extends Controller
     public function comment(Request $request, $slug)
     {
         $campaign = Campaign::whereSlug($slug)->firstOrFail();
-        $comments = $campaign->support()->paginate(10);
+        $comments = $campaign->support()->paginate(5);
 
         if ($request->ajax()) {
             $view = view('components.comment',compact('comments'))->render();

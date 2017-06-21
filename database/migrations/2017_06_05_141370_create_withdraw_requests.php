@@ -22,6 +22,8 @@ class CreateWithdrawRequests extends Migration
                 ->default(false);
             $table->boolean('status')
                 ->default(false);
+            $table->string('addition')
+                ->nullable();
             $table->integer('campaign_id')
                 ->unsigned()
                 ->index();

@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Campaign;
+use App\Models\Support;
+use App\Models\Report;
 
 class DashboardController extends Controller
 {
@@ -21,12 +25,14 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $count=array(
-            'user' => DB::table('users')->count(),
-            'campaign' => DB::table('campaigns')->count(),
-            'support' => DB::table('supports')->count()
-            );
-        return view('admin.home')->with('count', $count);
+        $user = User::all();
+        $campaign = Campaign::all();
+        $report = Report::all();        
+
+        return view('admin.home')
+            ->with('user', $user)
+            ->with('campaign', $campaign)
+            ->with('report', $report);
     }
 
     /**

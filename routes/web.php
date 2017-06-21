@@ -141,18 +141,24 @@ Route::group(['middleware' => 'auth:all'], function()
 
         Route::get('/campaign', ['as' => $user . 'campaign', 'uses' => 'ProfileController@campaign']);
 
-        Route::get('/campaign/{id}/withdraw', ['as' => $user . 'campaign', 'uses' => 'Campaign\RequestSupportController@index']);
+        Route::get('/campaign/{id}/withdraw', ['as' => $user . 'withdraw', 'uses' => 'Campaign\WithdrawController@index']);
 
-        Route::get('/campaign/{id}/withdraw', ['as' => $user . 'campaign', 'uses' => 'Campaign\RequestSupportController@index']);
+        Route::post('/campaign/{id}/withdraw', ['as' => $user . 'postWithdraw', 'uses' => 'Campaign\WithdrawController@store']);
 
-        Route::get('/wallets', ['as' => $user . 'wallet', 'uses' => 'Wallet\WalletController@index']);
+        Route::get('/campaign/{id}/withdraw/withdraws', ['as' => $user . 'getWithdraws', 'uses' => 'Campaign\WithdrawController@getWithdraws']);
+
+        Route::get('/campaign/{id}/withdraw/{with_id}/show', ['as' => $user . 'showWithdraw', 'uses' => 'Campaign\WithdrawController@showWithdraw']);
+
+        Route::get('/campaign/{id}/report', ['as' => $user . 'report', 'uses' => 'Campaign\ReportController@index']);
+
+        Route::get('/wallet', ['as' => $user . 'wallet', 'uses' => 'Wallet\WalletController@index']);
 
 
-        Route::post('/wallets/deposit', ['as' => $user . 'deposit', 'uses' => 'Wallet\DepositController@store']);
+        Route::post('/wallet/deposit', ['as' => $user . 'deposit', 'uses' => 'Wallet\DepositController@store']);
 
-        Route::get('/wallets/deposit/{id}', ['as' => $user . 'depositDetail', 'uses' => 'Wallet\DepositController@show']);
+        Route::get('/wallet/deposit/{id}', ['as' => $user . 'depositDetail', 'uses' => 'Wallet\DepositController@show']);
 
-        Route::get('wallets/deposit', ['as' => $user . 'getDeposits', 'uses' => 'Wallet\DepositController@getDeposits']);
+        Route::get('wallet/deposit', ['as' => $user . 'getDeposits', 'uses' => 'Wallet\DepositController@getDeposits']);
 
 
 
@@ -226,6 +232,25 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
     Route::get('wallet/confirm/history', ['as' => $admin . 'history', 'uses' => 'Wallet\HistoryController@index']);
 
     Route::get('wallet/confirm/history/histories', ['as' => $admin . 'getHistory', 'uses' => 'Wallet\HistoryController@getHistory']);
+
+
+
+    Route::get('withdraw/finance', ['as' => $admin . 'withdrawFinance', 'uses' => 'Withdraw\FinanceController@index']);
+
+    Route::post('withdraw/finance', ['as' => $admin . 'confirmWithdrawFinance', 'uses' => 'Withdraw\FinanceController@store']);
+
+    Route::get('withdraw/finance/withdraws', ['as' => $admin . 'getWithdrawFinances', 'uses' => 'Withdraw\FinanceController@getWithdrawFinances']);
+
+    Route::get('withdraw/finance/{id}/show', ['as' => $admin . 'showWithdrawFinance', 'uses' => 'Withdraw\FinanceController@showWithdrawFinance']);
+
+
+
+    Route::get('withdraw/logistic', ['as' => $admin . 'withdrawLogistic', 'uses' => 'Withdraw\NonFinanceController@index']);
+
+    Route::get('withdraw/logistic/withdraws', ['as' => $admin . 'getWithdrawLogistics', 'uses' => 'Withdraw\NonFinanceController@getWithdrawLogistics']);
+
+    Route::get('withdraw/logistic/{id}/show', ['as' => $admin . 'showWithdrawLogistic', 'uses' => 'Withdraw\NonFinanceController@showWithdrawLogistic']);
+
 
 });
 

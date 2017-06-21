@@ -54,7 +54,6 @@ class WithdrawRequest extends Model
   	return $this->campaign()->associate($id);
   }
 
-
   public function getStatus(){
     if( $this->confirmed == "1"){
       if( $this->status == "1"){

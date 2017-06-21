@@ -21,10 +21,16 @@
 	{{$campaign->subtitle}}
 </p>
 <p>
-	<a href="{{ route('campaign.detail',[$campaign->slug])}}" class="btn btn-sm btn-success">
-		Rincian
+	<a href="{{ route('profile.withdraw',[$campaign->id])}}" class="btn btn-sm btn-secondary">
+		<span class="icon-drawer"></span>
+		Permintaan Penarikan
 	</a>
-	<a href="{{ route('campaign.detail',[$campaign->slug])}}" class="btn btn-sm  btn-secondary">
+	<a href="{{ route('profile.report',[$campaign->id])}}" class="btn btn-sm btn-success">
+		<span class="icon-docs"></span>
+		Laporan
+	</a>
+	<a href="{{ route('campaign.detail',[$campaign->slug])}}" class="btn btn-sm  btn-primary">
+	<span class="icon-book-open"></span>
 		Baca Selengkapnya 
 	</a>
 </p>
