@@ -86,6 +86,8 @@ Route::group(['prefix' => 'campaign'], function() {
 
     Route::get('detail/{slug}', ['as' => $campaign . 'detail', 'uses' => 'Campaign\CampaignController@show']);
 
+    Route::get('detail/{slug}/comment', ['as' => $campaign . 'comments', 'uses' => 'Campaign\CampaignController@comment']);
+
 
     Route::get('/popular', ['as' => $campaign . 'popular', 'uses' => 'Campaign\CampaignController@popular']);
 
@@ -138,6 +140,10 @@ Route::group(['middleware' => 'auth:all'], function()
         Route::get('/', ['as' => $user . 'home', 'uses' => 'ProfileController@index']);
 
         Route::get('/campaign', ['as' => $user . 'campaign', 'uses' => 'ProfileController@campaign']);
+
+        Route::get('/campaign/{id}/withdraw', ['as' => $user . 'campaign', 'uses' => 'Campaign\RequestSupportController@index']);
+
+        Route::get('/campaign/{id}/withdraw', ['as' => $user . 'campaign', 'uses' => 'Campaign\RequestSupportController@index']);
 
         Route::get('/wallets', ['as' => $user . 'wallet', 'uses' => 'Wallet\WalletController@index']);
 

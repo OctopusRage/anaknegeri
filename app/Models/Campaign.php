@@ -70,6 +70,20 @@ class Campaign extends Model
         return false;
     }
 
+    public function getStatusFinansial()
+    {
+        $progress = 0.0;
+
+        foreach( $this->support as $support)
+        {
+            if($support->item == "Dana")
+            {   
+                $progress = $progress + $support->amount;
+            }
+        }
+        return $progress;
+    }
+
     public function getProgress()
     {
         $need = 0.0;
@@ -81,15 +95,8 @@ class Campaign extends Model
             }
         }
 
-        $progress = 0.0;
-
-        foreach( $this->support as $support)
-        {
-            if($support->item == "Dana")
-            {   
-                $progress = $progress + $support->amount;
-            }
-        }
+        $progress= $this->getStatusFinansial();
+        
 
         $precentage = ($progress / $need)*100;
         return number_format((float)$precentage, 2, '.', '');

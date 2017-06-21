@@ -3,13 +3,10 @@
         <a class="nav-link active" data-toggle="tab" href="#detail" role="tab" aria-controls="home"><i class="icon-info"></i> Detail </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#history" role="tab" aria-controls="profile"><i class="icon-reload"></i> History dukungan &nbsp;<span class="badge badge-pill badge-success">29</span></a>
+        <a class="nav-link" data-toggle="tab" href="#report" role="tab" aria-controls="profile"><i class="icon-note"></i> Pelaporan &nbsp;<span class="badge badge-pill badge-success">26</span></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#report" role="tab" aria-controls="profile"><i class="icon-note"></i> Pelaporan &nbsp;<span class="badge badge-pill badge-success">29</span></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#comment" role="tab" aria-controls="messages"><i class="icon-bubbles"></i> Komentar &nbsp;<span class="badge badge-pill badge-info">29</span></a>
+        <a class="nav-link" data-toggle="tab" href="#comment" role="tab" aria-controls="messages"><i class="icon-bubbles"></i> Komentar &nbsp;<span class="badge badge-pill badge-warning">{{$campaign->support->where("comment","!=", null)->count() }}</span></a>
     </li>
 </ul>
 
@@ -18,12 +15,6 @@
         <!-- Detail Campaign -->        
         {{ $campaign->detail }}
     </div>
-    <div class="tab-pane" id="history" role="tabpanel">
-       <?php for ($i=0; $i <10 ; $i++) {
-        ?>
-            @include('components.laporan')
-       <?php } ?>
-    </div>
     <div class="tab-pane" id="report" role="tabpanel">
        <?php for ($i=0; $i <10 ; $i++) {
         ?>
@@ -31,23 +22,117 @@
        <?php } ?>
     </div>
     <div class="tab-pane" id="comment" role="tabpanel">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="icon-hourglass"></span>&nbsp; Status Terkini Donasi
+                    </div>
+                    <div class="card-block">
+                        <div class="card">
+                          <div class="card-block p-0 clearfix">
+                              <i class="icon-cursor bg-info p-4 font-2xl mr-3 float-left"></i>
+                              <div class="h5 text-info mb-0 pt-3">
+                                  Rp. {{ $campaign->getStatusFinansial() }}
+                              </div>
+                              <div class="text-muted text-uppercase font-weight-bold font-xs">Dana Terkumpul</div>
+                          </div>
+                      </div>
+                      <h5 class="mb-3">Dukungan Lainnya</h5>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <td>Dukungan</td>
+                                    <td>Jumlah</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($campaign->support as $supports)
+                                    @if($supports->item != "Dana")
+                                        @if($supports->item == 0)
+                                            <tr>
+                                                <td colspan="2" class="text-center">                                                  
+                                                    Belum ada dukungan lain
+                                                </td>
+                                            </tr>
+                                        @else
+                                        <tr>
+                                            <td>
+                                                $support->item
+                                            </td>
+                                            <td>
+                                                $support->amount
+                                            </td>
+                                        </tr> 
+                                        @endif
+                                    @endif
+                                @endforeach
 
-        <?php for ($i=0; $i <10 ; $i++) {
-        ?>
-            <div class="media mb-3">
-              <img class="d-flex mr-3 rounded-circle" src="{{ asset('img/avatars/6.jpg') }}" alt="Generic placeholder image">
-              <div class="media-body">
-                <p class="h6 text-bold mt-2">
-                  Pandhu Weni
-                <br>
-                </p>
-                <p><small><i class="icon-calendar"></i> &nbsp; 25 Januari 2018</small></p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias perferendis eaque obcaecati nemo adipisci quae eveniet, molestias ex quis nisi, officiis reiciendis quas voluptatibus, ut voluptates hic autem architecto. Cum.</p>
-              </div>
+                            </tbody>
+                        </table>    
+                        @if($campaign->support->count() !=0)
+                        <h5 class="mb-3">Dukungan Terakhir</h5>
+
+                        <p>{{ $campaign->support->last()->getName() }} pada 
+                        <?php echo date('d M Y', strtotime($campaign->support->last()->created_at)); ?></p>
+                        @endif
+                    </div>
+                </div>
             </div>
-            <hr>
-       <?php } ?>
+            <div class="col-md-8" >
+                <h4 class="mb-3">
+                    Komentar Donatur
+                </h4>
+                <div id="comment-data">
+                    
+                </div>
+                <button type="button" id="loadMore" class="btn btn-primary">Muat Selanjutnya...</button>
+            </div>
+        </div>
      
 
     </div>
 </div>
+@section('viewjs')
+<script type="text/javascript">
+var page = 1;
+$(document).ready(function(){
+    loadMoreData(page);
+});
+
+$('#loadMore').click(function(){
+    page++;
+    loadMoreData(page);
+    console.log(page);
+});
+
+function loadMoreData(page){
+  $.ajax(
+        {
+            url: '{{url("/")}}/campaign/detail/'+'{{ $campaign->slug }}'+'/comment?page=' + page,
+            type: "GET",
+            beforeSend: function()
+            {
+                $('#loadMore').html('<i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...');
+            }
+        })
+        .done(function(data)
+        {
+            console.log(data);
+            if(data.html == ""){
+                $('#loadMore').html('Semua data telah dimuat...');
+                $('#loadMore').attr("disabled", "disabled");
+                $('#loadMore').addClass("btn-secondary");
+                return;
+            }
+            $('#loadMore').html('Muat Selanjutnya...');
+            $("#comment-data").append(data.html);
+        })
+        .fail(function(jqXHR, ajaxOptions, thrownError)
+        {
+              alert('Server tidak merespon...');
+        });
+}
+
+</script>
+@endsection

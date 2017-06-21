@@ -48,5 +48,15 @@ class Support extends Model
       return $this->supportType()->associate($id);
     }
 
-
+    public function getName()
+    {
+        if($this->anonim==true)
+        {
+            return "Anonim";
+        }
+        else
+        {
+            return $this->user->name;
+        }
+    }
 }

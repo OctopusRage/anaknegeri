@@ -18,7 +18,7 @@
       <div class="card">
           <div class="card-block p-0 clearfix">
               <i class="icon-emotsmile bg-warning p-4 font-2xl mr-3 float-left"></i>
-              <div class="h5 text-warning mb-0 pt-3">24</div>
+              <div class="h5 text-warning mb-0 pt-3">{{ Auth::user()->support->count()}}</div>
               <div class="text-muted text-uppercase font-weight-bold font-xs">Kontribusi</div>
           </div>
       </div>

@@ -176,12 +176,22 @@ class CampaignController extends Controller
     public function show($slug)
     {
         $campaign = Campaign::whereSlug($slug)->firstOrFail();
-        $history = $campaign->support()->get();
         return view('campaign.detail')
-            ->with('campaign', $campaign)
-            ->with('support', $support);
+            ->with('campaign', $campaign);
     }
 
+    public function comment(Request $request, $slug)
+    {
+        $campaign = Campaign::whereSlug($slug)->firstOrFail();
+        $comments = $campaign->support()->paginate(10);
+
+        if ($request->ajax()) {
+            $view = view('components.comment',compact('comments'))->render();
+            return response()->json(['html'=>$view]);
+        }
+        return response()->json($comments, 200);
+
+    }
     /**
      * Show the form for editing the specified resource.
      *
