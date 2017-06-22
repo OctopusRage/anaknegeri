@@ -14,7 +14,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{route('admin.campaign')}}"><i class="icon-note"></i> Pelaporan</a>
+                <a class="nav-link" href="{{route('admin.report')}}"><i class="icon-note"></i> Pelaporan</a>
             </li>
 
             <li class="nav-item nav-dropdown">

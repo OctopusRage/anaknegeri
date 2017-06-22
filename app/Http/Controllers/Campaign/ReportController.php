@@ -47,6 +47,27 @@ class ReportController extends Controller
             })->make(true);
     }
 
+    public function adminindex()
+    {
+        return view('admin.report.index');
+    }
+
+    public function getAllReports(){
+        $reports = DB::table('reports')
+            ->join('withdraw_requests', 'reports.withdraw_request_id','=','withdraw_requests.id')
+            ->join('campaigns', 'campaigns.id','=','withdraw_requests.campaign_id')
+            ->select('reports.*', 'campaigns.title as camp_title', 'campaigns.slug as slug')
+            ->get();
+
+        return Datatables::of($reports)
+            ->addColumn('action', function($report){
+                return '                
+                <a class="btn btn-sm btn-secondary info" target="_blank" href="/campaign/detail/'.$report->slug.'/report/'.$report->id.'">
+                    <i class="icon-eye"></i>
+                </a>
+                ';
+            })->make(true);
+    }
     /**
      * Show the form for creating a new resource.
      *

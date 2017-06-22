@@ -272,7 +272,9 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
 
     Route::get('withdraw/logistic/history/{id}/show', ['as' => $admin . 'showLogisticWithdrawHistory', 'uses' => 'Withdraw\NonFinanceController@showHistory']);
 
+    Route::get('report', ['as' => $admin . 'report', 'uses' => 'Campaign\ReportController@adminindex']);
 
+    Route::get('report/reports', ['as' => $admin . 'getAllReports', 'uses' => 'Campaign\ReportController@getAllReports']);
 
 });
 
