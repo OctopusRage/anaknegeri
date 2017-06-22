@@ -3,6 +3,12 @@
 namespace App\Http\Controllers\Campaign;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Campaign;
+use App\Models\Report;
+use App\Models\WithdrawRequest;
+use Datatables;
+use DB;
 
 class ReportController extends Controller
 {
@@ -11,9 +17,34 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index($id)
+    {   
+        $withdraws = WithdrawRequest::where('campaign_id', $id)
+            ->where('status', 1)
+            ->where('sent', 0)
+            ->get();
+        $campaign = Campaign::whereId($id)->firstOrFail();
+        return view('profile.campaign.report')
+            ->with('campaign', $campaign)
+            ->with('withdraws', $withdraws);
+    }
+
+    public function getReports($id){
+        $reports = DB::table('reports')
+            ->join('withdraw_requests', 'reports.withdraw_request_id','=','withdraw_requests.id')
+            ->join('campaigns', 'campaigns.id','=','withdraw_requests.campaign_id')
+            ->where('campaigns.id',$id)
+            ->select('reports.title as titlereport', 'reports.created_at as created_at', 'campaigns.slug as slug','reports.id as id')
+            ->get();
+
+        return Datatables::of($reports)
+            ->addColumn('action', function($report){
+                return '                
+                <a class="btn btn-sm btn-secondary info" target="_blank" href="/campaign/detail/'.$report->slug.'/report/'.$report->id.'">
+                    <i class="icon-eye"></i>
+                </a>
+                ';
+            })->make(true);
     }
 
     /**
@@ -34,7 +65,21 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $withdraw = WithdrawRequest::whereId($request->withdraw_id)->firstOrFail();
+        $report = new Report(array(
+            'title' => $request->get('title'),
+            'detail' => $request->get('detail')
+        ));
+
+        $report->assignWithdraw($request->get('withdraw_id'));
+        $report->save();
+        $withdraw->sent();
+        // $withdraw->where('id', $report->withdraw_request_id)->sent();
+
+        return redirect()
+            ->back()
+            ->with('message', 'Laporan berhasil dibuat')
+            ->with('status', 'success');
     }
 
     /**
@@ -43,9 +88,13 @@ class ReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug, $report_id)
     {
-        //
+        $campaign= Campaign::whereSlug($slug)->firstOrFail();
+        $report = Report::whereId($report_id)->firstOrFail();
+        return view('campaign.report')
+            ->with('campaign',$campaign)
+            ->with('report',$report);
     }
 
     /**

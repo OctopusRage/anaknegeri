@@ -3,7 +3,7 @@
         <a class="nav-link active" data-toggle="tab" href="#detail" role="tab" aria-controls="home"><i class="icon-info"></i> Detail </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#report" role="tab" aria-controls="profile"><i class="icon-note"></i> Pelaporan &nbsp;<span class="badge badge-pill badge-success">26</span></a>
+        <a class="nav-link" data-toggle="tab" href="#report" role="tab" aria-controls="profile"><i class="icon-note"></i> Pelaporan &nbsp;<span class="badge badge-pill badge-success">{{$withdraw->count()}}</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#comment" role="tab" aria-controls="messages"><i class="icon-bubbles"></i> Komentar &nbsp;<span class="badge badge-pill badge-warning">{{$campaign->support->where("comment","!=", null)->count() }}</span></a>
@@ -11,17 +11,17 @@
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane active" id="detail" role="tabpanel">
+    <div class="tab-pane p-5 active" id="detail" role="tabpanel">
         <!-- Detail Campaign -->        
-        {{ $campaign->detail }}
+        {!! $campaign->detail !!}
     </div>
-    <div class="tab-pane" id="report" role="tabpanel">
-       <?php for ($i=0; $i <10 ; $i++) {
-        ?>
+    <div class="tab-pane p-5" id="report" role="tabpanel">
+        <div id="report-data">
             @include('components.laporan')
-       <?php } ?>
+        </div>
+       <button type="button" id="loadMoreReport" class="btn btn-secondary">Muat Selanjutnya...</button>
     </div>
-    <div class="tab-pane" id="comment" role="tabpanel">
+    <div class="tab-pane p-5" id="comment" role="tabpanel">
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
@@ -86,7 +86,7 @@
                 <div id="comment-data">
                     
                 </div>
-                <button type="button" id="loadMore" class="btn btn-secondary">Muat Selanjutnya...</button>
+                <button type="button" id="loadMore" class="btn btn-secondary mt-3">Muat Selanjutnya...</button>
             </div>
         </div>
      
@@ -101,6 +101,47 @@ $(document).ready(function(){
 });
 
 $('#loadMore').click(function(){
+    page++;
+    loadMoreData(page);
+    console.log(page);
+});
+
+function loadMoreData(page){
+  $.ajax(
+        {
+            url: '{{url("/")}}/campaign/detail/'+'{{ $campaign->slug }}'+'/comment?page=' + page,
+            type: "GET",
+            beforeSend: function()
+            {
+                $('#loadMore').html('<i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...');
+            }
+        })
+        .done(function(data)
+        {
+            console.log(data);
+            if(data.html == ""){
+                $('#loadMore').html('Semua data telah dimuat...');
+                $('#loadMore').attr("disabled", "disabled");
+                $('#loadMore').addClass("btn-secondary");
+                return;
+            }
+            $('#loadMore').html('Muat Selanjutnya...');
+            $("#comment-data").append(data.html);
+        })
+        .fail(function(jqXHR, ajaxOptions, thrownError)
+        {
+              alert('Server tidak merespon...');
+        });
+}
+
+</script>
+<script type="text/javascript">
+var page = 1;
+$(document).ready(function(){
+    loadMoreData(page);
+});
+
+$('#loadMoreReport').click(function(){
     page++;
     loadMoreData(page);
     console.log(page);

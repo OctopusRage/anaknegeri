@@ -18,7 +18,6 @@ class CreateReports extends Migration
             Schema::create('reports', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('title', 128);
-                $table->double('amount',12,2);
                 $table->text('detail');
                 $table->integer('withdraw_request_id')
                     ->unsigned()

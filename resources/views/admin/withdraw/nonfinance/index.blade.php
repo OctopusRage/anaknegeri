@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title','Manajemen Penarikan Bantuan Logistik')
+@section('title','Riwayat Konfimasi Penarikan Logistik')
 @section('plugincss')
   <link rel="stylesheet" type="text/css" href="{{asset('css/dataTables.bootstrap4.min.css')}}">
 @endsection
@@ -10,7 +10,7 @@
         <div class="card-block">  
           <div class="row">
             <div class="col-md-12 mb-4 ">
-              <h4 class="float-left">Manajemen Penarikan Bantuan Logistik</h4>
+              <h4 class="float-left">Riwayat Konfimasi Penarikan Logistik</h4>
               
             </div>
           </div>      
@@ -30,7 +30,6 @@
     </div>
   </div>
   @include('admin.components.withdraw.modal')
-  @include('admin.components.withdraw.modal-action')
 @endsection
 @section('pluginjs')
   <script type="text/javascript" src="{{asset('js/jquery.dataTables.min.js')}}"></script>
@@ -119,13 +118,12 @@
   });
   
   </script>
-   <script type="text/javascript">
+  <script type="text/javascript">
   $(document).ready(function(){
 
     $('#actionWithdraw').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget);
       var id = button.data('id');
-      var addition = $('#inputAddition').val();
       var typeRequest = button.data('action');
       console.log(id);
       if(typeRequest == "accept"){
@@ -145,7 +143,7 @@
         var request = {
           'id': id,
           'type': typeRequest,
-          'addition' : addition
+          'addition' : $('textarea#inputAddition').val()
         };
 
         console.log(request);
@@ -159,19 +157,20 @@
         
         $.ajax(
         {
-          url: '{{ route("admin.confirmDeposit")}}',
+          url: '{{ route("admin.confirmWithdrawLogistic")}}',
           data: request,
           type: "POST",
           beforeSend: function()
             {
               $('#detailAction').html('<h5 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Mohon Menunggu...</h5>');
+              $('#inputAddition').hide();
             }
         })
         .done(function(data)
         {
           console.log(data);
-          $("#detailAction").html('<h5 class="text-center text-success"><span class="icon-check mb-3"></span><br> Permintaan deposit berhasil '+data.message+'</h5>');
-          $('#confirm-table').DataTable().ajax.reload();
+          $("#detailAction").html('<h5 class="text-center text-success"><span class="icon-check mb-3"></span><br> Permintaan penarikan berhasil '+data.message+'</h5>');
+          $('#withdraw-table').DataTable().ajax.reload();
         })
         .fail(function(ajaxOptions, thrownError)
         {

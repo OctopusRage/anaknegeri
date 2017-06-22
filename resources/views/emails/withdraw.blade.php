@@ -15,6 +15,8 @@
                             <p>Permintaan penarikan dukungan anda telah {{ $status }} oleh admin</p>
                             <p>Detail penarikan</p>
                             <p>{{$item}} sebanyak {{$amount}}</p>
+                            <p>Tambahan dari admin: {{ $addition }}</p>
+                            <p>Detail: {{ $detail }}</p>
                             <p>Dukungan sedang diproses untuk segera dikirimkan</p>
                             <a href="{{ route('home') }}" class="btn btn-primary mt-3 mb-5">Kembali ke Website</a>
                         </div>

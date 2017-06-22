@@ -264,6 +264,8 @@
         cmsURL = cmsURL + "&type=Files";
       }
 
+        tinyMCE.activeEditor.getContent({format : 'raw'});
+
       tinyMCE.activeEditor.windowManager.open({
         file : cmsURL,
         title : 'File Explorer',

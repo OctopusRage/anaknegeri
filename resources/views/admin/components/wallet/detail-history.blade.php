@@ -23,10 +23,6 @@
 					<td>Token</td>
 					<td><?php echo substr($deposit->token, 0, 32) ?>...</td>
 				</tr>
-				<tr>
-					<td>Status</td>
-					<td>Menunggu Konfirmasi</td>
-				</tr>
 			</tbody>
 		</table>
 	</div>

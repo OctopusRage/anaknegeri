@@ -1,4 +1,4 @@
-<div class="card bg-white pl-4 pr-4 pt-3 pb-5" style="top:-50px !important;>
+<div class="card bg-white pl-4 pr-4 pt-3 pb-5" style="top:-50px !important;"">
     <div class="card-block">
 
         <h3 class="mb-5 mt-3 text-center">

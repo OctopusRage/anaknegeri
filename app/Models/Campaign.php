@@ -113,6 +113,27 @@ class Campaign extends Model
         $precentage = ($progress / $need)*100;
         return number_format((float)$precentage, 2, '.', '');
     }
+
+    public function getStatusWithdraw()
+    {
+        $withdrawed = 0.0;
+
+        foreach( $this->withdraw as $withdraw)
+        {
+            if($withdraw->item == "Dana")
+            {   
+                $withdrawed = $withdrawed + $withdraw->amount;
+            }
+        }
+        return $withdrawed;
+    }
+
+    public function getAvailableForWithdraw()
+    {
+        $available = 0.0;
+        $available = $this->getStatusFinansial() - $this->getStatusWithdraw();
+        return $available;
+    }
     
     public function isSuccess()
     {

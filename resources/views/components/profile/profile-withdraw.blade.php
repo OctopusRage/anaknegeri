@@ -57,8 +57,8 @@
                  <div class="card">
                   <div class="card-block p-0 clearfix">
                       <i class="icon-wallet bg-success p-4 font-2xl mr-3 float-left"></i>
-                      <div class="h5 text-success mb-0 pt-3">Rp. {{ $campaign->getStatusFinansial() }}</div>
-                      <div class="text-muted text-uppercase font-weight-bold font-xs">Dana Terkumpul</div>
+                      <div class="h5 text-success mb-0 pt-3">Rp. {{ $campaign->getAvailableForWithdraw() }}</div>
+                      <div class="text-muted text-uppercase font-weight-bold font-xs">Dana Tersedia</div>
                   </div>
                 </div>
                 <div class="form-group {{ $errors->has('amount') ? ' has-danger' : '' }}  mb-3">

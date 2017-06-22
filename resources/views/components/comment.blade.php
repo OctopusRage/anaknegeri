@@ -1,5 +1,5 @@
 @foreach ($comments as $comment)
-<div class="card mb-2">
+<div class="card mb-0">
   <div class="card-block">    
     <div class="media">  
       <img class="d-flex mr-3 rounded-circle" style="max-width: 48px"  @if($comment->user->profile_img!=null && $comment->anonim == true) src="{{ asset('img/avatars/')}}/{{ $comment->user->profile_img }}" @else src="{{ asset('img/primary.png' )}}" @endif alt="Generic placeholder image">

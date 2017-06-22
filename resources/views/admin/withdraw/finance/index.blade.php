@@ -125,7 +125,6 @@
     $('#actionWithdraw').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget);
       var id = button.data('id');
-      var addition = $('#inputAddition').val();
       var typeRequest = button.data('action');
       console.log(id);
       if(typeRequest == "accept"){
@@ -145,7 +144,7 @@
         var request = {
           'id': id,
           'type': typeRequest,
-          'addition' : addition
+          'addition' : $('textarea#inputAddition').val()
         };
 
         console.log(request);
@@ -165,13 +164,14 @@
           beforeSend: function()
             {
               $('#detailAction').html('<h5 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Mohon Menunggu...</h5>');
+              $('#inputAddition').hide();
             }
         })
         .done(function(data)
         {
           console.log(data);
-          $("#detailAction").html('<h5 class="text-center text-success"><span class="icon-check mb-3"></span><br> Permintaan deposit berhasil '+data.message+'</h5>');
-          $('#confirm-table').DataTable().ajax.reload();
+          $("#detailAction").html('<h5 class="text-center text-success"><span class="icon-check mb-3"></span><br> Permintaan penarikan berhasil '+data.message+'</h5>');
+          $('#withdraw-table').DataTable().ajax.reload();
         })
         .fail(function(ajaxOptions, thrownError)
         {

@@ -45,7 +45,7 @@ class WithdrawRequest extends Model
 
   public function sent()
   {
-    $this->status = 2;
+    $this->sent = true;
     $this->save();
   }
 
@@ -57,15 +57,22 @@ class WithdrawRequest extends Model
   public function getStatus(){
     if( $this->confirmed == "1"){
       if( $this->status == "1"){
-        return "Accepted";
-      }else if($this->status == "2"){
-      	return "Dikirim";
-      }else{
+        if($this->sent == "1")
+        {
+          return "Sent";
+        }
+        else
+        {
+          return "Accepted";
+        }
+      }
+      else{
         return "Rejected";
       }
     }else{
         return "Pending";
     }
   }
+
 
 }	

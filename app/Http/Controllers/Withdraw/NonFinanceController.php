@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Withdraw;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Datatables;
+use App\Models\User;
 use App\Models\WithdrawRequest;
 use App\Models\Campaign;
-use Datatables;
+use Mail;
 
 class NonFinanceController extends Controller
 {
@@ -82,7 +84,89 @@ class NonFinanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $withdraw = WithdrawRequest::where('id', $request->id)->firstOrFail(); 
+        $campaign = $withdraw->campaign()->firstOrFail();
+        $user = User::whereId($campaign->created_by)->firstOrFail();
+
+        
+        if($request->type == 'accept')
+        {   
+            $withdraw->accepted();
+            $status = "Diterima";           
+
+        }else if($request->type == "reject")
+        {
+            $withdraw->rejected();  
+            $status = "Ditolak"; 
+        }
+
+        $withdraw->addition = $request->addition;
+        $withdraw->save();
+        
+        $data['email'] = $user->email;
+        $data['name'] = $user->name;
+        $data['item'] = $withdraw->item;
+        $data['amount'] = $withdraw->amount;
+        $data['detail'] = $withdraw->detail;
+        $data['addition'] = $withdraw->addition;
+        $data['status'] = $status;
+
+        Mail::send('emails.withdraw', $data, function($message) use ($data)
+        {
+            $message->from('weniindya@gmail.com', "Anaknegeri");
+            $message->subject("Konfirmasi Permintaan Penarikan Dukungan");
+            $message->to($data['email'], $data['name']);   
+        }); 
+
+        return response()->json([
+            'message' => $status
+        ]);
+    }
+
+    public function history()
+    {
+        return view('admin.withdraw.nonfinance.history');
+    }
+
+    public function getHistory()
+    {
+        $withdraws = WithdrawRequest::where('confirmed', true)->where('item','!=','Dana')->get();
+        return Datatables::of($withdraws) 
+            ->addColumn('campaign_title', function($withdraw){
+                return $withdraw->campaign->title;
+            })       
+            ->editColumn('created_at', function($withdraw){
+                return   date('d M Y H:i:s', strtotime($withdraw->created_at));
+            })    
+            ->editColumn('updated_at', function($withdraw){
+                return   date('d M Y H:i:s', strtotime($withdraw->updated_at));
+            })
+            ->editColumn('amount', function($withdraw){
+                return  $withdraw->amount;
+            })
+            ->editColumn('status', function($withdraw){
+                return   $withdraw->getStatus();
+            })
+            ->addColumn('action', function($withdraw){
+                return '
+                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#infoWithdraw" data-id="'.$withdraw->id.'">
+                    <i class="icon-info"></i>
+                </button>            
+                ';
+            })
+            ->make(true);
+    }
+
+    public function showHistory(Request $request, $id)
+    {
+        $withdraw = WithdrawRequest::whereId($id)->firstOrFail();
+        $campaign = Campaign::whereId($withdraw->campaign_id)->firstOrFail();
+        if ($request->ajax()) {
+            $view = view('admin.components.withdraw.detail-history')->with('withdraw', $withdraw)->render();
+            return response()->json(['html'=>$view]); 
+        } 
+        return response()->json(['withdraw'=> $withdraw, 'campaign' =>$campaign],200);
+
     }
 
     /**

@@ -14,6 +14,7 @@ use App\Http\Requests\CampaignFormRequest;
 use App\Models\SupportType;
 use App\Models\Campaign;
 use App\Models\Category;
+use App\Models\WithdrawRequest;
 use App\Models\Support;
 
 class CampaignController extends Controller
@@ -176,7 +177,9 @@ class CampaignController extends Controller
     public function show($slug)
     {
         $campaign = Campaign::whereSlug($slug)->firstOrFail();
+        $withdraw = $campaign->withdraw()->where('sent',1)->get();
         return view('campaign.detail')
+            ->with('withdraw', $withdraw)
             ->with('campaign', $campaign);
     }
 

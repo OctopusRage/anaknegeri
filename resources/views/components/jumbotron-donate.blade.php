@@ -6,6 +6,17 @@
       <h1 class="display-5 mb-3">Beasiswa untuk NTT</h1>
     </div>
     <div class="col-md-9 col-sm-12">
+      <div class="media mb-3">
+          <img class="d-flex align-self-center mr-3 rounded-circle" style="max-width: 48px; " @if( $campaign->user->profile_img !=null) src="{{ asset('img/avatars/')}}/{{ $campaign->user->profile_img }}" @else src="{{ asset('img/primary.png' )}}" @endif alt="Generic placeholder image" >
+          <div class="media-body">
+            <p class="h6 text-bold mt-2">
+                {{ $campaign->user->name }} @if ($campaign->user->isVerified(true)) 
+                <i class="icon-check text-primary"></i> 
+                @endif<br>
+              <small class="text-muted text-uppercase">campaigner</small>
+              </p>
+          </div>
+        </div>
       <p class="lead">{{ $campaign->subtitle }}</p>
 
     </div>

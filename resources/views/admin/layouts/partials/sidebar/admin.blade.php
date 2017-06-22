@@ -51,7 +51,7 @@
                         <a class="nav-link" href="{{route('admin.withdrawFinance')}}"><i class="icon-check"></i> Konfirmasi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('home')}}"><i class="icon-reload"></i> History</a>
+                        <a class="nav-link" href="{{route('admin.financeWithdrawHistory')}}"><i class="icon-reload"></i> History</a>
                     </li>
                 </ul>
             </li>
@@ -63,7 +63,7 @@
                         <a class="nav-link" href="{{route('admin.withdrawLogistic')}}"><i class="icon-check"></i> Konfirmasi</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('home')}}"><i class="icon-reload"></i> History</a>
+                        <a class="nav-link" href="{{route('admin.logisticWithdrawHistory')}}"><i class="icon-reload"></i> History</a>
                     </li>
                 </ul>
             </li>

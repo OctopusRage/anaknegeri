@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Withdraw;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Datatables;
+use App\Models\User;
 use App\Models\WithdrawRequest;
 use App\Models\Campaign;
+use Mail;
 
 class FinanceController extends Controller
 {
@@ -66,6 +68,52 @@ class FinanceController extends Controller
         return response()->json(['withdraw'=> $withdraw, 'campaign' =>$campaign],200);
 
     }
+
+    public function history()
+    {
+        return view('admin.withdraw.finance.history');
+    }
+
+    public function getHistory()
+    {
+        $withdraws = WithdrawRequest::where('confirmed', true)->where('item','Dana')->get();
+        return Datatables::of($withdraws) 
+            ->addColumn('campaign_title', function($withdraw){
+                return $withdraw->campaign->title;
+            })       
+            ->editColumn('created_at', function($withdraw){
+                return   date('d M Y H:i:s', strtotime($withdraw->created_at));
+            })    
+            ->editColumn('updated_at', function($withdraw){
+                return   date('d M Y H:i:s', strtotime($withdraw->updated_at));
+            })
+            ->editColumn('amount', function($withdraw){
+                return   "Rp. ".$withdraw->amount;
+            })
+            ->editColumn('status', function($withdraw){
+                return   $withdraw->getStatus();
+            })
+            ->addColumn('action', function($withdraw){
+                return '
+                <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#infoWithdraw" data-id="'.$withdraw->id.'">
+                    <i class="icon-info"></i>
+                </button>            
+                ';
+            })
+            ->make(true);
+    }
+
+    public function showHistory(Request $request, $id)
+    {
+        $withdraw = WithdrawRequest::whereId($id)->firstOrFail();
+        $campaign = Campaign::whereId($withdraw->campaign_id)->firstOrFail();
+        if ($request->ajax()) {
+            $view = view('admin.components.withdraw.detail-history')->with('withdraw', $withdraw)->render();
+            return response()->json(['html'=>$view]); 
+        } 
+        return response()->json(['withdraw'=> $withdraw, 'campaign' =>$campaign],200);
+
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -84,31 +132,37 @@ class FinanceController extends Controller
      */
     public function store(Request $request)
     {
-        $deposit = WalletDeposit::where('id', $request->id)->firstOrFail();        
-        $wallet = Wallet::where('id', $deposit->wallet_id)->firstOrFail();
-        $user = $wallet->user()->firstOrFail();
+        $withdraw = WithdrawRequest::where('id', $request->id)->firstOrFail(); 
+        $campaign = $withdraw->campaign()->firstOrFail();
+        $user = User::whereId($campaign->created_by)->firstOrFail();
 
+        
         if($request->type == 'accept')
         {   
-            $deposit->accepted();
-            $wallet->total = $wallet->total + $deposit->amount;
-            $wallet->save(); 
+            $withdraw->accepted();
             $status = "Diterima";           
 
         }else if($request->type == "reject")
         {
-            $deposit->rejected();  
+            $withdraw->rejected();  
             $status = "Ditolak"; 
         }
+
+        $withdraw->addition = $request->addition;
+        $withdraw->save();
         
         $data['email'] = $user->email;
         $data['name'] = $user->name;
+        $data['item'] = $withdraw->item;
+        $data['amount'] = "Rp. ".$withdraw->amount;
+        $data['detail'] = $withdraw->detail;
+        $data['addition'] = $withdraw->addition;
         $data['status'] = $status;
 
-        Mail::send('emails.deposit', $data, function($message) use ($data)
+        Mail::send('emails.withdraw', $data, function($message) use ($data)
         {
             $message->from('weniindya@gmail.com', "Anaknegeri");
-            $message->subject("Konfirmasi Deposit Dompet");
+            $message->subject("Konfirmasi Permintaan Penarikan Dukungan");
             $message->to($data['email'], $data['name']);   
         }); 
 

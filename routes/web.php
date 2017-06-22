@@ -93,6 +93,9 @@ Route::group(['prefix' => 'campaign'], function() {
 
     Route::get('/category/{slug}', ['as' => $campaign . 'category', 'uses' => 'Campaign\CampaignController@category']);
 
+    Route::get('/detail/{slug}/report/{report_id}', ['as' => $campaign . 'detailReport', 'uses' => 'Campaign\ReportController@show']);
+
+
 
 });
 
@@ -149,7 +152,11 @@ Route::group(['middleware' => 'auth:all'], function()
 
         Route::get('/campaign/{id}/withdraw/{with_id}/show', ['as' => $user . 'showWithdraw', 'uses' => 'Campaign\WithdrawController@showWithdraw']);
 
+
         Route::get('/campaign/{id}/report', ['as' => $user . 'report', 'uses' => 'Campaign\ReportController@index']);
+        Route::post('/campaign/{id}/report', ['as' => $user . 'postReport', 'uses' => 'Campaign\ReportController@store']);
+
+        Route::get('/campaign/{id}/report/reports', ['as' => $user . 'getReports', 'uses' => 'Campaign\ReportController@getReports']);
 
         Route::get('/wallet', ['as' => $user . 'wallet', 'uses' => 'Wallet\WalletController@index']);
 
@@ -243,13 +250,28 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
 
     Route::get('withdraw/finance/{id}/show', ['as' => $admin . 'showWithdrawFinance', 'uses' => 'Withdraw\FinanceController@showWithdrawFinance']);
 
+    Route::get('withdraw/finance/history', ['as' => $admin . 'financeWithdrawHistory', 'uses' => 'Withdraw\FinanceController@history']);
+
+    Route::get('withdraw/finance/history/histories', ['as' => $admin . 'getFinanceWithdrawHistory', 'uses' => 'Withdraw\FinanceController@getHistory']);
+
+    Route::get('withdraw/finance/history/{id}/show', ['as' => $admin . 'showFinanceWithdrawHistory', 'uses' => 'Withdraw\FinanceController@showHistory']);
+
 
 
     Route::get('withdraw/logistic', ['as' => $admin . 'withdrawLogistic', 'uses' => 'Withdraw\NonFinanceController@index']);
 
+    Route::post('withdraw/logistic', ['as' => $admin . 'confirmWithdrawLogistic', 'uses' => 'Withdraw\NonFinanceController@store']);
+
     Route::get('withdraw/logistic/withdraws', ['as' => $admin . 'getWithdrawLogistics', 'uses' => 'Withdraw\NonFinanceController@getWithdrawLogistics']);
 
     Route::get('withdraw/logistic/{id}/show', ['as' => $admin . 'showWithdrawLogistic', 'uses' => 'Withdraw\NonFinanceController@showWithdrawLogistic']);
+
+    Route::get('withdraw/logistic/history', ['as' => $admin . 'logisticWithdrawHistory', 'uses' => 'Withdraw\NonFinanceController@history']);
+
+    Route::get('withdraw/logistic/history/histories', ['as' => $admin . 'getLogisticWithdrawHistory', 'uses' => 'Withdraw\NonFinanceController@getHistory']);
+
+    Route::get('withdraw/logistic/history/{id}/show', ['as' => $admin . 'showLogisticWithdrawHistory', 'uses' => 'Withdraw\NonFinanceController@showHistory']);
+
 
 
 });
