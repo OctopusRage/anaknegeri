@@ -2,17 +2,35 @@
 @if(session('message'))
 mb-0
 @endif">
-    <li class="breadcrumb-item">Home</li>
-    <li class="breadcrumb-item"><a href="#">Admin</a>
-    </li>
-    <li class="breadcrumb-item active">Dashboard</li>
 
-    <!-- Breadcrumb Menu-->
-    <li class="breadcrumb-menu d-md-down-none">
-        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-            <a class="btn btn-secondary" href="#"><i class="icon-clock"></i>&nbsp; <?php echo date("d-m-Y H:i:s"); ?></a>
-        </div>
-    </li>
+<li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+
+@php 
+  $bread = URL::to('/admin'); 
+  $link = Request::path(); 
+  $subs = explode("/", $link);
+@endphp
+
+@if (Request::path() != '/')
+
+  @for($i = 1; $i < count($subs); $i++)
+
+    @php 
+      $bread = $bread."/".$subs[$i]; 
+      $title = urldecode($subs[$i]);
+      $title = str_replace("-", " ", $title);
+      $title = title_case($title);
+    @endphp
+    @if ($i == count($subs)-1)
+        <li class="breadcrumb-item">{{ $title }}</li>
+    @else
+    <li class="breadcrumb-item"><a href="{{ $bread }}">{{ $title }}</a></li>
+    @endif
+    
+
+  @endfor
+
+@endif
 </ol>
 @if(session('message'))
 <nav class="navbar  navbar-inverse bg-primary mb-4">

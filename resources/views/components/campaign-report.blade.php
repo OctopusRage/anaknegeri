@@ -19,6 +19,10 @@
 										{{ $report->withdraw->amount }}
 									</span>
 								</h6>
+								<h6>
+									<span class="icon-user"></span>&nbsp;
+									{{ $report->withdraw->campaign->user->name }}
+								</h6>
 							</div>
 			    </div>
 				</div>

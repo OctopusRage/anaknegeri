@@ -21,7 +21,7 @@
 				</tr>
 				<tr>
 					<td>Status</td>
-					<td>{{ $user->status }}</td>
+					<td>{{ $user->getStatus() }}</td>
 				</tr>
 				<tr>
 					<td>Role</td>

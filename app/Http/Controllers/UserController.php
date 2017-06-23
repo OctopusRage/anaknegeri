@@ -9,7 +9,8 @@ use App\Models\User;
 use App\Models\ActivationRequest;
 Use Mail;
 use Carbon\Carbon;
-use Role;
+use App\Models\Role;
+use Hash;
 
 class UserController extends Controller
 {
@@ -19,9 +20,19 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('admin.user.index');
+    {   
+        $roles = Role::all();
+        return view('admin.user.index')
+            ->with('roles', $roles);
     }
+
+    public function addModal()
+    {
+
+        $roles = Role::where('name','!=','user')->where('name','!=','organization')->get();
+        return view('admin.components.user.add-modal')->with('roles', $roles);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -41,7 +52,29 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = new User(array(
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'token' => str_random(64),
+        ));
+
+        $user->save();
+        for ($i=0; $i < count($request->role) ; $i++) { 
+            $user->assignRole($request->role[$i] );
+        }
+        if($request->activated==1){
+            $user->activated();
+        }
+        if($request->verified == 1)
+        {
+            $user->verified();
+        }
+
+        return response()->json([
+            'message' => 'success',
+            'data'  => $user
+        ]);
     }
 
     /**
@@ -61,9 +94,17 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $roles = Role::all();
+        $user = User::where('id',$id)->firstOrFail();
+        
+        if ($request->ajax()) {
+            $view = view('admin.components.user.edit-modal',compact('user', 'roles'))->render();
+            return response()->json(['html'=>$view]);
+        }
+        
+        return view('admin.components.user.edit-modal')->with('roles', $roles);
     }
 
     /**
@@ -75,7 +116,41 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::whereId($id)->firstOrFail();
+        $user->password=Hash::make($request->password);
+    
+
+        for ($i=0; $i < count($request->role) ; $i++) { 
+            if($user->hasRoleId($request->role[$i])){
+                $user->removeRole($request->role[$i] );
+            }
+        }
+        for ($i=0; $i < count($request->role) ; $i++) { 
+            $user->assignRole($request->role[$i] );
+        }
+
+        if($request->activated==1){
+            $user->activated();
+        }
+        if($request->verified == 1)
+        {
+            $user->verified();
+        }
+        if($request->status == 1)
+        {
+            $user->enable();
+        }
+        if($request->status==0)
+        {
+            $user->disable();
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'success',
+            'data'  => $user
+        ]);
     }
 
     /**
@@ -133,21 +208,13 @@ class UserController extends Controller
 
       
     }
-    public function status($value)
-    {   
-        if($value==1)
-        {
-            return "Active";
-        }else{
-            return "Unactive";
-        }
 
-    }
     public function getUsers(){
-        $users = DB::table('users')
-            ->select(DB::raw("users.id as id,  users.email as email, users.name as name, (CASE WHEN status = 1 THEN 'Active' ELSE 'Unactive' END) as status"))
-            ->get();
+        $users = User::all();
         return Datatables::of($users)
+            ->editColumn('status', function($user){
+                return $user->getStatus();
+            })
             ->addColumn('action', function($user){
                 return '
                 <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#infoUser" data-id="'.$user->id.'">
@@ -155,9 +222,6 @@ class UserController extends Controller
                 </button>
                 <button class="btn btn-sm btn-warning edit" data-toggle="modal" data-target="#editUser" data-id="'.$user->id.'">
                     <i class="icon-note"></i>
-                </button>
-                <button class="btn btn-sm btn-danger destroy" data-toggle="modal" data-target="#deleteUser" data-id="'.$user->id.'">
-                    <i class="icon-trash"></i>
                 </button>
                 ';
             })->make(true);

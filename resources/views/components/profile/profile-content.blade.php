@@ -39,7 +39,7 @@
         </div>
         <div class="card-block p-3 clearfix">
           <?php for($i=0;$i<5;$i++){ ?>
-            @include('components.laporan')
+          
           <?php } ?>
         </div>
          

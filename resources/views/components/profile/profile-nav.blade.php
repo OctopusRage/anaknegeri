@@ -20,7 +20,7 @@
 	  	<i class="icon-wallet"></i> &nbsp;
 	  	Dompet Untuknegeri
 	  </a>
-	  <a href="{{ route('profile-account') }}" class="list-group-item list-group-item-action">
+	  <a href="{{ route('profile.account') }}" class="list-group-item list-group-item-action">
 	  	<i class="icon-settings"></i> &nbsp;
 	  	Akun
 	  </a>

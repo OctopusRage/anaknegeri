@@ -58,7 +58,7 @@
                     <a class="dropdown-item"  href="{{ route('profile.home')}}"><i class="icon-user"></i> Profil</a>
                     <a class="dropdown-item"  href="{{ route('profile.campaign') }}"><i class="icon-cursor"></i> Campaign</a>
                     <a class="dropdown-item"  href="{{ route('profile.wallet') }}"><i class="icon-wallet"></i> Dompet</a>
-                    <a class="dropdown-item"  href="{{ route('profile-account') }}"><i class="icon-settings"></i> Akun</a>
+                    <a class="dropdown-item"  href="{{ route('profile.account') }}"><i class="icon-settings"></i> Akun</a>
                     <a class="dropdown-item" href="{{ route('authenticated.logout')}}"><i class="icon-logout"></i> Logout</a>
                 @else
                     <a class="dropdown-item"  href="{{ route('login') }}"><i class="icon-login"></i> Login</a>

@@ -58,16 +58,12 @@ class SupportController extends Controller
             // 'type_id'   => $type->id
         ));
 
-
         $user_id = Auth::user()->id;
         $support->assignUser($user_id);
-
         $campaign = Campaign::whereSlug($slug)->firstOrFail();
         $support->assignCampaign($campaign->id);
-
         $type = SupportType::where('type', $request->get('type'))->firstOrFail();
         $support->assignType($type->id);
-
 
         $support->save();
 

@@ -13,6 +13,7 @@
             </div>
             <span class="help-block">Pesan error</span>
         </div>
+
         <div class="form-group  mb-3">
             <label for="name">Tanggal Lahir</label>
             <div class="input-group">
@@ -22,18 +23,22 @@
             </div>
             <span class="help-block">Pesan error</span>
         </div>
+        
         <div class="form-group  mb-3">
 
             <label for="name">Foto Profile</label><br>
             <input type="file" name="id_img" ><br>
             <span class="help-block">Pesan error</span>
         </div>
+
+        @if(Auth::user()->hasRole('organization'))
         <div class="form-group  mb-3">
 
             <label for="name">Banner</label><br>
             <input type="file" name="id_img" ><br>
             <span class="help-block">Pesan error</span>
         </div>
+        @endif
         <div class="form-group mb-3">
             <label for="name">Bio</label>
             <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" placeholder="Ceritakan sedikit tentang anda"></textarea>

@@ -82,33 +82,31 @@
   <script type="text/javascript">
   $(document).ready(function(){
 
-  $('#infoWithdraw').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var id = button.data('id') // Extract info from data-* attributes
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  $('#infoReport').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var id = button.data('id');
       console.log(id);
       
     $.ajax(
       {
-          url: '{{ route("admin.index")}}/withdraw/finance/'+id+'/show/',
+          url: '{{ route("admin.index")}}/report/'+id+'/show/',
           type: "GET",
           beforeSend: function()
           {
-              $('#detailWithdraw').html('<h1 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...</h1>');
+              $('#detailReport').html('<h1 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...</h1>');
           }
       })
       .done(function(data)
       {
         console.log(data);
           console.log(data);
-          $("#detailWithdraw").html(data.html);
+          $("#detailReport").html(data.html);
       })
       .fail(function(ajaxOptions, thrownError)
       {
         // console.log(jqXHR.status);
        console.log(thrownError);
-          $("#detailWithdraw").html('<h2 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br>Gagal Mengambil Data</h2>');
+          $("#detailReport").html('<h2 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br>Gagal Mengambil Data</h2>');
       });
 
 
@@ -117,74 +115,5 @@
   });   
   });
   
-  </script>
-   <script type="text/javascript">
-  $(document).ready(function(){
-
-    $('#actionWithdraw').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget);
-      var id = button.data('id');
-      var typeRequest = button.data('action');
-      console.log(id);
-      if(typeRequest == "accept"){
-        $('#btnAccept').show();
-        $('#btnReject').hide();
-        $('#detailAction').html('<center>Yakin ingin konfirmasi permintaan penarikan ini?</center>');
-      }else if (typeRequest == "reject"){
-        $('#btnReject').show();
-        $('#btnAccept').hide();
-        $('#detailAction').html('<center>Yakin ingin menolak permintaan penarikan ini?</center>');
-      }
-      
-      
-
-       $('.confirm').click(function(){
-        $('.confirm').hide();
-        var request = {
-          'id': id,
-          'type': typeRequest,
-          'addition' : $('textarea#inputAddition').val()
-        };
-
-        console.log(request);
-
-        $.ajaxSetup({
-          headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-        });
-
-        
-        $.ajax(
-        {
-          url: '{{ route("admin.confirmWithdrawFinance")}}',
-          data: request,
-          type: "POST",
-          beforeSend: function()
-            {
-              $('#detailAction').html('<h5 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Mohon Menunggu...</h5>');
-              $('#inputAddition').hide();
-            }
-        })
-        .done(function(data)
-        {
-          console.log(data);
-          $("#detailAction").html('<h5 class="text-center text-success"><span class="icon-check mb-3"></span><br> Permintaan penarikan berhasil '+data.message+'</h5>');
-          $('#withdraw-table').DataTable().ajax.reload();
-        })
-        .fail(function(ajaxOptions, thrownError)
-        {
-         console.log(thrownError);
-          $("#detailAction").html('<h5 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br> Proses Gagal</h5>');
-        });
-
-       });
-
-
-      
-      
-      });   
-    });
-    
   </script>
 @endsection

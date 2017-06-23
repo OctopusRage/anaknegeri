@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
-                    <i class="icon-user-follow"></i>&nbsp; Informasi Campaign
+                    <i class="icon-user-cursor"></i>&nbsp; Informasi Campaign
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>

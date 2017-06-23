@@ -61,12 +61,27 @@ class ReportController extends Controller
 
         return Datatables::of($reports)
             ->addColumn('action', function($report){
-                return '                
+                return '               
                 <a class="btn btn-sm btn-secondary info" target="_blank" href="/campaign/detail/'.$report->slug.'/report/'.$report->id.'">
                     <i class="icon-eye"></i>
                 </a>
+
+                <button class="btn btn-sm btn-info info" data-toggle="modal" data-target="#infoReport" data-id="'.$report->id.'">
+                    <i class="icon-info"></i>
+                </button> 
                 ';
             })->make(true);
+    }
+
+    public function showReport(Request $request, $id){
+        $report = Report::where('id',$id)->firstOrFail();
+
+        if ($request->ajax()) {
+            $view = view('admin.components.report.detail',compact('report'))->render();
+            return response()->json(['html'=>$view]);
+        } 
+
+        return response()->json(['data', $report]);
     }
     /**
      * Show the form for creating a new resource.

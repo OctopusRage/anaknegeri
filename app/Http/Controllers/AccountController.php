@@ -1,14 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Datatables;
 use Auth;
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\Campaign;
 
-class ProfileController extends Controller
+class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,14 +13,11 @@ class ProfileController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
-        $id= Auth::user()->id;
+    {
+        $id = Auth::user()->id;
         $user = User::whereId($id)->firstOrFail();
-        $count=array(
-            'campaign' => $user->campaign()->count(),
-            'contribute' => $user->support()->count()
-            );
-        return view('profile')->with('user',$user)->with('count', $count);
+        return view('profile.account')
+            ->with('user', $user);
     }
 
     /**
@@ -91,27 +85,4 @@ class ProfileController extends Controller
     {
         //
     }
-
-
-    /**
-     * Get All Campaign created by User.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function campaign(Request $request)
-    {   
-        $user=Auth::user();
-        $campaigns= Campaign::where('created_by', $user->id)->paginate(5);
-        $campaigns->sortByDesc('created_at');
-
-        if ($request->ajax()) {
-            $view = view('components.profile.campaign-on-profile',compact('campaigns'))->render();
-            return response()->json(['html'=>$view]);
-        }
-        return view('profile.campaign',compact('campaigns'));
-    }
-
-
-
 }

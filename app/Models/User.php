@@ -67,6 +67,16 @@ class User extends Authenticatable
         return false;
     }
 
+    public function hasRoleId($id)
+    {
+        foreach($this->roles as $role)
+        {
+            if($role->id == $id) return true;
+        }
+
+        return false;
+    }
+
     public function assignRole($role)
     {
         return $this->roles()->attach($role);
@@ -82,6 +92,12 @@ class User extends Authenticatable
         $this->activated = true;
         $this->save();
     }
+
+    public function deactivate(){
+        $this->activated = false;
+        $this->save();
+    }
+
     public function isActive($status)
     {   
         if($this->activated == $status){
@@ -90,14 +106,34 @@ class User extends Authenticatable
         return false;
     }
 
-    public function deactivate(){
+    public function enable()
+    {
+        $this->status = true;
+        $this->save();
+    }
+
+    public function disable(){
         $this->status = false;
         $this->save();
+    }
+
+    public function isEnable($status)
+    {
+        if($this->status == $status){
+            return true;
+        }
+        return false;
     }
 
     public function verified()
     {
         $this->verified = true;
+        $this->save();
+    }
+
+    public function unverified()
+    {
+        $this->verified = false;
         $this->save();
     }
 
@@ -107,6 +143,32 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }   
+
+    public function getStatus()
+    {
+        if($this->isEnable(true))
+        {
+            if($this->isActive(true))
+            {
+                if($this->isVerified(true))
+                {
+                    return "Verified";
+                }
+                else
+                {
+                    return "Active";
+                }
+            }
+            else
+            {                
+                return "Unactive";
+            }
+        }
+        else
+        {
+            return "Disabled";
+        }
     }
 
 }   

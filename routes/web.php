@@ -35,11 +35,6 @@ Route::get('campaign/donate', function () {
     return view('campaign/donate');
 })->name('campaign-donate');
 
-Route::get('profile/account', function () {
-    return view('profile/account');
-})->name('profile-account');
-
-
 Route::get('organisasi', function () {
     return view('organisasi');
 })->name('organisasi');
@@ -94,6 +89,8 @@ Route::group(['prefix' => 'campaign'], function() {
     Route::get('/category/{slug}', ['as' => $campaign . 'category', 'uses' => 'Campaign\CampaignController@category']);
 
     Route::get('/detail/{slug}/report/{report_id}', ['as' => $campaign . 'detailReport', 'uses' => 'Campaign\ReportController@show']);
+
+
 
 
 
@@ -167,7 +164,7 @@ Route::group(['middleware' => 'auth:all'], function()
 
         Route::get('wallet/deposit', ['as' => $user . 'getDeposits', 'uses' => 'Wallet\DepositController@getDeposits']);
 
-
+        Route::get('account', ['as' => $user . 'account', 'uses' => 'AccountController@index']);
 
     });
 
@@ -203,10 +200,17 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
 
     Route::get('user', ['as' => $admin . 'user', 'uses' => 'UserController@index']);
 
+    Route::post('user', ['as' => $admin . 'addUser', 'uses' => 'UserController@store']);
+
     Route::get('user/users', ['as' => $admin . 'getUsers', 'uses' => 'UserController@getUsers']);
 
     Route::get('user/{id}/show', ['as' => $admin . 'showUser', 'uses' => 'UserController@showUser']);
 
+    Route::get('user/add-modal',['as' => $admin . 'addModal', 'uses' => 'UserController@addModal']);
+
+    Route::get('user/{id}/edit',['as' => $admin . 'editUser', 'uses' => 'UserController@edit']);
+
+    Route::post('user/{id}/edit',['as' => $admin . 'postEditUser', 'uses' => 'UserController@update']);
 
 
     Route::get('campaign', ['as' => $admin . 'campaign', 'uses' => 'Campaign\CampaignController@adminindex']);
@@ -273,6 +277,8 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
     Route::get('withdraw/logistic/history/{id}/show', ['as' => $admin . 'showLogisticWithdrawHistory', 'uses' => 'Withdraw\NonFinanceController@showHistory']);
 
     Route::get('report', ['as' => $admin . 'report', 'uses' => 'Campaign\ReportController@adminindex']);
+    
+    Route::get('report/{id}/show', ['as' => $admin . 'showReport', 'uses' => 'Campaign\ReportController@showReport']);
 
     Route::get('report/reports', ['as' => $admin . 'getAllReports', 'uses' => 'Campaign\ReportController@getAllReports']);
 
