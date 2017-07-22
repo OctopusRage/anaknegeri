@@ -9,7 +9,7 @@
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon-user"></i>
                 </span>
-                <input type="text" class="form-control" placeholder="Nama Lengkap">
+                <input type="text" class="form-control" placeholder="Nama Lengkap" value="{{$user->name}}">
             </div>
             <span class="help-block">Pesan error</span>
         </div>
@@ -19,7 +19,7 @@
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon-calendar"></i>
                 </span>
-                <input type="text" class="form-control" placeholder="Tanggal Lahir">
+                <input type="text" class="form-control" placeholder="Tanggal Lahir" value="{{$user->date}}">
             </div>
             <span class="help-block">Pesan error</span>
         </div>
@@ -41,8 +41,12 @@
         @endif
         <div class="form-group mb-3">
             <label for="name">Bio</label>
-            <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" placeholder="Ceritakan sedikit tentang anda"></textarea>
-            <span class="help-block">Pesan error</span>
+            <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" placeholder="Ceritakan sedikit tentang anda">
+                {{$user->bio}}
+            </textarea>
+            <span class="help-block">
+                {{$user->alamat}}
+            </span>
         </div>
         <div class="form-group mb-3">
             <label for="name">Alamat</label>
