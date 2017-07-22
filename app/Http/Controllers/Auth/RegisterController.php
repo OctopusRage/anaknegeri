@@ -115,11 +115,10 @@ class RegisterController extends Controller
     }
 
     public function createWallet($id){
-        $newWallet= Wallet::create(array(
-            'total' => 0
-        )); 
-        $newWallet->save();
+        $newWallet= new Wallet;
+        $newWallet->total = 0;
         $newWallet->assignUser($id);
+        $newWallet->save();
     }
 
     public function activate($token)
@@ -146,7 +145,7 @@ class RegisterController extends Controller
         $this->create($request->all());
 
         return redirect('/login')
-            ->with('message','Registrasi berhasil <br>Silakan cek email untuk aktivasi akun')
+            ->with('message','Registrasi berhasil <br/>Silakan cek email untuk aktivasi akun')
             ->with('status', 'success');
     }
 

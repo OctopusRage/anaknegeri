@@ -20,7 +20,8 @@ class Wallet extends Model
 
   public function assignUser($user_id)
   {
-  	return $this->user()->associate($user_id);
+    $user = \App\Models\User::find($user_id);
+  	return $this->user()->associate($user);
   }
 
   public function getTotalWallet()
