@@ -15,15 +15,18 @@ class CategorySeed extends Seeder
         DB::table('categories')->delete();
 
         Category::create([
-            'category'   => 'Beasiswa'
+            'category'   => 'Beasiswa',
+            'slug' => 'beasiswa'
         ]);
 
         Category::create([
-            'category'   => 'Kelompok Belajar'
+            'category'   => 'Kelompok Belajar',
+            'slug' => 'kelompok-belajar'
         ]);
 
         Category::create([
-            'category'   => 'Indonesia Berkarya'
+            'category'   => 'Indonesia Berkarya',
+            'slug' => 'indonesia-berkarya'
         ]);
 
         

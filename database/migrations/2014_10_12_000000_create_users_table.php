@@ -40,6 +40,8 @@ class CreateUsersTable extends Migration
                     ->nullable();                  
                 $table->text('banner_img')
                     ->nullable();  
+                $table->text('address')
+                    ->nullable();      
                 $table->rememberToken();
                 $table->timestamps();
             });

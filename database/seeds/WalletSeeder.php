@@ -13,31 +13,12 @@ class WalletSeeder extends Seeder
     public function run()
     {
       DB::table('wallets')->delete();
-
-      $wallet = Wallet::create(array(
-          'total'         => 0,
-          'user_id'				=> 1
-      ));
-
-      $wallet = Wallet::create(array(
-          'total'          => 0,
-          'user_id'				=> 2
-      ));
-
-      $wallet = Wallet::create(array(
-          'total'          => 0,
-          'user_id'				=> 3
-      ));
-
-      $wallet = Wallet::create(array(
-          'total'          => 0,
-          'user_id'				=> 4
-      ));
-
-      $wallet = Wallet::create(array(
-          'total'          => 0,
-          'user_id'				=> 5
-      ));
-
+      $users  = DB::table('users')->all();
+      foreach($users as $user) {
+          $wallet = Wallet::create(array(
+            'total'         => 0,
+            'user_id'				=> $user->id
+          ));
+      }
     }
 }
