@@ -25,7 +25,7 @@
                 <span class="d-md-down-none">{{  Auth::user()->name }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-right mr-3">
-                <a class="dropdown-item"  href="{{ route('profile-account') }}"><i class="icon-settings"></i> Pengaturan</a>
+                <a class="dropdown-item"  href="#"><i class="icon-settings"></i> Pengaturan</a>
                 <div class="divider"></div>
                 <a class="dropdown-item" href="{{ route('authenticated.logout')}}"><i class="icon-logout"></i> Logout</a>
             </div>

@@ -41,16 +41,12 @@
         @endif
         <div class="form-group mb-3">
             <label for="name">Bio</label>
-            <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" placeholder="Ceritakan sedikit tentang anda">
-                {{$user->bio}}
-            </textarea>
-            <span class="help-block">
-                {{$user->alamat}}
-            </span>
+            <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" placeholder="Ceritakan sedikit tentang anda">{{$user->bio}}</textarea>
+            <span class="help-block"></span>
         </div>
         <div class="form-group mb-3">
             <label for="name">Alamat</label>
-            <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" placeholder="Silakan tulis alamat fisik anda"></textarea>
+            <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" placeholder="Silakan tulis alamat fisik anda">{{$user->address}}</textarea>
             <span class="help-block">Pesan error</span>
         </div>
 
