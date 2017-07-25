@@ -6,6 +6,12 @@
           <h3 class="text-center">Campaign Anda</h3>
         </div>
         <div class="card-block p-3 clearfix " >
+          <a href="{{ route('campaign.create')}}" class="btn btn-sm btn-secondary">
+            <span class="icon-plus"></span>
+              Buat Campaign Baru
+          </a>
+        </div>
+        <div class="card-block p-3 clearfix " >
             <div class="row">
               <div class="col" id="campaign-data">
                 
