@@ -21,6 +21,9 @@ class AccountController extends Controller
     }
     public function updateAccount(Request $request, $id)
     {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
         $account = User::whereId($id)->firstOrFail();
         $account->name = $request->get('name');
         $account->date = $request->get('birthdate');
@@ -29,6 +32,7 @@ class AccountController extends Controller
         $account->save();
         return redirect()->back()
             ->with('status', 'success')
+            ->with('user', Auth::user())
             ->with('message', 'Data telah terupdate');
     }
     public function store(Request $request)

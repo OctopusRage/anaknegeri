@@ -14,7 +14,6 @@
         <div class="card-block p-3 clearfix " >
             <div class="row">
               <div class="col" id="campaign-data">
-                
                 @include('components.profile.campaign-on-profile')
               </div>
             </div>              

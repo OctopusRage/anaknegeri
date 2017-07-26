@@ -139,6 +139,8 @@ Route::group(['middleware' => 'auth:all'], function()
 
         Route::get('/', ['as' => $user . 'home', 'uses' => 'ProfileController@index']);
 
+        Route::post('/{id}/update',['as' => $user . 'postEditAccount', 'uses' => 'AccountController@updateAccount']);
+
         Route::get('/campaign', ['as' => $user . 'campaign', 'uses' => 'ProfileController@campaign']);
 
         Route::get('/campaign/{id}/withdraw', ['as' => $user . 'withdraw', 'uses' => 'Campaign\WithdrawController@index']);
