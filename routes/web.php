@@ -167,6 +167,8 @@ Route::group(['middleware' => 'auth:all'], function()
         Route::get('wallet/deposit', ['as' => $user . 'getDeposits', 'uses' => 'Wallet\DepositController@getDeposits']);
 
         Route::get('account', ['as' => $user . 'account', 'uses' => 'AccountController@index']);
+        
+        Route::post('account/{id}/change_password`', ['as' => $user . 'postEditPassword', 'uses' => 'AccountController@updatePassword']);
 
     });
 

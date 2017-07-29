@@ -6,7 +6,7 @@
           <h3 class="text-center">Akun</h3>
         </div>
         <div class="card-block p-3 clearfix">
-
+          @include('components.status')
           @include('components.profile.account-update')
           <hr>
           <div class="row">

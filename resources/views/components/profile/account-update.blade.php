@@ -7,7 +7,7 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="form-group  mb-3">
             <label for="name">Nama Lengkap</label>
-            <div class="input-group">
+            <div class="input-group has-{{$errors->first('name')!=null?'danger':''}}">
                 <span class="input-group-addon"><i class="icon-user"></i>
                 </span>
                 <input name="name" type="text" class="form-control" placeholder="Nama Lengkap" value="{{$user->name}}">
@@ -21,7 +21,7 @@
 
         <div class="form-group  mb-3">
             <label for="birthdate">Tanggal Lahir</label>
-            <div class="input-group">
+            <div class="input-group has-{{$errors->first('birthdate')!=null?'danger':''}}">
                 <span class="input-group-addon"><i class="icon-calendar"></i>
                 </span>
                 <input type="text" name="birthdate" class="form-control" placeholder="Tanggal Lahir" value="{{$user->date}}">
@@ -34,7 +34,6 @@
         </div>
         
         <div class="form-group  mb-3">
-
             <label for="file_profile">Foto Profile</label><br>
             <input type="file" name="file_profile" ><br>
             <span class="help-block">
