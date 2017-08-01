@@ -5,6 +5,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
 use Validator;
+use File;
+use Image;
+use Carbon\Carbon;
 use Hash;
 
 class AccountController extends Controller
@@ -30,6 +33,17 @@ class AccountController extends Controller
             return back()->withErrors($validator)->withInput()->with('status', 'danger')->with('message','Terjadi beberapa kesalahan input!');
         }
         $account = User::whereId($id)->firstOrFail();
+        $image = $request->file_profile;
+        if (isset($image)) {
+            $imageExt = strtolower($image->getClientOriginalExtension());
+            if( !($imageExt == "png" || $imageExt == "jpg" || $imageExt == "jpeg")  ){
+                $validator->errors()->add('file_profile', 'File must be an image!');
+                return back()->withErrors($validator)->withInput()->with('status', 'danger')->with('message','Terjadi beberapa kesalahan input!');
+            }
+            $profile_img = $this->processImage($image);
+            $delete_img = File::delete(public_path('img/avatars/'.$account->profile_img));
+            $account->profile_img = $profile_img;
+        }
         $account->name = $request->get('name');
         $account->date = $request->get('birthdate');
         $account->bio = $request->get('bio');
@@ -83,5 +97,24 @@ class AccountController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function processImage($image){
+        $originalImage = $image;
+        $randomString = str_random(64);
+        $input =  $randomString . '.' . $image->getClientOriginalExtension();
+   
+        //$destinationPath = public_path('img/campaigns/thumbs/'. $input);
+        $oriDestinationPath = public_path('img/avatars/'. $input);
+
+        $img = Image::make($image
+            ->getRealPath())
+            ->resize(null, 350, function ($constraint) {
+                $constraint->aspectRatio();
+            })
+            ->crop(350, 350)
+            ->save($oriDestinationPath);
+        //$oriImage = Image::make($originalImage->getRealPath())->save($oriDestinationPath);
+
+        return $input;
     }
 }
