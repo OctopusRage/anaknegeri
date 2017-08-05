@@ -30,7 +30,7 @@
         <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <img @if (Route::has('login'))
                     @if (Auth::check())
-                        @if(Auth::user()->profile_img !=null) src="{{ asset('img/avatars/')}}/{{ $user->profile_img }}" @else src="{{ asset('img/primary.png' )}}" @endif class="img-avatar" alt="Profile Pic" 
+                        @if(Auth::user()->profile_img !=null) src="{{ asset('img/avatars/')}}/{{ Auth::user()->profile_img }}" @else src="{{ asset('img/primary.png' )}}" @endif class="img-avatar" alt="Profile Pic" 
                     @endif
                 @endif
             >
