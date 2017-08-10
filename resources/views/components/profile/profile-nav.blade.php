@@ -1,7 +1,7 @@
 <div class="card">
 	<div class="embed-responsive embed-responsive-1by1">
 	  <div class="embed-responsive-item" src="/">  
-	  	<img class="card-img-top" @if(Auth::user()->profile_img !=null) src="{{ asset('img/avatars/')}}/{{ $user->profile_img }}" @else src="{{ asset('img/bg-primary.png' )}}" @endif alt="Card image cap">
+	  	<img class="card-img-top" @if(Auth::user()->profile_img !=null) src="{{ asset('img/avatars/')}}/{{ Auth::user()->profile_img }}" @else src="{{ asset('img/bg-primary.png' )}}" @endif alt="Card image cap">
 		</div>
 	</div>
 	<div class="card-block">

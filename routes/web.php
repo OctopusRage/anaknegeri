@@ -169,6 +169,8 @@ Route::group(['middleware' => 'auth:all'], function()
         Route::get('account', ['as' => $user . 'account', 'uses' => 'AccountController@index']);
         
         Route::post('account/{id}/change_password`', ['as' => $user . 'postEditPassword', 'uses' => 'AccountController@updatePassword']);
+        
+        Route::post('verify/{id}', ['as' => $user . 'postVerification', 'uses' => 'AccountController@createVerificationRequest']);
 
     });
 

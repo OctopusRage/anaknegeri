@@ -180,7 +180,7 @@ class UserController extends Controller
 
       if($countRequests <= 3){
 
-        $activation = new ActivationRequest([]);
+        $activation = new ActivationRequest;
         $activation->assignActivationRequests($id);
         $activation->save();
         

@@ -14,19 +14,19 @@ class CreateVerificationRequests extends Migration
     public function up()
     {
 
-        if(!Schema::hasTable('verificaton_requests')){
-            Schema::create('verificaton_requests', function (Blueprint $table) {
+        if(!Schema::hasTable('verification_requests')){
+            Schema::create('verification_requests', function (Blueprint $table) {
                 $table->increments('id');
                 $table->boolean('confirmed')
                     ->default(false);
                 $table->boolean('status')
                     ->default(false);
-                $table->text('id_img');
+                $table->text('id_img')->nullable();
                 $table->string('address');
-                $table->string('website', 64);
-                $table->string('fb_id', 32);
-                $table->string('twitter_id', 32);
-                $table->string('instagram_id', 32);
+                $table->string('website', 64)->nullable();
+                $table->string('fb_id', 32)->nullable();
+                $table->string('twitter_id', 32)->nullable();
+                $table->string('instagram_id', 32)->nullable();
                 $table->integer('user_id')
                     ->unsigned()
                     ->index();
@@ -46,6 +46,6 @@ class CreateVerificationRequests extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('verificaton-requests');
+        Schema::dropIfExists('verification_requests');
     }
 }
