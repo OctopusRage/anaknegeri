@@ -78,174 +78,47 @@
       }
     });
   </script>
-  <!-- <script type="text/javascript">
-    $(document).ready(function(){
 
-      $('#infoUser').on('show.bs.modal', function (event) {
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#confirmUser').on('show.bs.modal', function (event) {
+        $('#confirmUser').show();
         var button = $(event.relatedTarget);
         var id = button.data('id');
         console.log(id);
 
-        $.ajax(
-        {
-          url: '/admin/user/'+id+'/show/',
-          type: "GET",
-          beforeSend: function()
-          {
-            $('#detailUser').html('<h1 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...</h1>');
-          }
-        })
-        .done(function(data)
-        {
-          console.log(data);
-          console.log(data);
-          $("#detailUser").html(data.html);
-        })
-        .fail(function(ajaxOptions, thrownError)
-        {
-          // console.log(jqXHR.status);
-          console.log(thrownError);
-          $("#detailUser").html('<h2 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br>Gagal Mengambil Data</h2>');
-        });
-
-      });   
-    });
-
-  </script>
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $('#addUser').on('show.bs.modal', function (event) {
-        $('#detailAction').load('/admin/user/add-modal');
-        $('#btnAdd').click(function(){
-          $('#btnAdd').hide();
-          var request = {
-            'name': $('#inputFullName').val(),
-            'email': $('#inputEmail').val(),
-            'password': $('#inputPassword').val(),
-            'role[]' : [],
-            'activated' : $('#inputActivated:checked').val(),
-            'verified' : $('#inputVerified:checked').val(),
-          };
-          $(".role:checked").each(function() {
-            request['role[]'].push($(this).val());
-          });
-          console.log(request);
+        $('#btnConfirmUser').click(function(){
+          $('#btnConfirmUser').hide();
           $.ajaxSetup({
             headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              'X-CSRF-TOKEN': '{{ csrf_token() }}'
             }
           });
           $.ajax(
           {
-            url: '{{ route("admin.addUser")}}',
-            data: request,
+            url: '/admin/verification/'+ id +'/confirm',
+            data: {},
             type: "POST",
             beforeSend: function()
             {
-              $('#detailAction').html('<h5 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Mohon Menunggu...</h5>');
+              $('#confirmContent').html('<h5 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Mohon Menunggu...</h5>');
             }
           })
           .done(function(data)
           {
             console.log(data);
-            $("#detailAction").html('<h5 class="text-center text-success"><span class="icon-check mb-3"></span><br> User berhasil ditambahkan </h5>');
+            $("#confirmContent").html('<h5 class="text-center text-success"><span class="icon-check mb-3"></span><br> User berhasil dikonfirmasi </h5>');
             $('#verifications-table').DataTable().ajax.reload();
           })
           .fail(function(ajaxOptions, thrownError)
           {
            console.log(thrownError);
-           $("#detailAction").html('<h5 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br> Proses Gagal</h5>');
-         });
-        });
-      });   
-    });
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $('#editUser').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var id = button.data('id');
-        console.log(id);
-        $.ajax(
-        {
-          url: '/admin/user/'+id+'/edit/',
-          type: "GET",
-          beforeSend: function()
-          {
-            $('#editAction').html('<h1 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...</h1>');
-          }
-        })
-        .done(function(data)
-        {
-          console.log(data);
-          console.log(data);
-          $("#editAction").html(data.html);
-        })
-        .fail(function(ajaxOptions, thrownError)
-        {
-          console.log(thrownError);
-          $("#editAction").html('<h2 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br>Gagal Mengambil Data</h2>');
-        });
-
-      });   
-    });
-
-  </script>
-
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $('#editUser').on('show.bs.modal', function (event) {
-        $('#btnEdit').show();
-        var button = $(event.relatedTarget);
-        var id = button.data('id');
-        console.log(id);
-
-        $('#btnEdit').click(function(){
-          $('#btnEdit').hide();
-
-          var request = {
-            'password': $('#inputPassword').val(),
-            'role[]' : [],
-            'activated' : $('#inputActivated:checked').val(),
-            'verified' : $('#inputVerified:checked').val(),
-            'status' : $('.status:checked').val(),
-          };
-
-          $(".role:checked").each(function() {
-            request['role[]'].push($(this).val());
-          });
-          console.log(request);
-          $.ajaxSetup({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-          });
-          $.ajax(
-          {
-            url: '/admin/user/'+id+'/edit',
-            data: request,
-            type: "POST",
-            beforeSend: function()
-            {
-              $('#editAction').html('<h5 class="text-center"><i class="fa fa-spinner fa-pulse"></i>&nbsp; Mohon Menunggu...</h5>');
-            }
-          })
-          .done(function(data)
-          {
-            console.log(data);
-            $("#editAction").html('<h5 class="text-center text-success"><span class="icon-check mb-3"></span><br> User berhasil diedit </h5>');
-            $('#verifications-table').DataTable().ajax.reload();
-          })
-          .fail(function(ajaxOptions, thrownError)
-          {
-           console.log(thrownError);
-           $("#editAction").html('<h5 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br> Proses Gagal</h5>');
+           $("#confirmContent").html('<h5 class="text-center text-muted"><span class="icon-ghost mb-3"></span><br> Proses Gagal</h5>');
 
             $('#btnEdit').show();
          });
         });
       });   
     });
-  </script> -->
+  </script>
   @endsection

@@ -176,10 +176,7 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
 
     Route::get('verifications', ['as' => $admin . 'verifications', 'uses' => 'VerificationController@index']);
     Route::get('verifications/json', ['as' => $admin . 'getUsersVerification', 'uses' => 'VerificationController@getVerifications']);
-    Route::get('verification/{id}/show', ['as' => $admin . 'showUserVerification', 'uses' => 'VerificationController@show']);
-    Route::get('verification/add-modal',['as' => $admin . 'addModalVerification', 'uses' => 'VerifiationController@addModal']);
-    Route::get('verification/{id}/edit',['as' => $admin . 'editVerification', 'uses' => 'VerificationController@edit']);
-    Route::post('verification/{id}/edit',['as' => $admin . 'postEditVerification', 'uses' => 'VerificationController@update']);
+    Route::post('verification/{id}/confirm',['as' => $admin . 'postConfirmVerification', 'uses' => 'VerificationController@confirm']);
 
     Route::get('campaign', ['as' => $admin . 'campaign', 'uses' => 'Campaign\CampaignController@adminindex']);
     Route::get('campaign/campaigns', ['as' => $admin . 'getCampaigns', 'uses' => 'Campaign\CampaignController@getCampaigns']);

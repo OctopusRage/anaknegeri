@@ -44,7 +44,7 @@ class User extends Authenticatable
     public function support()
     {
         return $this->hasMany('App\Models\Support', 'user_id');
-    } 
+    }
 
     public function activationRequests()
     {
