@@ -18,6 +18,8 @@ class HomeController extends Controller
     public function index()
     {   
         $campaigns = Campaign::take(3)->get();
+        alert()->success('Resource created successfully!');
+        
         return view('home')
             ->with('campaigns', $campaigns);
     }

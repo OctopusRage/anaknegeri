@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class VerificationRequest extends Model
 {
-    
+    protected $guarded = ['id'];
     /**
      * The attributes that are mass assignable.
      *
@@ -17,7 +17,6 @@ class VerificationRequest extends Model
         'twitter_id', 'instagram_id', 'user_id'
     ];
 
-    protected $guarded = ['id'];
 
 
     /**
@@ -37,6 +36,14 @@ class VerificationRequest extends Model
     
     public function assignVerificationRequests($id){
     	return $this->user()->associate($id);
+    }
+
+    public function getStatus() {
+        return $this->status == 1 ? "Organisasi" : "Non - Organisasi";
+    }
+
+    public function getConfirmation() {
+        return $this->confirmed == 1 ? "Confirmed" : "Unconfirmed";
     }
 
 }

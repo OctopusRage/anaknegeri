@@ -24,7 +24,7 @@
                         <a class="nav-link" href="{{route('admin.user')}}"><i class="icon-list"></i> Data User</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('home')}}"><i class="icon-user-following"></i> Verifikasi User</a>
+                        <a class="nav-link" href="{{route('admin.verifications')}}"><i class="icon-user-following"></i> Verifikasi User</a>
                     </li>
                 </ul>
             </li>

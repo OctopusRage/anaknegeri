@@ -1,6 +1,19 @@
+@if(!$user->verified)
 <h5 class="mb-4">
 	Verifikasi Akun
 </h5>
+<div class="bg-info mb-3 p-2">
+    <div class="row">
+        <div class="col-md-auto display-4">
+            <i class="icon-exclamation align-middle"></i>
+        </div>
+        <div class="col-md-9">
+            Mengapa harus melakukan verifikasi akun?  Verifikasi akun ini dibutuhkan jika anda ingin membuat suatu campaign. 
+            Dengan adanya verifikasi ini diharapkan akan mengurangi pemungutan dana yang tidak resmi oleh 
+            pihak yang tidak bertanggung jawab.
+        </div>
+    </div>
+</div>
 <form action="{{route('profile.postVerification', $user->id)}}" method="POST" enctype="multipart/form-data">
 <div class="checkbox">
     <label class="switch switch-icon switch-primary-outline-alt checkbox-inline mb-3">
@@ -101,7 +114,7 @@
         </div>
         <div class="form-group mb-3">
             <label for="address">Alamat</label>
-            <textarea id="textarea-input" name="address2" rows="5" class="form-control" placeholder="Silakan tulis alamat fisik anda">{{$user->address}}</textarea>
+            <textarea id="textarea-input" name="address2" rows="5" class="form-control" placeholder="Silakan tulis alamat fisik anda">{{$user->address2}}</textarea>
             <span class="help-block">
             @if ($errors->any())
                 {{$errors->first('address2')}}
@@ -123,3 +136,4 @@
 
 </div>
 </form>
+@endif

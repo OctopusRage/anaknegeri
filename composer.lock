@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "33ffa7d0217b94ad03010172abc0397c",
+    "content-hash": "2a80ca58844674126fff541517976dfc",
     "packages": [
         {
             "name": "davejamesmiller/laravel-breadcrumbs",
@@ -1590,6 +1590,57 @@
                 "uuid"
             ],
             "time": "2017-03-26T20:37:53+00:00"
+        },
+        {
+            "name": "squareboat/alert",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squareboat/alert.git",
+                "reference": "46c258ddf9ee95cb040784cf7904d5d563d18d69"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squareboat/alert/zipball/46c258ddf9ee95cb040784cf7904d5d563d18d69",
+                "reference": "46c258ddf9ee95cb040784cf7904d5d563d18d69",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/session": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.9.*",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SquareBoat\\Alert\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Amit Gupta",
+                    "email": "akaamitgupta@gmail.com"
+                }
+            ],
+            "description": "An easy way for Laravel flash notifications using sweetalert JS plugin.",
+            "keywords": [
+                "alert",
+                "flash",
+                "laravel",
+                "sweetalert"
+            ],
+            "time": "2016-10-06T05:54:21+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

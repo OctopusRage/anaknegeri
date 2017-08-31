@@ -19,6 +19,9 @@ use App\Models\Support;
 
 class CampaignController extends Controller
 {
+    public function __construct() {
+        $this->middleware('user.verified', ['only' => ['create','store']]);
+    }
 
     /**
      * Display a listing of the resource.

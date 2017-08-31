@@ -162,7 +162,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        SquareBoat\Alert\AlertServiceProvider::class,
+        
         /*
          * Package Service Providers...
          */
@@ -235,6 +236,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Input' => Illuminate\Support\Facades\Input::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Alert' => SquareBoat\Alert\Facades\Alert::class,
+        
     ],
 
 ];
