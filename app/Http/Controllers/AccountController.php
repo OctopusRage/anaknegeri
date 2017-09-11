@@ -96,11 +96,6 @@ class AccountController extends Controller
         
         $account = User::whereId($id)->firstOrFail();
         $verificationRequest = new \App\Models\VerificationRequest;
-        if($request->input('isOrganization') != null) {
-            $account->status = true;
-        } else {
-            $account->status = false;
-        }
         $image = $request->id_img;
         if (isset($image)) {
             $imageExt = strtolower($image->getClientOriginalExtension());
@@ -114,6 +109,11 @@ class AccountController extends Controller
             $id_img = $this->processImage($image, 'verification');
             $delete_img = File::delete(public_path('img/organization-requests/'.$account->id_img));
             $verificationRequest->id_img = $id_img;
+        }
+        if($request->input('isOrganization') != null) {
+            $verificationRequest->status = true;
+        } else {
+            $verificationRequest->status = false;
         }
         $verificationRequest->name = $request->input('name2');
         $verificationRequest->address = $request->input('address2');

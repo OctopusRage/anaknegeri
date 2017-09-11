@@ -36,6 +36,7 @@ class VerificationController extends Controller
         $role = \App\Models\Role::whereName($role)->first();
         $user = $verification->user;
         $user->verified = true;
+        $user->removeRole($role);
         $user->assignRole($role);
         $user->save();
         return response()->json([
