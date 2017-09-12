@@ -100,7 +100,7 @@
                                 <span class="help-block">
                                     <strong>{{ $errors->first('password_confirmation') }}</strong>
                                 </span>
-                            @endif1
+                            @endif
 
                             <button type="submit" class="btn btn-block btn-primary">Register</button>
 
