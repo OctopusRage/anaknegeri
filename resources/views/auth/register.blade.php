@@ -96,6 +96,11 @@
                             <div class="g-recaptcha mb-3" data-sitekey="6Lf_VDAUAAAAAGd425WFc90D0myIFshiEyvLRdOd">
                                 
                             </div>
+                            @if ($errors->has('password'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                </span>
+                            @endif1
 
                             <button type="submit" class="btn btn-block btn-primary">Register</button>
 
