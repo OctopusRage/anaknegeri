@@ -60,8 +60,7 @@ class RegisterController extends Controller
                 'email' => 'required|string|email|max:64|unique:users',
                 'password' => 'required|string|min:6|max:32',
                 'password_confirmation' => 'required|string|same:password',
-                'g-recaptcha-response'  => 'required',
-                'captcha'               => 'accepted'
+                'g-recaptcha-response'  => 'required|recaptcha',
             ],
             [
                 'name.required'         => 'Kolom nama harus diisi',
@@ -74,7 +73,8 @@ class RegisterController extends Controller
                 'password.min'          => 'Panjang karakter minimal 6',
                 'password.max'          => 'Panjang karakter maksimal 32',
                 'g-recaptcha-response.required' => 'Captcha is required',
-                'captcha.min'           => 'Wrong captcha, please try again.'
+                'captcha.min'           => 'Wrong captcha, please try again.',
+                'g-recaptcha-response.recaptcha' => 'The :attribute field is not correct.',
             ]
         );
 

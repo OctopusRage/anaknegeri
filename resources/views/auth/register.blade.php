@@ -93,9 +93,10 @@
                                     </span>
                                 @endif
                             </div>
-                            <div class="g-recaptcha mb-3" data-sitekey="6LfgGCQUAAAAAKi0uWSrcWz-fmNXSOX2pTC62-J9">
+                            <!-- <div class="g-recaptcha mb-3" data-sitekey="6LfgGCQUAAAAAKi0uWSrcWz-fmNXSOX2pTC62-J9">
                                 
-                            </div>
+                            </div> -->
+                            {!! Recaptcha::render() !!}
 
                             <button type="submit" class="btn btn-block btn-primary">Register</button>
 
