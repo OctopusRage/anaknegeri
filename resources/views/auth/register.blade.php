@@ -93,7 +93,7 @@
                                     </span>
                                 @endif
                             </div>
-                            <div class="g-recaptcha mb-3" data-sitekey="6LfgGCQUAAAAAKi0uWSrcWz-fmNXSOX2pTC62-J9">
+                            <div class="g-recaptcha mb-3" data-sitekey="6Lf_VDAUAAAAAGd425WFc90D0myIFshiEyvLRdOd">
                                 
                             </div>
 
