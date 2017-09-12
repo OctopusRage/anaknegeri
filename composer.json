@@ -15,7 +15,8 @@
         "predis/predis": "^1.1",
         "squareboat/alert": "^1.0",
         "unisharp/laravel-filemanager": "^1.7",
-        "yajra/laravel-datatables-oracle": "7.5"
+        "yajra/laravel-datatables-oracle": "7.5",
+        "greggilbert/recaptcha": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

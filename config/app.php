@@ -181,8 +181,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Yajra\Datatables\DatatablesServiceProvider::class
-
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 
     ],
 
@@ -237,6 +237,7 @@ return [
         'Input' => Illuminate\Support\Facades\Input::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Alert' => SquareBoat\Alert\Facades\Alert::class,
+        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,      
         
     ],
 

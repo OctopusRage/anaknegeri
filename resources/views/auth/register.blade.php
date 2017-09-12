@@ -93,14 +93,10 @@
                                     </span>
                                 @endif
                             </div>
-                            <div class="g-recaptcha mb-3" data-sitekey="6Lf_VDAUAAAAAGd425WFc90D0myIFshiEyvLRdOd">
+                            <!-- <div class="g-recaptcha mb-3" data-sitekey="6LfgGCQUAAAAAKi0uWSrcWz-fmNXSOX2pTC62-J9">
                                 
-                            </div>
-                            @if ($errors->has('password'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                </span>
-                            @endif
+                            </div> -->
+                            {!! Recaptcha::render() !!}
 
                             <button type="submit" class="btn btn-block btn-primary">Register</button>
 
