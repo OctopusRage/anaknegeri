@@ -74,7 +74,8 @@ class RegisterController extends Controller
                 'password.min'          => 'Panjang karakter minimal 6',
                 'password.max'          => 'Panjang karakter maksimal 32',
                 'g-recaptcha-response.required' => 'Captcha is required',
-                'captcha.min'           => 'Wrong captcha, please try again.'
+                'captcha.min'           => 'Wrong captcha, please try again.',
+                'captcha.accepted'      => 'Captcha must be accepted',
             ]
         );
 
