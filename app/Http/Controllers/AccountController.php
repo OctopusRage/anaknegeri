@@ -102,7 +102,6 @@ class AccountController extends Controller
             $imageExt = strtolower($image->getClientOriginalExtension());
             $uploadCloud  = Cloudder::upload($image->getRealPath(), null, [], []);
             $imageUrl = $uploadCloud->getResult()['url'];
-            dd($imageUrl);
             $verificationRequest->id_img = $imageUrl;
         }
         if($request->input('isOrganization') != null) {
@@ -120,6 +119,8 @@ class AccountController extends Controller
         $verificationRequest->additional_info = $request->input('additional_info');
         $verificationRequest->assignVerificationRequests(Auth::user()->id);
         $verificationRequest->save();
+        dd($verificationRequest);
+
         return redirect()->back()
             ->with('status', 'success')
             ->with('user', Auth::user())
