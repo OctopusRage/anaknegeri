@@ -9,6 +9,7 @@ use File;
 use Image;
 use Carbon\Carbon;
 use Hash;
+use Cloudder;
 
 class AccountController extends Controller
 {
@@ -99,16 +100,9 @@ class AccountController extends Controller
         $image = $request->id_img;
         if (isset($image)) {
             $imageExt = strtolower($image->getClientOriginalExtension());
-            if( !($imageExt == "png" || $imageExt == "jpg" || $imageExt == "jpeg")  ){
-                $validator->errors()->add('id_img', 'File must be an image!');
-                return back()->withErrors($validator)
-                    ->withInput()
-                    ->with('status', 'danger')
-                    ->with('message','Terjadi beberapa kesalahan input!');
-            }
-            $id_img = $this->processImage($image, 'verification');
-            $delete_img = File::delete(public_path('img/organization-requests/'.$account->id_img));
-            $verificationRequest->id_img = $id_img;
+            $uploadCloud  = Cloudder::upload($image->getRealPath(), null, [], []);
+            $imageUrl = $uploadCloud->getResult()['url'];
+            $verificationRequest->id_img = $imageUrl;
         }
         if($request->input('isOrganization') != null) {
             $verificationRequest->status = true;
