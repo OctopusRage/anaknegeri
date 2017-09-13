@@ -119,9 +119,8 @@ class AccountController extends Controller
         $verificationRequest->additional_info = $request->input('additional_info');
         $verificationRequest->assignVerificationRequests(Auth::user()->id);
         $verificationRequest->save();
-        dd($verificationRequest);
 
-        return redirect()->back()
+        return redirect()->route('profile.account')
             ->with('status', 'success')
             ->with('user', Auth::user())
             ->with('message', 'Verifikasi telah terkirim');
