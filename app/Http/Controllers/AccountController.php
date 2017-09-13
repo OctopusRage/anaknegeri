@@ -102,6 +102,7 @@ class AccountController extends Controller
             $imageExt = strtolower($image->getClientOriginalExtension());
             $uploadCloud  = Cloudder::upload($image->getRealPath(), null, [], []);
             $imageUrl = $uploadCloud->getResult()['url'];
+            dd($imageUrl);
             $verificationRequest->id_img = $imageUrl;
         }
         if($request->input('isOrganization') != null) {
