@@ -57,8 +57,12 @@ class VerificationController extends Controller
             ->editColumn('confirmed', function($verification){
                 return $verification->getConfirmation();
             })
+            ->addColumn('attached', function($verification){
+                return '<a href="'.$verification->id_img.'" class="btn btn-sm btn-info">Test</a>';
+            })
             ->addColumn('action', function($verification){
                 return '
+                <a target="_blank" href="'.$verification->id_img.'" class="btn btn-sm btn-success"><i class="icon-arrow-down-circle"></i></a> 
                 <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#confirmUser" data-id="'.$verification->id.'">
                     <i class="icon-check"></i>
                 </button>

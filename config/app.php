@@ -183,6 +183,8 @@ return [
 
         Yajra\Datatables\DatatablesServiceProvider::class,
         Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
+        JD\Cloudder\CloudderServiceProvider::class,
+        
 
     ],
 
@@ -238,7 +240,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Alert' => SquareBoat\Alert\Facades\Alert::class,
         'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,      
-        
+        'Cloudder' => JD\Cloudder\Facades\Cloudder::class,
     ],
 
 ];
