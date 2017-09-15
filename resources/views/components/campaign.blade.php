@@ -3,7 +3,9 @@
 <div class="card mb-4" >
 	<div class="embed-responsive embed-responsive-1by1">
 	  <div class="embed-responsive-item" src="/">  
-	  	<img class="card-img-top" @if($campaign->feature_img!=null) src="{{ asset('img/campaigns/thumbs')}}/{{ $campaign->feature_img }}" @else src="{{ asset('img/bg-primary.png' )}}"  style="backgroud-color:#63c2de !important" @endif alt="Card image cap">
+        <a href="{{ route('campaign.detail', [$campaign->slug] )}}">
+	  	    <img class="card-img-top" @if($campaign->feature_img!=null) src="{{ asset('img/campaigns/thumbs')}}/{{ $campaign->feature_img }}" @else src="{{ asset('img/bg-primary.png' )}}"  style="backgroud-color:#63c2de !important" @endif alt="Card image cap">
+        </a>
 		</div>
 	</div>
     @include('components.progress')

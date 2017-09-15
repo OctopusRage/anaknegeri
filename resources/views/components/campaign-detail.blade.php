@@ -136,44 +136,44 @@ function loadMoreData(page){
 
 </script>
 <script type="text/javascript">
-var page = 1;
-$(document).ready(function(){
-    loadMoreData(page);
-});
+// var page = 1;
+// $(document).ready(function(){
+//     loadMoreData(page);
+// });
 
-$('#loadMoreReport').click(function(){
-    page++;
-    loadMoreData(page);
-    console.log(page);
-});
+// $('#loadMoreReport').click(function(){
+//     page++;
+//     loadMoreData(page);
+//     console.log(page);
+// });
 
-function loadMoreData(page){
-  $.ajax(
-        {
-            url: '{{url("/")}}/campaign/detail/'+'{{ $campaign->slug }}'+'/comment?page=' + page,
-            type: "GET",
-            beforeSend: function()
-            {
-                $('#loadMore').html('<i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...');
-            }
-        })
-        .done(function(data)
-        {
-            console.log(data);
-            if(data.html == ""){
-                $('#loadMore').html('Semua data telah dimuat...');
-                $('#loadMore').attr("disabled", "disabled");
-                $('#loadMore').addClass("btn-secondary");
-                return;
-            }
-            $('#loadMore').html('Muat Selanjutnya...');
-            $("#comment-data").append(data.html);
-        })
-        .fail(function(jqXHR, ajaxOptions, thrownError)
-        {
-              alert('Server tidak merespon...');
-        });
-}
+// function loadMoreData(page){
+//   $.ajax(
+//         {
+//             url: '{{url("/")}}/campaign/detail/'+'{{ $campaign->slug }}'+'/comment?page=' + page,
+//             type: "GET",
+//             beforeSend: function()
+//             {
+//                 $('#loadMore').html('<i class="fa fa-spinner fa-pulse"></i>&nbsp; Memuat...');
+//             }
+//         })
+//         .done(function(data)
+//         {
+//             console.log(data);
+//             if(data.html == ""){
+//                 $('#loadMore').html('Semua data telah dimuat...');
+//                 $('#loadMore').attr("disabled", "disabled");
+//                 $('#loadMore').addClass("btn-secondary");
+//                 return;
+//             }
+//             $('#loadMore').html('Muat Selanjutnya...');
+//             $("#comment-data").append(data.html);
+//         })
+//         .fail(function(jqXHR, ajaxOptions, thrownError)
+//         {
+//               alert('Server tidak merespon...');
+//         });
+// }
 
 </script>
 @endsection
