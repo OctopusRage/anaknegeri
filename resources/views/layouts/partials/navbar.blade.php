@@ -23,7 +23,7 @@
         </li>
     </ul>
 <ul class="nav navbar-nav ml-auto">
-    <li class="nav-item px-3 d-md-down-none">
+    <li class="nav-item px1-3 d-md-down-none">
         <a class="nav-link {{ Request::segment(1) === 'campaign' ? 'active' : null }}" href="{{ route('campaign.home') }}">Campaign</a>
     </li>
     <li class="nav-item dropdown pr-3 ">
@@ -45,12 +45,19 @@
                         </div>
                         <a class="dropdown-item"  href="{{ route('admin.index') }}"><i class="icon-speedometer"></i> Dashboard</a>
                     @endif
+                    <div class="dropdown-header text-center">
+                        <strong>Saldo</strong>
+                    </div>
+                    <a class="dropdown-item"  href="{{ route('profile.wallet') }}"><i class="icon-wallet"></i>Rp
+                        {{Auth::user()->wallet->total}}
+                    </a>
                      @if (Auth::user()->hasRole('organization'))
                          <div class="dropdown-header text-center">
                             <strong>Organisasi</strong>
                         </div>
                         <a class="dropdown-item"  href="{{ route('admin.index') }}"><i class="icon-speedometer"></i> Profil Publik</a>
                     @endif
+
 
                     <div class="dropdown-header text-center">
                         <strong>Account</strong>
@@ -71,3 +78,7 @@
     </li>
 </ul>
 </header>
+
+<script>
+
+</script>

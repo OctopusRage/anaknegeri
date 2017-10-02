@@ -81,7 +81,7 @@ class AccountController extends Controller
     public function createVerificationRequest(Request $request, $id){
         $validator = Validator::make($request->all(), [
             'name2' => 'required',
-            'address2' => 'required', 
+            'address2' => 'required',
             'website' => 'nullable|url',
             'fb_id' => 'nullable|url',
             'twitter_id' => 'nullable|url',
