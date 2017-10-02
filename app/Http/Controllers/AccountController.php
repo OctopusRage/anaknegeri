@@ -81,7 +81,7 @@ class AccountController extends Controller
     public function createVerificationRequest(Request $request, $id){
         $validator = Validator::make($request->all(), [
             'name2' => 'required',
-            'address2' => 'required', 
+            'address2' => 'required',
             'website' => 'nullable|url',
             'fb_id' => 'nullable|url',
             'twitter_id' => 'nullable|url',
@@ -119,7 +119,8 @@ class AccountController extends Controller
         $verificationRequest->additional_info = $request->input('additional_info');
         $verificationRequest->assignVerificationRequests(Auth::user()->id);
         $verificationRequest->save();
-        return redirect()->back()
+
+        return redirect()->route('profile.account')
             ->with('status', 'success')
             ->with('user', Auth::user())
             ->with('message', 'Verifikasi telah terkirim');
