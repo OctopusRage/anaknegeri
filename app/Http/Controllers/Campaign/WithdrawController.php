@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Campaign;
 use App\Models\WithdrawRequest;
 use Datatables;
+use Validator;
 
 
 
@@ -68,17 +69,23 @@ class WithdrawController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'type' => 'required',
             'amount_bank' => 'required',
             'bank_detail' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                ->with('status', 'warning')->with('message', 'Terjadi beberapa kesalahan input')->withInput();
+        }
+
         $campaign = Campaign::whereId($id)->firstOrFail();
 
         if($request->get('type')=="Finansial"){
             $item = 'Dana';
-            $amount = $request->get('amount_bank');   
-            $detail = $request->get('bank_detail');   
+            $amount = $request->get('amount_bank');
+            $detail = $request->get('bank_detail');
         }else{
             $item = $request->get('item');
             $amount = $request->get('amount');   

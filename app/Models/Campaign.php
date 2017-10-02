@@ -117,8 +117,9 @@ class Campaign extends Model
     public function getStatusWithdraw()
     {
         $withdrawed = 0.0;
+        $withdraw = $this->withdraw()->where('status', '=',true)->get();
 
-        foreach( $this->withdraw as $withdraw)
+        foreach( $withdraw as $withdraw)
         {
             if($withdraw->item == "Dana")
             {   

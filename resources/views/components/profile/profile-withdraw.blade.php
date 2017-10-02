@@ -61,18 +61,39 @@
                       <div class="text-muted text-uppercase font-weight-bold font-xs">Dana Tersedia</div>
                   </div>
                 </div>
-                <div class="form-group {{ $errors->has('amount') ? ' has-danger' : '' }}  mb-3">
+                <div class="form-group {{ $errors->has('amount_bank') ? ' has-danger' : '' }}  mb-3">
                   <label for="inputAmount">Jumlah Penarikan</label>
                   <div class="input-group">
                     <span class="input-group-addon">Rp. </span>
                     <input type="number" class="form-control" name="amount_bank" id="inputAmount">
                   </div>
                 </div>
-
-                <div class="form-group {{ $errors->has('amount') ? ' has-danger' : '' }}  mb-3">
+                  @php
+                    $bankDetail = Auth::user()->bankDetail;
+                    $checkedWithdraw = empty($bankDetail);
+                    $bankDetailString = empty($bankDetail) ? '': '
+                        no Rek: '. $bankDetail->bank_account.',
+                        bank: '. $bankDetail->bank_name. ',
+                        atas nama: '. $bankDetail->name;
+                  @endphp
+                  <div class="form-group  mb-3">
+                      <label for="withdraw_to">Tujuan Penarikan</label>
+                      <div class="radio">
+                          <label for="check_withdraw_pribadi">
+                              <input type="radio" {{$checkedWithdraw ? 'checked': ''}} id="check_withdraw_pribadi" checked name="withdraw_to" value="pribadi">&nbsp; Rekening Pribadi
+                          </label>
+                      </div>
+                      <div class="radio">
+                          <label for="check_withdraw_lain">
+                              <input type="radio" {{$checkedWithdraw ? 'checked': ''}} id="check_withdraw_lain" name="withdraw_to" value="lain">&nbsp; Rekening Lain
+                          </label>
+                      </div>
+                  </div>
+                <div class="form-group {{ $errors->has('bank_detail') ? ' has-danger' : '' }}  mb-3">
                   <label for="inputRekening">Rekening bank</label>
                   <textarea class="form-control" name="bank_detail" rows="5" placeholder="Masukkan Detail Nomor Rekening Bank (Nomor Rekening - Atas Nama - BANK)" id="inputRekening"></textarea>
                 </div>
+
               </div>
 
               <div id="group-non-finansial">
@@ -159,6 +180,18 @@
         $('#group-finansial').hide();
         $('#group-non-finansial').slideDown();
       }
+    });
+    $("input[name=withdraw_to]").change(function() {
+        var type = $(this).val();
+        if(type=="pribadi"){
+            $('#inputRekening').html({{$bankDetailString}});
+            $('#inputRekening').attr('disabled', true);
+            console.log('pribadi');
+        }else if(type=="lain"){
+            $('#inputRekening').html("");
+            $('#inputRekening').attr('disabled', false);
+            console.log('lain');
+        }
     });
 
   </script>

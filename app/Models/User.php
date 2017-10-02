@@ -56,6 +56,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Wallet', 'user_id');
     }
 
+    public function bankDetail()
+    {
+        return $this->hasOne('App\Models\BankDetail', 'user_id');
+    }
+
     // Role Relation
     public function hasRole($name)
     {
