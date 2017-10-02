@@ -69,7 +69,9 @@ class WithdrawController extends Controller
     public function store(Request $request, $id)
     {
         $this->validate($request, [
-           'name'
+            'type' => 'required',
+            'amount_bank' => 'required',
+            'bank_detail' => 'required',
         ]);
         $campaign = Campaign::whereId($id)->firstOrFail();
 
@@ -81,6 +83,11 @@ class WithdrawController extends Controller
             $item = $request->get('item');
             $amount = $request->get('amount');   
             $detail = $request->get('detail');   
+        }
+
+        if ($request->amount_bank > $campaign->getAvailableForWithdraw()) {
+            return back()->with('status', 'warning')
+                ->with('message', 'Dana penarikan tidak sesuai');
         }
 
         $withdraw = new WithdrawRequest(array(
