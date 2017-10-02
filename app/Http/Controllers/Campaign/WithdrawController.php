@@ -68,6 +68,9 @@ class WithdrawController extends Controller
      */
     public function store(Request $request, $id)
     {
+        $this->validate($request, [
+           'name'
+        ]);
         $campaign = Campaign::whereId($id)->firstOrFail();
 
         if($request->get('type')=="Finansial"){
