@@ -10,18 +10,21 @@
         <div class="form-group  mb-3">
         
             <label for="support_type">Jenis dukungan yang diberikan</label>
-            
 
-             <div class="radio">
+            @if($campaign->supportType->where('type', 'Finansial')->count() > 0)
+            <div class="radio">
                 <label for="check_finansial">
-                    <input type="radio" id="check_finansial" name="type" value="Finansial">&nbsp; Finansial
+                    <input type="radio" checked id="check_finansial" name="type" value="Finansial">&nbsp; Finansial
                 </label>
             </div>
+            @endif
+            @if($campaign->supportType->where('type', 'Non Finansial')->count() > 0)
             <div class="radio">
                 <label for="check_nonfinansial">
-                    <input type="radio" id="check_nonfinansial" name="type" value="Non Finansial">&nbsp; Non Finansial
+                    <input type="radio" {{old('type')=='Non Finansial'?'checked':''}} id="check_nonfinansial" name="type" value="Non Finansial">&nbsp; Non Finansial
                 </label>
             </div>
+            @endif
         </div>
         <!-- Untuk dukungan finansial -->
         <div class="row">
@@ -36,13 +39,13 @@
                 </div>
                 <div class="form-group  mb-3">
                     <label for="name">Jumlah</label>
-                    <div class="input-group">
+                    <div class="input-group {{$errors->has('amount')? 'has-danger': ''}}">
                         <span class="input-group-addon">Rp.
                         </span>
                         <input type="hidden" name="item" value="Dana">
                         <input type="number" class="form-control" name="amount" placeholder="Jumlah Donasi">
                     </div>
-                    <span class="help-block">Pesan error</span>
+                    <span class="help-block ">{{$errors->has('amount')? $errors->first('amount'): ''}}</span>
                 </div>
             </div>            
         </div>
@@ -101,26 +104,27 @@
                 </div>
                 <div class="form-group  mb-3">
                     <label for="inputItem">Nama barang</label>
-                    <div class="input-group">
+                    <div class="input-group {{$errors->has('barang')? 'has-danger': ''}}">
                         <span class="input-group-addon"><i class="icon-drawer"></i>
                         </span>
                         <input type="text" class="form-control" name="barang" id="inputItem" placeholder="Nama Barang">
                     </div>
-                    <span class="help-block">Pesan error</span>
+                    <span class="help-block">{{$errors->has('barang')? $errors->first('barang'): ''}}</span>
                 </div> 
                 <div class="form-group  mb-3">
                     <label for="inputAmount">Jumlah</label>
-                    <div class="input-group">
+                    <div class="input-group {{$errors->has('count')? 'has-danger': ''}}">
                         <span class="input-group-addon"><i class="icon-arrow-right"></i>
                         </span>
                         <input type="number" id="inputAmount" name="count" class="form-control" placeholder="Jumlah Donasi">
                     </div>
-                    <span class="help-block">Pesan error</span>
+                    <span class="help-block">{{$errors->has('count')? $errors->first('count'): ''}}</span>
                 </div>
 
-                <div class="form-group mb-3">
+                <div class="form-group mb-3 {{$errors->has('count')? 'has-danger': ''}}">
                     <label for="name">Dikirim dari <span class="text-muted"></span></label>
                     <textarea id="inputAddress" name="detail" rows="5" class="form-control" placeholder="Silakan tulis alamat pengiriman anda"></textarea>
+                    <span class="help-block">{{$errors->has('detail')? $errors->first('detail'): ''}}</span>
                 </div>
 
             </div>
@@ -152,10 +156,13 @@
 @section('viewjs')
 <script type="text/javascript">
     $(document).ready(function(){
-
         $('#group-input-donasi-finansial').hide();
         $('#group-input-donasi-non-finansial').hide();
-
+        if($("#check_finansial").is(":checked")) {
+            $('#group-input-donasi-finansial').show();
+        }else {
+            $('#group-input-donasi-non-finansial').show();
+        }
 
         $("input[name=type]").change(function() {
             var type = $(this).val();

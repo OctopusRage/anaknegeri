@@ -9,6 +9,8 @@ use App\Models\Support;
 use App\Models\SupportType;
 use App\Models\Wallet;
 use Auth;
+use Illuminate\Support\Facades\Validator;
+
 class SupportController extends Controller
 {
     /**
@@ -41,12 +43,35 @@ class SupportController extends Controller
      */
     public function store(Request $request, $slug)
     {
+        $validator = Validator::make($request->all(),[
+            'type'    => 'required',
+        ]);
+
+        if($validator->fails()) {
+            return back()->withInput()->withErrors($validator)
+                ->with('status', 'warning')
+                ->with('message', 'Terjadi kesalahan pada input');
+        }
         if($request->get('type')=="Finansial"){
+            $validator = Validator::make($request->all(),[
+                'amount'    => 'required|min:10000',
+            ]);
+
             $item = $request->get('item');
             $amount = $request->get('amount');   
         }else{
+
+            $validator = Validator::make($request->all(),[
+                'barang'    => 'required',
+                'count'    => 'required|min:1'
+            ]);
             $item = $request->get('barang');
             $amount = $request->get('count');
+        }
+        if($validator->fails()) {
+            return back()->withInput()->withErrors($validator)
+                ->with('status', 'warning')
+                ->with('message', 'Terjadi kesalahan pada input');
         }
 
         $support = new Support(array(
