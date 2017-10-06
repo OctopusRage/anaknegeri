@@ -20,7 +20,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
   .copy('resources/assets/js/jquery.dataTables.min.js', 'public/js/jquery.dataTables.min.js')
   .copy('resources/assets/js/dataTables.bootstrap4.min.js', 'public/js/dataTables.bootstrap4.min.js')
   .copyDirectory('node_modules/tinymce', 'public/tinymce')
-  .copyDirectory('node_modules/tinymce', 'public/tinymce')
   .copyDirectory('resources/assets/img', 'public/img')
   .copyDirectory('resources/assets/filemanager', 'public/tinymce/filemanager')
   .version();
