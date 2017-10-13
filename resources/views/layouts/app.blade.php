@@ -9,12 +9,11 @@
 		
 		@include('layouts.partials.navbar')
 		<div class="app-body">
-		@include('layouts.partials.sidebar')
-
-		
+			@include('layouts.partials.sidebar')
+			@yield('content')
 		</div>
 		@include('banner.unactive')
-	  @yield('content')
+
 
 		@include('layouts.partials.footer')    
 		@include('layouts.partials.script') 

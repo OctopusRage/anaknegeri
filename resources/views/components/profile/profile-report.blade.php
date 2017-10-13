@@ -9,7 +9,19 @@
       <div class="card-header">
         <h3 class="text-center">Data Laporan</h3>
       </div>
-      <div class="card-block p-3 clearfix">
+
+        <div class="card-block clearfix">
+            <table class="table table-striped table-bordered" id="report-table" style="width: 100% !important">
+                <thead class="thead-inverse">
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Judul</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="card-block clearfix">
         <div class="row">
           <div class="col-md-8">
             <dl class="row">
@@ -29,8 +41,8 @@
           
         @include('components.status')
         
-        <div class="card pt-3" id="form-add-report">
-          <h3 class="text-center texr-info"> Buat Laporan</h3>
+        <div class="card pt-3 hide" id="form-add-report">
+          <h3 class="text-center text-info"> Buat Laporan</h3>
           <div class="card-block ">
   
           <form action="{{ route('profile.postReport', [$campaign->id])}}" method="POST" enctype="multipart/form-data">
@@ -73,17 +85,7 @@
       </div>
 
  
-      <div class="card-block clearfix">
-        <table class="table table-striped table-bordered" id="report-table" style="width: 100% !important">
-            <thead class="thead-inverse">
-              <tr>
-                <th>Tanggal</th>
-                <th>Judul</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-          </table>
-      </div>
+
          
     </div>
   </div>
