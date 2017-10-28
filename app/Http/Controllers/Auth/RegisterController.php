@@ -74,7 +74,7 @@ class RegisterController extends Controller
                 'password.max'          => 'Panjang karakter maksimal 32',
                 'g-recaptcha-response.required' => 'Captcha is required',
                 'captcha.min'           => 'Wrong captcha, please try again.',
-                'g-recaptcha-response.recaptcha' => 'The :attribute field is not correct.',
+//                'g-recaptcha-response.recaptcha' => 'The :attribute field is not correct.',
             ]
         );
 
@@ -96,7 +96,8 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'token' => str_random(64),
             'activated' => false,
-        ]); 
+        ]);
+        $this->createWallet($user->id);
 
         $role = Role::whereName('user')->first();
         $user->assignRole($role);
@@ -125,8 +126,6 @@ class RegisterController extends Controller
     {
         User::where('token',$token)->firstOrFail()->activated();
         $user = User::where('token', $token)->firstOrFail();
-
-        $this->createWallet($user->id);
 
         return view('banner.activation-success')
             ->with('message', 'Selamat, akun anda telah aktif!');
