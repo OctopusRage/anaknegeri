@@ -95,6 +95,20 @@ class CampaignController extends Controller
         return view('campaign.create')->with('category', $category);    
     }
 
+    private function validator(array $data) {
+        return Validator::make($data, [
+            'title'         => 'required',
+            'subtitle'      => '',
+            'address'       => 'required',
+            'slug'          => 'required|unique:campaigns',
+            'feature_img'   => 'required',
+            'deadline'      => 'date',
+            'detail'        => 'required|min:50'
+        ], [
+
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -104,6 +118,10 @@ class CampaignController extends Controller
 
     public function store(Request $request)
     {
+        $validator = $this->validator($request->all());
+        if($validator->fails()) {
+            return back()->withErrors($validator)->with('status', 'danger')->with('message', 'Terjadi kesalahan saat input');
+        }
         $image = Input::file('feature_img');
         $input = $this->processImage($image);
         $slug = strtolower(str_replace(' ', '-', $request->get('slug')));
