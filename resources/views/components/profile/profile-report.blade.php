@@ -47,34 +47,37 @@
   
           <form action="{{ route('profile.postReport', [$campaign->id])}}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    				<div class="form-group">
-              <label class="form-control-label" for="multiple-select">Laporan Atas</label>
-              <select id="multiple-select" name="withdraw_id" class="form-control" multiple="" style="height: 10rem">
-                  
-									@foreach ($withdraws as  $withdraw)
-                  	<option value="{{ $withdraw->id }}">
-                  		{{$withdraw->item}} sebanyak
-                  		@if($withdraw->item=="Dana")
-                  			Rp. 
-                  		@endif
-                  		{{$withdraw->amount}}
-                  		pada 
-                  		<?php echo date('d M Y', strtotime($withdraw->created_at)); ?>
-                  	</option>
-									@endforeach
-              </select>
-          	</div>
+              <div class="form-group {{ $errors->has('withdraw_id') ? ' has-danger' : '' }}  mb-3">
+                  <label class="form-control-label" for="multiple-select">Laporan Atas</label>
+                  <select id="multiple-select" name="withdraw_id" class="form-control" multiple="" style="height: 10rem">
+
+                        @foreach ($withdraws as  $withdraw)
+                        <option value="{{ $withdraw->id }}">
+                            {{$withdraw->item}} sebanyak
+                            @if($withdraw->item=="Dana")
+                                Rp.
+                            @endif
+                            {{$withdraw->amount}}
+                            pada
+                            <?php echo date('d M Y', strtotime($withdraw->created_at)); ?>
+                        </option>
+                        @endforeach
+                  </select>
+                  <span class="help-block">{{$errors->has('withdraw_id')? $errors->first('withdraw_id'): ''}}</span>
+              </div>
             <div class="form-group {{ $errors->has('title') ? ' has-danger' : '' }}  mb-3">
               <label for="inputTitle">Judul Laporan</label>
               <div class="input-group">
                 <span class="input-group-addon"><icon class="icon-pencil"></icon></span>
                 <input type="text" class="form-control" name="title" id="inputTitle" placeholder="Judul Laporan">
               </div>
+              <span class="help-block">{{$errors->has('title')? $errors->first('title'): ''}}</span>
             </div>
 
             <div class="form-group {{ $errors->has('detail') ? ' has-danger' : '' }}  mb-3">
               <label for="inputDetail">Detail</label>
               <textarea class="form-control" name="detail" rows="5" placeholder="Masukkan Detail Laporan atas permintaan penarikan yang dimaksud" id="inputDetail"></textarea>
+              <span class="help-block">{{$errors->has('detail')? $errors->first('detail'): ''}}</span>
             </div>
            	<button type="submit" class="btn btn-primary">Buat Laporan</button>
           </form>

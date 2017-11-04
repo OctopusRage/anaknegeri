@@ -54,7 +54,7 @@ class SupportController extends Controller
         }
         if($request->get('type')=="Finansial"){
             $validator = Validator::make($request->all(),[
-                'amount'    => 'required|min:10000',
+                'amount'    => 'required|integer|min:10000',
             ]);
 
             $item = $request->get('item');

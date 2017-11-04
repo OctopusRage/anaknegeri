@@ -17,7 +17,7 @@
     </div>
     <div class="tab-pane p-5" id="report" role="tabpanel">
         <div id="report-data">
-            @include('components.laporan')
+            @include('components.laporan', ['slug', $slug])
         </div>
        <button type="button" id="loadMoreReport" class="btn btn-secondary">Muat Selanjutnya...</button>
     </div>

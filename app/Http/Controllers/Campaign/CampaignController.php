@@ -183,7 +183,8 @@ class CampaignController extends Controller
         $withdraw = $campaign->withdraw()->where('sent',1)->get();
         return view('campaign.detail')
             ->with('withdraw', $withdraw)
-            ->with('campaign', $campaign);
+            ->with('campaign', $campaign)
+            ->with('slug', $slug);
     }
 
     public function comment(Request $request, $slug)

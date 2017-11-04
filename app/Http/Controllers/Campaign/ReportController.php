@@ -9,6 +9,7 @@ use App\Models\Report;
 use App\Models\WithdrawRequest;
 use Datatables;
 use DB;
+use Validator;
 
 class ReportController extends Controller
 {
@@ -101,6 +102,14 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'withdraw_id'   => 'required',
+            'title'         => 'required',
+            'detail'        => 'required',
+        ]);
+        if($validator->fails()) {
+            return back()->withErrors($validator)->with('status', 'danger')->with('message', 'Terjadi kesalah pada saat input');
+        }
         $withdraw = WithdrawRequest::whereId($request->withdraw_id)->firstOrFail();
         $report = new Report(array(
             'title' => $request->get('title'),
