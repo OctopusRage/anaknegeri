@@ -53,6 +53,7 @@
         @include('components.status')
         
         <div class="card pt-3" id="form-konfirmasi">
+          @if(Auth::user()->activated == true)
           <h3 class="text-center texr-info"> Konfirmasi Transfer</h3>
           <div class="card-block ">
 
@@ -66,15 +67,29 @@
                 <span class="input-group-addon">Rp. </span>
                 <input type="number" class="form-control" name="amount" id="inputAmount">
               </div>
+                <span class="help-block">
+                    @if ($errors->any())
+                        {{$errors->first('amount')}}
+                    @endif
+                </span>
            </div>
 
             <div class="form-group {{ $errors->has('image') ? ' has-danger' : '' }}  mb-3">
               <label for="inputImage">Bukti Transfer</label>
               <input type="file" class="form-control" name="image" class="inputImage">
+                <span class="help-block">
+                    @if ($errors->any())
+                        {{$errors->first('image')}}
+                    @endif
+                </span>
            </div>
            <button type="submit" class="btn btn-primary">Konfirmasi</button>
           </form>
-
+          @else
+          <div class="card-block alert alert-warning">
+                  Akun belum aktif, silakan lakukan aktivasi sesuai prosedur di email. Untuk melakukan topup / konfirmasi transfer harap konfirmasi email anda terlebih dahulu.
+          </div>
+          @endif
           </div>
         </div>
 

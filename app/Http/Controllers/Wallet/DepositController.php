@@ -10,10 +10,28 @@ use Datatables;
 use Auth;
 use Image;
 use Input;
+use Validator;
 
 class DepositController extends Controller
 {
+
+    public function validator(array $data){
+        $validator = Validator::make($data, [
+            'image' => 'required',
+            'amount' => 'required|min:50000'
+        ],[
+            'amount.min'    => 'Top up minimal yang bisa dilakukan adalah Rp.50.0000',
+            'amount.required' => 'Mohon isi jumlah transfer anda',
+            'image.required' => 'silahkan serahkan bukti transfer',
+        ]);
+        return $validator;
+    }
+
     public function store(Request $request){
+        $validator = $this->validator($request->all());
+        if($validator->fails()) {
+            return back()->withErrors($validator)->with('message', 'Data yang anda masukkan kurang lengkap')->with('status', 'danger');
+        }
         $id = Auth::user()->id;
         $image = $this->processImage(Input::file('image'));
         $wallet = Wallet::where('user_id', $id)->firstOrFail();

@@ -15,9 +15,9 @@
 		@yield('content')
 
 
-		@include('layouts.partials.footer')    
-		@include('layouts.partials.script') 
-		@yield('script')   
+		@include('layouts.partials.footer')
+		@include('layouts.partials.script')
+		@yield('script')
 </body>
 	
 </html>
