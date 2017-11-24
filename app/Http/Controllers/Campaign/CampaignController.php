@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Campaign;
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use DB;
 use App\Http\Controllers\Controller;
@@ -120,7 +121,7 @@ class CampaignController extends Controller
     {
         $validator = $this->validator($request->all());
         if($validator->fails()) {
-            return back()->withErrors($validator)->with('status', 'danger')->with('message', 'Terjadi kesalahan saat input');
+            return back()->withErrors($validator)->with('status', 'danger')->with('message', 'Terjadi kesalahan saat input')->withInput();
         }
         $image = Input::file('feature_img');
         $input = $this->processImage($image);
@@ -128,7 +129,6 @@ class CampaignController extends Controller
         $campaign = new Campaign(array(
             'title'         => $request->get('title'),
             'subtitle'      => $request->get('subtitle'),
-            'deadline'      => $request->get('deadline'),
             'address'       => $request->get('address'),
             'slug'          => $slug,
             'feature_img'   => $input,
@@ -155,7 +155,6 @@ class CampaignController extends Controller
             }
         }
         return redirect()->back()
-            ->withInput()
             ->with('message','Campaign berhasil dibuat.')
             ->with('status', 'success');
     }
@@ -223,9 +222,18 @@ class CampaignController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+        $campaign = Campaign::whereSlug($slug)->firstOrFail();
+        $category = Category::all();
+        $financeSupport = $campaign->supportType->where('type', 'Finansial')->first();
+        $nonfinanceSupport = $campaign->supportType->where('type', 'Non Finansial')->all();
+        return view('campaign.edit')
+            ->with('campaign', $campaign)
+            ->with('category', $category)
+            ->with('financeSupport', $financeSupport)
+            ->with('nonfinanceSupport', $nonfinanceSupport)
+            ->with('slug', $slug);
     }
 
     /**
@@ -237,7 +245,55 @@ class CampaignController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator =  Validator::make($request->all(), [
+            'title'         => 'required',
+            'subtitle'      => '',
+            'address'       => 'required',
+            'slug'          => 'required',
+            'deadline'      => 'date',
+            'detail'        => 'required|min:10'
+        ], []);
+        if($validator->fails()) {
+            return back()->withErrors($validator)->with('status', 'danger')->with('message', 'Terjadi kesalahan saat input')->withInput();
+        }
+
+        $slug = strtolower(str_replace(' ', '-', $request->get('slug')));
+        $campaign = Campaign::find($id);
+        $campaign->title = $request->get('title');
+        $campaign->subtitle = $request->get('subtitle');
+        $campaign->address = $request->get('address');
+        if ($campaign->slug != $slug) {
+            $campaign->slug = $slug;
+        }
+        if($request->hasFile('feature_img')) {
+            $image = $request->file('feature_img');
+            $input = $this->processImage($image);
+            $campaign->feature_image = $input;
+        }
+        $campaign->deadline = Carbon::parse($request->get('deadline'));
+        $campaign->detail = $request->get('detail');
+        $campaign->save();
+        $category = $request->get('category_id');
+        $campaign->assignCategory($category);
+        $finansialType= SupportType::whereType('Finansial')->first();
+        $nonFinansialType= SupportType::whereType('Non Finansial')->first();
+        $checkifFinansial = $request->has('check_finansial') ? true : false;
+        $checkifNonFinansial = $request->has('check_nonfinansial') ? true : false;
+        $campaign->supportType()->detach();
+        if($checkifFinansial){
+            $donasiDana= $request->get('donasi_finansial');
+            $campaign->assignSupportNeed($finansialType, 'Dana', $donasiDana);
+        }
+        if($checkifNonFinansial){
+            $item = $request->input('item');
+            $amount = $request->input('amount');
+            for ($i=0; $i < count($item) ; $i++) {
+                $campaign->assignSupportNeed($nonFinansialType, $item[$i], $amount[$i]);
+            }
+        }
+        return redirect()->back()
+            ->with('message','Campaign berhasil diedit.')
+            ->with('status', 'success');
     }
 
     /**

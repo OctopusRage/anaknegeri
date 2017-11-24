@@ -30,7 +30,7 @@ class Campaign extends Model
 
     public function supportType()
     {
-        return $this->belongsToMany('App\Models\SupportType')->withTimestamps()->withPivot('item', 'amount');
+        return $this->belongsToMany('App\Models\SupportType')->withTimestamps()->withPivot('id', 'item', 'amount');
     }
 
     public function support()

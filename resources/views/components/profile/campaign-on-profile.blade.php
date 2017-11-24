@@ -33,6 +33,10 @@
 	<span class="icon-book-open"></span>
 		Baca Selengkapnya 
 	</a>
+	<a href="{{ route('campaign.edit',[$campaign->slug])}}" class="btn btn-sm  btn-success">
+		<span class="icon-pencil"></span>
+		Edit Campaign
+	</a>
 </p>
 <hr>
 @endforeach

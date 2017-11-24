@@ -79,6 +79,8 @@ Route::group(['prefix' => 'campaign'], function() {
     Route::get('/', ['as' => $campaign . 'home', 'uses' => 'Campaign\CampaignController@index']);
     Route::get('detail/{slug}', ['as' => $campaign . 'detail', 'uses' => 'Campaign\CampaignController@show']);
     Route::get('detail/{slug}/comment', ['as' => $campaign . 'comments', 'uses' => 'Campaign\CampaignController@comment']);
+    Route::get('detail/{slug}/edit', ['as' => $campaign . 'edit', 'uses' => 'Campaign\CampaignController@edit']);
+    Route::post('detail/{id}/update', ['as' => $campaign . 'update', 'uses' => 'Campaign\CampaignController@update']);
     Route::get('/popular', ['as' => $campaign . 'popular', 'uses' => 'Campaign\CampaignController@popular']);
     Route::get('/category/{slug}', ['as' => $campaign . 'category', 'uses' => 'Campaign\CampaignController@category']);
     Route::get('/detail/{slug}/report/{report_id}', ['as' => $campaign . 'detailReport', 'uses' => 'Campaign\ReportController@show']);
@@ -217,7 +219,7 @@ Route::group(['prefix' => 'admin','middleware' => 'auth:administrator'], functio
 
 /*
 *******************
-Auth:Finansial
+Auth:Finansial\\
 *******************
 */
 // Route::group(['prefix' => 'finance','middleware' => 'auth:finance'], function()
