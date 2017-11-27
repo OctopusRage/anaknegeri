@@ -55,7 +55,12 @@ class ProfileController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::whereId($id)->firstOrFail();
+        $count=array(
+            'campaign' => $user->campaign()->count(),
+            'contribute' => $user->support()->count()
+        );
+        return view('profile')->with('userprofile',$user)->with('count', $count);
     }
 
     /**
@@ -112,6 +117,17 @@ class ProfileController extends Controller
         return view('profile.campaign',compact('campaigns'));
     }
 
+    public function campaignsPublic(Request $request, $id)
+    {
+        $user= User::find($id);
+        $campaigns= Campaign::where('created_by', $user->id)->paginate(5);
+        $campaigns->sortByDesc('created_at');
 
+        if ($request->ajax()) {
+            $view = view('components.profile.campaign-on-profile',compact('campaigns'))->render();
+            return response()->json(['html'=>$view]);
+        }
+        return view('profile.campaign',compact('campaigns'))->with('userprofile', $user);
+    }
 
 }

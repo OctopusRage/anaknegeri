@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers\Campaign;
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use DB;
 use App\Http\Controllers\Controller;
@@ -10,18 +9,14 @@ use Image;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Contracts\Auth\Guard;
-use App\Http\Requests\CampaignFormRequest;
 use App\Models\SupportType;
 use App\Models\Campaign;
 use App\Models\Category;
-use App\Models\WithdrawRequest;
-use App\Models\Support;
 
 class CampaignController extends Controller
 {
     public function __construct() {
-        $this->middleware('user.verified', ['only' => ['create','store']]);
+        $this->middleware('user.verified', ['only' => ['create','store', 'edit', 'update']]);
     }
 
     /**

@@ -49,6 +49,11 @@ Guest Access
 *******************
 */
 
+Route::group(['prefix' => 'userprofile'], function() {
+    Route::get('/{id}', ['as' => 'userprofile.home', 'uses' => 'ProfileController@show']);
+    Route::get('/{id}/campaigns', ['as' => 'userprofile.campaigns', 'uses' => 'ProfileController@campaignsPublic']);
+});
+
 /**
  * Complete Auth Routes
  * Access on App\Controllers\Auth

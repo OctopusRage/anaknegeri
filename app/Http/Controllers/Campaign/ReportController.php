@@ -13,6 +13,11 @@ use Validator;
 
 class ReportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('user.verified')->only(['index', 'store']);
+    }
+
     /**
      * Display a listing of the resource.
      *
