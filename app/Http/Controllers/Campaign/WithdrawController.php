@@ -71,8 +71,6 @@ class WithdrawController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'type' => 'required',
-            'amount_bank' => 'required',
-            'bank_detail' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -83,10 +81,29 @@ class WithdrawController extends Controller
         $campaign = Campaign::whereId($id)->firstOrFail();
 
         if($request->get('type')=="Finansial"){
+            $validator = Validator::make($request->all(), [
+                'amount_bank' => 'required',
+                'bank_detail' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return back()->withErrors($validator)
+                    ->with('status', 'warning')->with('message', 'Terjadi beberapa kesalahan input')->withInput();
+            }
             $item = 'Dana';
             $amount = $request->get('amount_bank');
             $detail = $request->get('bank_detail');
         }else{
+            $validator = Validator::make($request->all(), [
+                'amount' => 'required',
+                'item' => 'required',
+                'detail' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return back()->withErrors($validator)
+                    ->with('status', 'warning')->with('message', 'Terjadi beberapa kesalahan input')->withInput();
+            }
             $item = $request->get('item');
             $amount = $request->get('amount');   
             $detail = $request->get('detail');   

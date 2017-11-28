@@ -7,7 +7,7 @@
     } else {
         $user = Auth::user();
         $profilelink = route('profile.home', ['id'=>$user->id]);
-		$campaignlink = route('profile.home', ['id'=>$user->id]);
+		$campaignlink = route('profile.campaign');
 
     }
 ?>
